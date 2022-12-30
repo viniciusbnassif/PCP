@@ -1,6 +1,7 @@
 package com.liderMinas.PCP
 
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.Editable
@@ -11,16 +12,61 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import com.liderMinas.PCP.database.MyHelper
 import java.util.*
 
 
 class ApontamentoEmbalados1 : AppCompatActivity() {
+    private lateinit var idPrd: EditText
+    private lateinit var descPrd: EditText
+    private lateinit var qePrd: EditText
+    private lateinit var validPrd: EditText
+    private lateinit var tipoVPrd: EditText
+    //private lateinit var validPrd: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apontamento_embalados1)
+
+
+
+
+        /*
+        VERSÃO 2, AGUARDE, DEVE ESTAR ERRADA.
+        var helper = MyHelper(applicationContext)
+
+        var db: SQLiteDatabase = helper.readableDatabase
+        val produtoTodos = db.rawQuery("SELECT * FROM Produto", null)
+        val produtosArray = resources.get(produtoTodos)
+
+        val spinner = findViewById<Spinner>(R.id.menu)
+        if (spinner != null) {
+            val adapter = ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, produtosArray)
+            spinner.adapter = adapter
+
+            spinner.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    Toast.makeText(
+                        this@ApontamentoEmbalados1,
+                        "Item selecionado" + produtosArray[position], Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+            }*/
+
+
+
+                //var items = ArrayAdapter<Cursor>(this, android.R.layout.simple_spinner_item, produtoTodos)
+
 
         //Criar barra de ações
         val toolbar = findViewById<BottomAppBar?>(R.id.apontEmbaladosBottomBar)
@@ -32,18 +78,10 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             setDisplayShowCustomEnabled(true)
         }
 
-        // calling the action bar
-
-        // showing the back button in action bar
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true); //Mostrar o botão
-        //supportActionBar?.setHomeButtonEnabled(true);      //Ativar o botão
-
-
-
-
-        var optmenu = findViewById<TextInputLayout>(R.id.menu)
-        val items = arrayOf("Item 1", "Item 2dois", "Item 3sasdasdasd", "Item 4aaaaaaaaaaaaaaaaaaa")
-        (optmenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(items)
+        //val items = ArrayAdapter(this@ApontamentoEmbalados1, R.layout.activity_apontamento_embalados1, R.id.menu, getAllProdutos)
+        //optmenu.adapter = items
+        //val optmenu = findViewById<MenuDropDownListView>(R.id.menu).apply { adapter= items }
+        //(optmenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(items)
 
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
         val dty = dateFormatter.format(Date())
@@ -229,6 +267,32 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         }
 
     }
+
+    /*private fun getProdutos(){
+        val prdList = Database.getAllProdutos()
+
+    }
+
+
+    private fun initView(){
+        idPrd = findViewById(R.id.idProduto)
+        descPrd = findViewById(R.id.descProduto)
+        qePrd = findViewById(R.id.qeProduto)
+        validPrd = findViewById(R.id.validProduto)
+        tipoVPrd = findViewById(R.id.tipoVProduto)
+
+
+
+
+
+        //var optmenu = findViewById<MenuDropDownListView>(R.id.optmenu)
+        val getAllProdutos = SQLiteHelper(this)
+        getAllProdutos.getAllProdutos()
+        Log.d("ResultadoSelectProduto =", getAllProdutos.getAllProdutos().toString())
+        //val items = ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ProdutoModelo<Any>())*/
+
+
+
 
     //método do botão de voltar da Action Bar
    override fun onSupportNavigateUp(): Boolean {

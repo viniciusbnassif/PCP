@@ -64,80 +64,88 @@ class SQLiteHelper(context: Context):
             private const val ID_SYNC = "idSync"
             private const val DATA_SYNC = "dataHoraSync"
             private const val STATUS_SYNC = "statusSync"
+
+            /*========================================================================*/
+
+            val createDBUSUARIO = (
+                    "CREATE TABLE " + TBL_USUARIO + " (" +
+                    ID_USUARIO + " INTEGER NOT NULL PRIMARY KEY, " +
+                    USERNAME + " VARCHAR(64) NOT NULL, " +
+                    PASSWORD + " VARCHAR(64) NOT NULL, " +
+                    NOME + " VARCHAR(64) NOT NULL " +
+                    "); ")
+            val createDBMOTIVO=(
+                    "CREATE TABLE "+ TBL_MOTIVO + " (" +
+                    ID_MOTIVO + " INTEGER NOT NULL PRIMARY KEY," +
+                    DESC_MOTIVO + " VARCHAR(128) NOT NULL" +
+                    ");")
+            val createDBPRODUTO = (
+                    "CREATE TABLE "+ TBL_PRODUTO + " (" +
+                    ID_PRODUTO + " INTEGER NOT NULL PRIMARY KEY," +
+                    DESC_PROD + " VARCHAR(64)NOT NULL," +
+                    QE_PROD + " INTEGER NOT NULL," +
+                    VALID_PROD + " INTEGER NOT NULL," +
+                    TIPOV_PROD + " VARCHAR(1) NOT NULL" +
+                    ");" )
+            val createDBAE = (
+                    "CREATE TABLE "+ TBL_APONTEMBALADO+ " (" +
+                    ID_AE + " INTEGER NOT NULL PRIMARY KEY," +
+                    PILHA_AE + " INTEGER NOT NULL," +
+                    DATA_AE + " VARCHAR(14) NOT NULL," +
+                    LOTE_AE + " INTEGER NOT NULL," +
+                    CAIXA_AE + " INTEGER NOT NULL," +
+                    UNID_AE + " INTEGER NOT NULL," +
+                    VALID_AE + " VARCHAR(8) NOT NULL," +
+                    ID_PRODUTO + " INTEGER NOT NULL," +
+                    QE_PROD + " INTEGER NOT NULL," +
+                    VALID_PROD + " VARCHAR(2) NOT NULL," +
+                    ID_USUARIO + " INTEGER NOT NULL," +
+                    "FOREIGN KEY("+ ID_PRODUTO +") REFERENCES "+TBL_PRODUTO+" ("+ ID_PRODUTO +")," +
+                    "FOREIGN KEY("+ QE_PROD +") REFERENCES "+TBL_PRODUTO+" ("+ QE_PROD +")," +
+                    "FOREIGN KEY("+ VALID_PROD +") REFERENCES "+TBL_PRODUTO+" ("+ VALID_PROD +")," +
+                    "FOREIGN KEY("+ ID_USUARIO +") REFERENCES "+ TBL_USUARIO +" ("+ ID_USUARIO +")" +
+                    ");" )
+            val createDBAP = (
+                    "CREATE TABLE "+ TBL_APONTPERDA +" (" +
+                    ID_AP +" INTEGER NOT NULL PRIMARY KEY," +
+                    QTD_AP +" FLOAT," +
+                    DATA_AP +" VARCHAR(14)," +
+                    ID_USUARIO +" INTEGER NOT NULL," +
+                    ID_PRODUTO +" INTEGER NOT NULL," +
+                    ID_MOTIVO +" INTEGER NOT NULL," +
+                    ID_AE +" INTEGER NOT NULL," +
+                    "FOREIGN KEY("+ ID_USUARIO +") REFERENCES "+TBL_USUARIO+" ("+ ID_USUARIO +")," +
+                    "FOREIGN KEY("+ID_PRODUTO+") REFERENCES "+TBL_PRODUTO+" ("+ID_PRODUTO+")," +
+                    "FOREIGN KEY("+ID_MOTIVO+") REFERENCES "+ TBL_MOTIVO+" ("+ID_MOTIVO+")," +
+                    "FOREIGN KEY("+ID_AE+") REFERENCES "+ TBL_APONTEMBALADO +" ("+ID_AE+")" +
+                    ");" )
+            val createDBSYNC = (
+                    "CREATE TABLE "+TBL_SYNC+" (" +
+                    ID_SYNC +" INTEGER NOT NULL PRIMARY KEY," +
+                    DATA_SYNC +" VARCHAR(14)," +
+                    STATUS_SYNC +" INTEGER" +
+                    ");"+
+                    "INSERT INTO "+ TBL_USUARIO + " (username, password, nome) VALUES (guilherme.augusto, 123, Guilherme Augusto);"+
+                    "INSERT INTO " + TBL_PRODUTO + " (descPoduto, qeProduto, validProduto, tipoVProduto) VALUES (Pão de teste, 5, 45, M);")
+
         }
 
         override fun onCreate(db: SQLiteDatabase?) {
-
-            val createDBPCP = (
-            "CREATE TABLE " + TBL_USUARIO + "(" +
-            ID_USUARIO + "INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY," +
-            USERNAME + "VARCHAR(64) NOT NULL," +
-            PASSWORD + "VARCHAR(64) NOT NULL," +
-            NOME + "VARCHAR(64) NOT NULL" +
-            ");" +
-            "" +
-            "CREATE TABLE "+ TBL_MOTIVO + "(" +
-            ID_MOTIVO + "INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY," +
-            DESC_MOTIVO + "VARCHAR(128) NOT NULL" +
-            ");" +
-            "" +
-            "CREATE TABLE "+ TBL_PRODUTO + "(" +
-            ID_PRODUTO + "INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY," +
-            DESC_PROD + "VARCHAR(64)NOT NULL," +
-            QE_PROD + "INTEGER NOT NULL," +
-            VALID_PROD + "INTEGER NOT NULL," +
-            TIPOV_PROD + "VARCHAR(1) NOT NULL" +
-            ");" +
-            "" +
-            "CREATE TABLE "+ TBL_APONTEMBALADO+ "(" +
-            ID_AE + " INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY," +
-            PILHA_AE + "INTEGER NOT NULL," +
-            DATA_AE + "VARCHAR(14) NOT NULL," +
-            LOTE_AE + " INTEGER NOT NULL," +
-            CAIXA_AE + " INTEGER NOT NULL," +
-            UNID_AE + " INTEGER NOT NULL," +
-            VALID_AE + " VARCHAR(8) NOT NULL," +
-            ID_PRODUTO + " INTEGER NOT NULL," +
-            QE_PROD + " INTEGER NOT NULL," +
-            VALID_PROD + " VARCHAR(2) NOT NULL," +
-            ID_USUARIO + " INTEGER NOT NULL," +
-            "FOREIGN KEY("+ ID_PRODUTO +") REFERENCES "+TBL_PRODUTO+"("+ ID_PRODUTO +")," +
-            "FOREIGN KEY("+ QE_PROD +") REFERENCES "+TBL_PRODUTO+"("+ QE_PROD +")," +
-            "FOREIGN KEY("+ VALID_PROD +") REFERENCES "+TBL_PRODUTO+"("+ VALID_PROD +")," +
-            "FOREIGN KEY("+ ID_USUARIO +") REFERENCES "+ TBL_USUARIO +"("+ ID_USUARIO +")" +
-            ");" +
-            "" +
-            "CREATE TABLE "+ TBL_APONTPERDA +"(" +
-            ID_AP +" INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY," +
-            QTD_AP +" FLOAT," +
-            DATA_AP +" VARCHAR(14)," +
-            ID_USUARIO +" INTEGER NOT NULL," +
-            ID_PRODUTO +" INTEGER NOT NULL," +
-            ID_MOTIVO +" INTEGER NOT NULL," +
-            ID_AE +" INTEGER NOT NULL," +
-            "FOREIGN KEY("+ ID_USUARIO +") REFERENCES "+TBL_USUARIO+"("+ ID_USUARIO +")," +
-            "FOREIGN KEY("+ID_PRODUTO+") REFERENCES "+TBL_PRODUTO+"("+ID_PRODUTO+")," +
-            "FOREIGN KEY("+ID_MOTIVO+") REFERENCES "+ TBL_MOTIVO+"("+ID_MOTIVO+")," +
-            "FOREIGN KEY("+ID_AE+") REFERENCES "+ TBL_APONTEMBALADO +"("+ID_AE+")" +
-            ");" +
-            "" +
-            "CREATE TABLE "+TBL_SYNC+"(" +
-            ID_SYNC +" INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY," +
-            DATA_SYNC +" VARCHAR(14)," +
-            STATUS_SYNC +" INTEGER" +
-            ");"+
-            "INSERT INTO"+ TBL_USUARIO + "(username, password, nome) VALUES (guilherme.augusto, 123, Guilherme Augusto);"
-            )
-            db?.execSQL(createDBPCP);
+            db?.execSQL(createDBUSUARIO)
+            db?.execSQL(createDBMOTIVO)
+            db?.execSQL(createDBPRODUTO)
+            db?.execSQL(createDBAE)
+            db?.execSQL(createDBAP)
+            db?.execSQL(createDBSYNC)
         }
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
 
             var dropDBPCP = ("DROP TABLE IF EXISTS $TBL_PRODUTO;" +
-                            "DROP TABLE IF EXISTS $TBL_APONTPERDA;" +
-                            "DROP TABLE IF EXISTS $TBL_APONTEMBALADO;" +
-                            "DROP TABLE IF EXISTS $TBL_MOTIVO;" +
-                            "DROP TABLE IF EXISTS $TBL_USUARIO;")
+                             "DROP TABLE IF EXISTS $TBL_APONTPERDA;" +
+                             "DROP TABLE IF EXISTS $TBL_APONTEMBALADO;" +
+                             "DROP TABLE IF EXISTS $TBL_MOTIVO;" +
+                             "DROP TABLE IF EXISTS $TBL_USUARIO;")
             db.execSQL(dropDBPCP)
             onCreate(db)
         }
@@ -157,10 +165,13 @@ class SQLiteHelper(context: Context):
             return success
         }
         @SuppressLint("Range")
+
+        /* Select de todos os produtos*/
         fun getAllProdutos(): ArrayList<ProdutoModelo> {
-            val stdList: ArrayList<ProdutoModelo> = ArrayList()
-            val selectQuery = "SELECT * FROM $TBL_PRODUTO"
+            val prdList: MutableList<ProdutoModelo> = ArrayList()
+            val selectQuery = "SELECT * FROM $TBL_PRODUTO;"
             val db = this.readableDatabase
+
 
             val cursor: Cursor?
 
@@ -187,10 +198,10 @@ class SQLiteHelper(context: Context):
                     tipoVProduto =  cursor.getString(cursor.getColumnIndex("tipoVProduto"))
 
                     val prd = ProdutoModelo(idProduto = idProduto, descProduto = descProduto, qeProduto = qeProduto, validProduto = validProduto, tipoVProduto = tipoVProduto)
-                    stdList.add(prd)
+                    prdList.add(prd)
                 }while (cursor.moveToNext())
             }
-            return stdList
+            return prdList
         }
     }
 

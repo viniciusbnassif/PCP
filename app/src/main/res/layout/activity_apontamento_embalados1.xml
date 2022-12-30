@@ -44,7 +44,7 @@
             android:layout_margin="5dp"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <!--<com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/menu"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
@@ -63,7 +63,16 @@
                     android:inputType="none"
                     app:boxCornerRadiusBottomEnd="5dp"
                     app:boxCornerRadiusBottomStart="5dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
+            <Spinner
+                android:id="@+id/menu"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:hint="Produto"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout19"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></Spinner>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -246,10 +255,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout21" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</ScrollView>
+    </ScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -263,68 +272,68 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/apontEmbaladosBottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom"
-        android:background="@color/blue_700"
-        app:backgroundTint="@color/blue_700"
-        app:hideOnScroll="true"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIconTint="@color/white"
-        app:titleTextColor="@color/white" />
+            android:id="@+id/apontEmbaladosBottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:background="@color/blue_700"
+            app:backgroundTint="@color/blue_700"
+            app:hideOnScroll="true"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIconTint="@color/white"
+            app:titleTextColor="@color/white" />
 
-    <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:outlineAmbientShadowColor="#000000"
-    app:layout_anchor="@id/apontEmbaladosBottomBar"
-    app:layout_anchorGravity="center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:outlineAmbientShadowColor="#000000"
+            app:layout_anchor="@id/apontEmbaladosBottomBar"
+            app:layout_anchorGravity="center">
 
-    <ProgressBar
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5px"
-        android:background="#146683"
-        android:indeterminate="false"
-        android:keyboardNavigationCluster="false"
-        android:max="2"
-        android:maxWidth="10dp"
-        android:maxHeight="5dp"
-        android:minWidth="10dp"
-        android:minHeight="5dp"
-        android:progress="2"
-        android:progressTint="#FFFFFF" />
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5px"
+                android:background="#146683"
+                android:indeterminate="false"
+                android:keyboardNavigationCluster="false"
+                android:max="2"
+                android:maxWidth="10dp"
+                android:maxHeight="5dp"
+                android:minWidth="10dp"
+                android:minHeight="5dp"
+                android:progress="2"
+                android:progressTint="#FFFFFF" />
 
-    <ProgressBar
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5px"
-        android:background="#146683"
-        android:indeterminate="false"
-        android:keyboardNavigationCluster="false"
-        android:max="2"
-        android:maxWidth="10dp"
-        android:maxHeight="5dp"
-        android:minWidth="10dp"
-        android:minHeight="5dp"
-        android:progress="2"
-        android:progressTint="#146a8a" />
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5px"
+                android:background="#146683"
+                android:indeterminate="false"
+                android:keyboardNavigationCluster="false"
+                android:max="2"
+                android:maxWidth="10dp"
+                android:maxHeight="5dp"
+                android:minWidth="10dp"
+                android:minHeight="5dp"
+                android:progress="2"
+                android:progressTint="#146a8a" />
 
-    </LinearLayout>
+        </LinearLayout>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/startActivityApontamentoPerdas"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="right|center_vertical"
-    android:layout_margin="3dp"
-    android:contentDescription="Finalizar"
-    android:src="@drawable/ic_baseline_done_24"
-    android:tooltipText="Finalizar" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/startActivityApontamentoPerdas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_margin="3dp"
+            android:contentDescription="Finalizar"
+            android:src="@drawable/ic_baseline_done_24"
+            android:tooltipText="Finalizar" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
