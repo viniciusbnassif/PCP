@@ -7,6 +7,8 @@
     tools:context=".ApontamentoEmbalados1"
     android:windowSoftInputMode="adjustResize|adjustPan">
 
+
+
     <!--com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/startActivityApontamentoPerdas"
         android:layout_width="wrap_content"
@@ -59,6 +61,11 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="20dp">
+
+            <EditText
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></EditText>
 
             <!--Inicio do layout horizontal 1-->
 

@@ -2,9 +2,14 @@ package com.liderMinas.PCP
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.text.InputType
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
 
@@ -34,6 +39,11 @@ class ApontamentoPerdas : AppCompatActivity() {
             setDisplayShowCustomEnabled(true)
         }
 
+        var motivo1 = findViewById<AutoCompleteTextView>(R.id.motivo1)
+        val items = arrayOf("Item 1", "Item 2dois", "Item 3sasdasdasd", "Item 4aaaaaaaaaaaaaaaaaaa")
+        (motivo1 as? MaterialAutoCompleteTextView)?.setSimpleItems(items)
+
+        //motivo1.setInputType(InputType.TYPE_NULL)
 
             /*var back = findViewById<Button>(R.id.fabBack)
         back.setOnClickListener {
@@ -49,12 +59,12 @@ class ApontamentoPerdas : AppCompatActivity() {
             val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
             val dty = dateFormatter.format(Date())
 
-            //findViewById<TextView>(R.id.finalDate).apply { text = dty }
+            findViewById<TextView>(R.id.finalDate).apply { text = dty }
 
             val dateFormatter0 = SimpleDateFormat("kk:mm")
             val time = dateFormatter0.format(Date())
 
-            //findViewById<TextView>(R.id.finalTime).apply { text = time }
+            findViewById<TextView>(R.id.finalTime).apply { text = time }
 
         }
 
