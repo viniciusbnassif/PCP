@@ -18,7 +18,7 @@
         <item name="android:shadowColor">@color/blue_200</item>
         <item name="colorContainer">@color/blue_200</item>
         <item name="android:textColorHighlight">@color/blue_100</item>
-        <item android:state_activate='true'>@color/blue_100</item>
+
 
         <!-- Status bar color. -->
         <!--item name="android:statusBarColor">@color/blue_0</item-->
