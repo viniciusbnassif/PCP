@@ -1,5 +1,6 @@
 package com.liderMinas.PCP
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -15,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        SQLiteHelper(this);
+
 
         //Criar barra de ações
         val toolbar = findViewById<Toolbar?>(R.id.toolbar)

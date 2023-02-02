@@ -9,17 +9,6 @@
 
 
 
-    <!--com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/startActivityApontamentoPerdas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:contentDescription="Avançar"
-        android:tooltipText="Avançar"
-        android:text="Avançar"
-        app:icon="@drawable/ic_baseline_navigate_next_24" /-->
-
     <ProgressBar
         android:id="@+id/progressInd"
         style="?android:attr/progressBarStyle"
@@ -49,364 +38,218 @@
         <!-- android:background="#11888888""-->
 
 
-        <!--Abertura do layout vertical, para poder fazer
-            varias linhas sem uma ficar sobreposta a outra-->
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="20dp">
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
-            <EditText
-                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></EditText>
-
-            <!--Inicio do layout horizontal 1-->
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/menu"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:hint="Produto">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/optmenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="none"
-                        app:boxCornerRadiusBottomEnd="5dp"
-                        app:boxCornerRadiusBottomStart="5dp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:visibility="visible">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:editable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="Embalagens p/ caixa"
-                        android:singleLine="true"
-                        android:text="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textAlignment="textEnd"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="10"
-                    android:textSize="20dp" />-->
-
-                <!---</LinearLayout>
-
-            <!-Início do layout horizontal 2
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="horizontal">-->
+                android:gravity="center"
+                android:hint="Produto"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout19"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <AutoCompleteTextView
+                    android:id="@+id/optmenu"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:visibility="visible">
+                    android:inputType="none"
+                    app:boxCornerRadiusBottomEnd="5dp"
+                    app:boxCornerRadiusBottomStart="5dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextData"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:editable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="Data"
-                        android:inputType="date"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
 
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Data: "
-                    android:textSize="20dp"></TextView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout17"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout20"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayout19"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menu">
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:editable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Embalagens p/ caixa"
+                    android:singleLine="true"
+                    android:text="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout19"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayout18"
+                app:layout_constraintStart_toEndOf="@+id/textInputLayout17"
+                app:layout_constraintTop_toBottomOf="@+id/menu">
+
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextData"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
+                    android:layout_height="match_parent"
+                    android:editable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Data"
                     android:inputType="date"
-                    android:textSize="20dp" /> -->
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:visibility="visible">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout18"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textInputLayout19"
+                app:layout_constraintTop_toBottomOf="@+id/menu">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextHora"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:editable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="Hora de Início"
-                        android:inputType="time"
-                        android:singleLine="true"
-                        android:tooltipText="Hora de Início" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hora: "
-                    android:textSize="20dp"></TextView>
-
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextHora"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="time"
-                    android:textSize="20dp" />-->
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:visibility="visible">
+                    android:editable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Hora de Início"
+                    android:inputType="time"
+                    android:singleLine="true"
+                    android:tooltipText="Hora de Início" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextLote"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
 
-                        android:hint="Lote"
-                        android:inputType="number"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--<com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lote:"
-                    android:textSize="20dp"></com.google.android.material.textview.MaterialTextView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/textInputLayout21"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayout21"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout17">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextLote"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:textSize="20dp" />-->
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:visibility="visible">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/btnValidade"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:drawableRight="@drawable/ic_baseline_calendar_month_24"
-                        android:drawableTint="#323232"
-                        android:editable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="Validade"
-                        android:inputType="date"
-                        android:singleLine="true"
-                        android:text=""
-                        android:tooltipText="Clique para abrir o calendário e selecionar/editar a data" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Lote"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Validade: "
-                    android:textSize="20dp"></TextView>
-
-                <Button
-                    android:id="@+id/btnValidade"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="-5dp"
-                    android:text="dd/mm/aaaa"
-                    android:textSize="20dp"
-                    app:icon="@drawable/ic_baseline_calendar_month_24" />-->
-
-                <!--<EditText
-                    android:id="@+id/editTextVal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:text=""
-                    android:inputType="none"
-                    android:textSize="20dp"
-                    android:onClick="showDatePickerDialog"/-->
-
-
-            </LinearLayout>
-            <!--Fim do layout horizontal 2-->
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <Button
-                    android:id="@+id/minusBtn"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:enabled="false"
-                    android:hapticFeedbackEnabled="true"
-                    android:longClickable="false"
-                    android:text="-"
-                    android:textSize="80sp"
-                    android:tooltipText="Subtrair"
-                    app:cornerRadius="15dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1"
-                    android:baselineAligned="false"
-                    android:minWidth="150dp"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:minWidth="140dp"
-                        android:visibility="visible">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/finalResult"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:hint="Pilhas"
-                            android:inputType="date"
-                            android:singleLine="true"
-                            android:text="0"
-                            android:textAlignment="center"
-                            android:textSize="72sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/plusBtn"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:hapticFeedbackEnabled="true"
-                    android:longClickable="false"
-                    android:text="+"
-                    android:textSize="80sp"
-                    android:tooltipText="Somar"
-                    app:cornerRadius="15dp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout21"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:text="Avançar">
+                android:layout_marginStart="2dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textInputLayout20"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout18">
 
-                <!--Button
-                    android:id="@+id/startActivityApontamentoPerdas"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/btnValidade"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Avançar"
-                    app:icon="@drawable/ic_baseline_navigate_next_24"
-                    app:iconPadding="1dp" /-->
+                    android:drawableRight="@drawable/ic_baseline_calendar_month_24"
+                    android:drawableTint="#323232"
+                    android:editable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Validade"
+                    android:inputType="date"
+                    android:singleLine="true"
+                    android:text=""
+                    android:tooltipText="Clique para abrir o calendário e selecionar/editar a data" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/minusBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:enabled="false"
+                android:hapticFeedbackEnabled="true"
+                android:longClickable="false"
+                android:text="-"
+                android:textSize="80sp"
+                android:tooltipText="Subtrair"
+                app:cornerRadius="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayout22"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout20" />
 
-        <!--Fim do layout vertical-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout22"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:minWidth="140dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/plusBtn"
+                app:layout_constraintStart_toEndOf="@+id/minusBtn"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout20">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/finalResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Pilhas"
+                    android:inputType="date"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="72sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    </ScrollView>
+            <Button
+                android:id="@+id/plusBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hapticFeedbackEnabled="true"
+                android:longClickable="false"
+                android:text="+"
+                android:textSize="80sp"
+                android:tooltipText="Somar"
+                app:cornerRadius="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textInputLayout22"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout21" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -420,68 +263,68 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/apontEmbaladosBottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:background="@color/blue_700"
-            app:backgroundTint="@color/blue_700"
-            app:hideOnScroll="true"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIconTint="@color/white"
-            app:titleTextColor="@color/white" />
+        android:id="@+id/apontEmbaladosBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:background="@color/blue_700"
+        app:backgroundTint="@color/blue_700"
+        app:hideOnScroll="true"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIconTint="@color/white"
+        app:titleTextColor="@color/white" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:outlineAmbientShadowColor="#000000"
-            app:layout_anchor="@id/apontEmbaladosBottomBar"
-            app:layout_anchorGravity="center">
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:outlineAmbientShadowColor="#000000"
+    app:layout_anchor="@id/apontEmbaladosBottomBar"
+    app:layout_anchorGravity="center">
 
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_margin="5px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#146683"
-                android:indeterminate="false"
-                android:keyboardNavigationCluster="false"
-                android:max="2"
-                android:maxWidth="10dp"
-                android:maxHeight="5dp"
-                android:minWidth="10dp"
-                android:minHeight="5dp"
-                android:progress="2"
-                android:progressTint="#FFFFFF" />
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"
+        android:background="#146683"
+        android:indeterminate="false"
+        android:keyboardNavigationCluster="false"
+        android:max="2"
+        android:maxWidth="10dp"
+        android:maxHeight="5dp"
+        android:minWidth="10dp"
+        android:minHeight="5dp"
+        android:progress="2"
+        android:progressTint="#FFFFFF" />
 
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#146683"
-                android:indeterminate="false"
-                android:keyboardNavigationCluster="false"
-                android:layout_margin="5px"
-                android:max="2"
-                android:maxWidth="10dp"
-                android:maxHeight="5dp"
-                android:minWidth="10dp"
-                android:minHeight="5dp"
-                android:progress="2"
-                android:progressTint="#146a8a" />
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"
+        android:background="#146683"
+        android:indeterminate="false"
+        android:keyboardNavigationCluster="false"
+        android:max="2"
+        android:maxWidth="10dp"
+        android:maxHeight="5dp"
+        android:minWidth="10dp"
+        android:minHeight="5dp"
+        android:progress="2"
+        android:progressTint="#146a8a" />
 
-        </LinearLayout>
+    </LinearLayout>
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/startActivityApontamentoPerdas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_margin="3dp"
-            android:contentDescription="Finalizar"
-            android:src="@drawable/ic_baseline_done_24"
-            android:tooltipText="Finalizar" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/startActivityApontamentoPerdas"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right|center_vertical"
+    android:layout_margin="3dp"
+    android:contentDescription="Finalizar"
+    android:src="@drawable/ic_baseline_done_24"
+    android:tooltipText="Finalizar" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
