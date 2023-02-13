@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.BaseColumns
 import com.liderMinas.PCP.database.ProdutoModelo
 
 
@@ -15,6 +16,7 @@ import com.liderMinas.PCP.database.ProdutoModelo
 class SQLiteHelper(context: Context):
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION)
     {
+        val db = this.writableDatabase
         companion object {
 
             private const val DATABASE_VERSION = 1
@@ -27,7 +29,7 @@ class SQLiteHelper(context: Context):
 
             /*========================================================================*/
 
-            private const val TBL_PRODUTO = "produto"
+            const val TBL_PRODUTO = "produto"
             private const val ID_PRODUTO = "idProduto"
             private const val DESC_PROD = "descProduto"
             private const val QE_PROD = "qeProduto"
@@ -124,9 +126,7 @@ class SQLiteHelper(context: Context):
                     ID_SYNC +" INTEGER NOT NULL PRIMARY KEY," +
                     DATA_SYNC +" VARCHAR(14)," +
                     STATUS_SYNC +" INTEGER" +
-                    ");"+
-                    "INSERT INTO "+ TBL_USUARIO + " (username, password, nome) VALUES (guilherme.augusto, 123, Guilherme Augusto);"+
-                    "INSERT INTO " + TBL_PRODUTO + " (descPoduto, qeProduto, validProduto, tipoVProduto) VALUES (Pão de teste, 5, 45, M);")
+                    ");")
 
         }
 
@@ -137,6 +137,11 @@ class SQLiteHelper(context: Context):
             db?.execSQL(createDBAE)
             db?.execSQL(createDBAP)
             db?.execSQL(createDBSYNC)
+            db?.execSQL("INSERT INTO usuario (username, password, nome) VALUES ('kane','123', 'Kane Garcia'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
+            db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
+            db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
+            db?.execSQL("INSERT INTO motivo (descMotivo) VALUES ('Preguiça'), ('Soninho'), ('Queimou a rosca');")
+
         }
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -167,13 +172,75 @@ class SQLiteHelper(context: Context):
         @SuppressLint("Range")
 
         /* Select de todos os produtos*/
-        fun getAllProdutos(): ArrayList<ProdutoModelo> {
+        fun getAllProdutos(): MutableList<ProdutoModelo> {
             val prdList: MutableList<ProdutoModelo> = ArrayList()
             val selectQuery = "SELECT * FROM $TBL_PRODUTO;"
-            val db = this.readableDatabase
+            val result = db.rawQuery(selectQuery, null)
+
+            while (result.moveToNext()) {
+                prdList.add(
+                    ProdutoModelo(
+                        result.getInt(result.getColumnIndex(ID_PRODUTO)),
+                        result.getString(result.getColumnIndex(DESC_PROD)),
+                        result.getInt(result.getColumnIndex(QE_PROD)),
+                        result.getInt(result.getColumnIndex(VALID_PROD)),
+                        result.getString(result.getColumnIndex(TIPOV_PROD)),
+                    )
+                )
+            }
+            result.close()
+            return prdList
+        }
+
+        fun getProdutos(): Cursor {
+            return db.query(
+                TBL_PRODUTO,
+                arrayOf("$ID_PRODUTO AS ${BaseColumns._ID}",
+                DESC_PROD,
+                /*QE_PROD,
+                VALID_PROD,
+                TIPOV_PROD*/
+                ),
+                null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                null /* GROUP BY clause, null if no GROUP BY clause */,
+                null /* HAVING CLAUSE, null if no HAVING clause */,
+                null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+            )
+        }
+
+        fun getDetailProdutos(idPrd: Int): Cursor {
+            return db.query(
+                TBL_PRODUTO,
+                arrayOf("$ID_PRODUTO AS ${BaseColumns._ID}",
+                    QE_PROD,
+                    VALID_PROD,
+                    TIPOV_PROD
+                ),
+                "idProduto = $idPrd" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                null /* GROUP BY clause, null if no GROUP BY clause */,
+                null /* HAVING CLAUSE, null if no HAVING clause */,
+                null /* ORDER BY clause products will be shown alphabetically a->z*/
+            )
+        }
+
+        fun getMotivo(): Cursor {
+            return db.query(
+                TBL_MOTIVO,
+                arrayOf("$ID_MOTIVO AS ${BaseColumns._ID}",
+                    DESC_MOTIVO
+                ),
+                null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                null /* GROUP BY clause, null if no GROUP BY clause */,
+                null /* HAVING CLAUSE, null if no HAVING clause */,
+                null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+            )
+        }
 
 
-            val cursor: Cursor?
+            /*val cursor: Cursor?
 
             try {
                 cursor = db.rawQuery(selectQuery, null)
@@ -201,8 +268,8 @@ class SQLiteHelper(context: Context):
                     prdList.add(prd)
                 }while (cursor.moveToNext())
             }
-            return prdList
-        }
+            return prdList*/
+
     }
 
 

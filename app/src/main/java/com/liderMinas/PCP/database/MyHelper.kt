@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.ContactsContract.Data
 
-class MyHelper(context: Context): SQLiteOpenHelper(context, "PCP",null, 1) {
+/*class MyHelper(context: Context): SQLiteOpenHelper(context, "PCP",null, 1) {
 
     val db = this.writableDatabase
 
@@ -75,5 +75,4 @@ class MyHelper(context: Context): SQLiteOpenHelper(context, "PCP",null, 1) {
     }
 
 
-    fun readIdAndProduto(): MutableList<A>
-}
+}*/

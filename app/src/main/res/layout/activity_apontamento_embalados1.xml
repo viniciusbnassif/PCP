@@ -27,11 +27,12 @@
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:keepScreenOn="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <!-- TODO: Update blank fragment layout -->
@@ -39,13 +40,15 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintapem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_centerInParent="true"
             android:layout_margin="5dp"
             android:orientation="vertical">
 
-            <!--<com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/menu"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/optmenu"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -57,23 +60,44 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <AutoCompleteTextView
-                    android:id="@+id/optmenu"
+                    android:id="@+id/menu"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="none"
                     app:boxCornerRadiusBottomEnd="5dp"
                     app:boxCornerRadiusBottomStart="5dp" />
-            </com.google.android.material.textfield.TextInputLayout>-->
-            <Spinner
-                android:id="@+id/menu"
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:hint="Produto"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayout19"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--LinearLayout
+                android:id="@+id/LLAPEM"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_background"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout17"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></Spinner>
+                app:layout_constraintTop_toTopOf="@+id/constraintapem">
 
+                <TextView
+                    android:id="@+id/textviewAPEM"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
+                    android:text="Selecione o produto:"></TextView>
+
+
+                <Spinner
+                    android:id="@+id/menu"
+                    style="android.R.layout.select_dialog_singlechoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:outlineAmbientShadowColor="@color/black"
+                    android:outlineProvider="background"
+                    android:spinnerMode="dialog">
+
+                </Spinner>
+            </LinearLayout-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout17"
@@ -81,20 +105,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayout20"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
                 app:layout_constraintEnd_toStartOf="@+id/textInputLayout19"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/menu">
+                app:layout_constraintTop_toBottomOf="@+id/LLAPEM">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textView"
+                    android:id="@+id/editTextEmbalagemCaixa"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:editable="false"
                     android:focusableInTouchMode="false"
                     android:hint="Embalagens p/ caixa"
-                    android:singleLine="true"
-                    android:text="10" />
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -108,7 +130,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
                 app:layout_constraintEnd_toStartOf="@+id/textInputLayout18"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayout17"
-                app:layout_constraintTop_toBottomOf="@+id/menu">
+                app:layout_constraintTop_toBottomOf="@+id/LLAPEM">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextData"
@@ -126,12 +148,11 @@
                 android:id="@+id/textInputLayout18"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayout19"
-                app:layout_constraintTop_toBottomOf="@+id/menu">
+                app:layout_constraintTop_toBottomOf="@+id/LLAPEM">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextHora"
@@ -160,7 +181,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextLote"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="58dp"
 
                     android:hint="Lote"
                     android:inputType="number"
@@ -181,7 +202,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/btnValidade"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="58dp"
                     android:drawableRight="@drawable/ic_baseline_calendar_month_24"
                     android:drawableTint="#323232"
                     android:editable="false"
@@ -205,7 +226,7 @@
                 android:textSize="80sp"
                 android:tooltipText="Subtrair"
                 app:cornerRadius="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textInputLayout22"
                 app:layout_constraintEnd_toStartOf="@+id/textInputLayout22"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout20" />
@@ -221,7 +242,7 @@
                 android:layout_weight="1"
                 android:minWidth="140dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/space"
                 app:layout_constraintEnd_toStartOf="@+id/plusBtn"
                 app:layout_constraintStart_toEndOf="@+id/minusBtn"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout20">
@@ -249,10 +270,16 @@
                 android:textSize="80sp"
                 android:tooltipText="Somar"
                 app:cornerRadius="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textInputLayout22"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayout22"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout21" />
+
+            <Space
+                android:id="@+id/space"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout22"></Space>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -267,7 +294,7 @@
         android:background="#00FFFFFF"
         android:backgroundTint="#00FFFFFF"
         android:foregroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
