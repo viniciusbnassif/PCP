@@ -14,6 +14,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.time.LocalDate
 import java.util.*
 import java.text.*
@@ -21,7 +22,7 @@ import java.text.*
 
 class ApontamentoEmbalados1 : AppCompatActivity() {
     lateinit var db: SQLiteHelper
-    lateinit var spinner: AutoCompleteTextView
+    lateinit var spinner: Spinner
     var simpleCursorAdapter: SimpleCursorAdapter? = null
     var cursor: Cursor? = null
     var id: Int = 0
@@ -30,12 +31,11 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apontamento_embalados1)
 
-
-        // Spinner Script EP4: A NEW HOPE
         db = SQLiteHelper(this)
 
-        spinner = this.findViewById(R.id.menu)
-        setOrRefreshSpinner()
+        spinner = findViewById<Spinner>(R.id.menu)
+        var adapter =
+            setOrRefreshSpinner()
 
         //Criar barra de ações
         val toolbar = findViewById<BottomAppBar?>(R.id.apontEmbaladosBottomBar)
@@ -47,10 +47,10 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             setDisplayShowCustomEnabled(true)
         }
 
-        val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
+        val dateFormatter = SimpleDateFormat("dd/MM/yyyy") //formatar data no formato padrão
         val dty = dateFormatter.format(Date())
 
-        val dateFormatter0 = SimpleDateFormat("kk:mm")
+        val dateFormatter0 = SimpleDateFormat("kk:mm") //formatar tempo no formato 24h (kk)
         val time = dateFormatter0.format(Date())
 
         var time0 = findViewById<TextView>(R.id.editTextHora).apply { text = time }
@@ -59,7 +59,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
         val dateVal: TextInputEditText = findViewById(R.id.btnValidade)
         dateVal.setOnClickListener {
-            //Exibir barra de progresso
+            //Exibir barra de progresso, pois nos testes o Date Picker demorou entre 1 a 2 segundos para aparecer.
             val progress =
                 findViewById<ProgressBar>(R.id.progressInd).apply { visibility = View.VISIBLE }
 
@@ -70,7 +70,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                     .setTitleText("Selecione a data de vencimento")
                     .build()
 
-            //abre popup
+            //abre popup para inserção/alteração da data
             datePicker.show(supportFragmentManager, "materialDatePicker")
 
             datePicker.addOnPositiveButtonClickListener {
@@ -80,15 +80,8 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
 
                 dateFormatter = SimpleDateFormat("dd/MM/yyyy")
-                //zone = Calendar.getInstance(TimeZone.getTimeZone("GMT-3"))
                 date = dateFormatter.format(Date(it))
 
-                //val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
-                //val dty = dateFormatter.format(Date())
-
-                //date = dateFormatter.format(Date(it))
-                //val df = TimeZone(zone)
-                //Toast.makeText(this, "$date is selected", Toast.LENGTH_LONG).show()
 
 
                 var array = date.split("/").toTypedArray()
@@ -98,8 +91,9 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 var intArrayAno = array[2].toString().toInt()
                 var arrayNbr = 1
 
+                //Para o sistema de datas brasileiro, o Date Picker tem um erro que sempre mostra o dia anterior a seleção.
+                //Código para correção "automática" a seguir.
                 //Se o mês tiver 31 dias (jan, mar, mai, jul, ago, out, dez), verificar
-
                 if ((array[1] == "01") or (array[1] == "03") or (array[1] == "05") or (array[1] == "07") or (array[1] == "08") or (array[1] == "10") or (array[1] == "12")) {
                     //Se o Dia for entre 01 a 30 adicionar mais 1.
                     if ((intArrayDia >= 1) and (intArrayDia <= 30)) {
@@ -144,11 +138,13 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
                 //=====================================================
 
-
+                // variavel com final St recebem a data corrigida para exibição
                 var intArrayDiaSt = intArrayDia.toString()
                 var intArrayMesSt = intArrayMes.toString()
                 var intArrayAnoSt = intArrayAno.toString()
 
+                //Se a data tiver apenas um número (exemplo: 05 de Janeiro: 5/1/2023)
+                // corrigir colocando os zeros na frente para suprir as regras
                 if (intArrayDiaSt.length == 1) {
                     intArrayDiaSt = "0$intArrayDia"
                 }
@@ -161,11 +157,12 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 Toast.makeText(this, "$finalDate is selected", Toast.LENGTH_LONG).show()
 
 
-                //val dateFinal.text = Editable.Factory.getInstance().newEditable(date.toString())
+                //Exibição da data corrigida no campo correto.
                 val dateValReturn = findViewById<TextInputEditText>(R.id.btnValidade)
                 dateValReturn.text =
                     Editable.Factory.getInstance().newEditable(finalDate.toString())
 
+                //após colocar o valor em exibição e fechar o DatePicker, é necessário remover a barra de progresso da UI
                 val progress = findViewById<ProgressBar>(R.id.progressInd).apply {
                     visibility = View.INVISIBLE
                 }
@@ -189,7 +186,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         plusRtn.setOnClickListener {
             var pilha: EditText = findViewById(R.id.finalResult)
 
-            //se o campo estiver vazio, para evitar crash, preencher com 0
+            //se o campo estiver vazio, para evitar crash ao pressionar +, preencher com 0
             if (pilha.length() == 0) {
                 pilha.text = Editable.Factory.getInstance().newEditable(0.toString())
             }
@@ -212,7 +209,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         minusRtn.setOnClickListener {
             var pilha: EditText = findViewById(R.id.finalResult)
 
-            //se o campo estiver vazio, para evitar crash, preencher com 0
+            //se o campo estiver vazio, para evitar crash ao pressionar -, preencher com 0
             if (pilha.length() == 0) {
                 pilha.text = Editable.Factory.getInstance().newEditable(0.toString())
             }
@@ -240,144 +237,72 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             Animatoo.animateSlideLeft(this)
         }
 
+
     }
 
-    private fun setOrRefreshSpinner() {
-        // Get AutoCompleteTextView
-        cursor = db.getProdutos()
 
-        //var spinner = findViewById<AutoCompleteTextView>(R.id.motivo2)
-        // Define from/to info
-        //val nsColumns = arrayOf<String>(nameColumn)
-        //val nsTo = intArrayOf(R.id.simpleDropdownItem)
-        // Create adapter. Cursor set in setFilterQueryProvider() below.
+
+    //Insere dados no Spinner
+    fun setOrRefreshSpinner() {
+        cursor = db.getProdutos()
+        val DESC_PROD = "descProduto"
         if (simpleCursorAdapter == null) {
             simpleCursorAdapter = SimpleCursorAdapter(
-                this, android.R.layout.select_dialog_item,
+                this,
+                android.R.layout.select_dialog_item,
                 cursor,
-                arrayOf("descProduto"),
-                intArrayOf(android.R.id.text1), 0
+                arrayOf(DESC_PROD),
+                intArrayOf(android.R.id.text1),
+                0
             )
-            // Set adapter on view.
-            spinner.setAdapter(simpleCursorAdapter)
+            spinner.adapter = simpleCursorAdapter //spinner recebe os dados para exibição
 
-            // OnItemClickListener - User selected value from DropDown
-            //spinner.setOnItemClickListener { listView, view, position, id ->
-            spinner!!.onItemSelectedListener = object: AdapterView.OnItemClickListener,
-                AdapterView.OnItemSelectedListener {
-                    @SuppressLint("Range")
-                    override fun onItemSelected(
-                        p0: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        _id: Long
-                    ) {
-                        val cursor = p0?.getItemAtPosition(position) as Cursor
-                        // Get the name selected
-                        val selectedName = cursor.getString(1)
-                        if (view?.context != null) {
-
-                    }
-                        //id = _id.toInt()
-                        overrideDataBlock(_id)
-                        if (view != null) {
-                            Toast.makeText(
-                                view.context,
-                                "You selected ${
-                                    cursor!!.getString(1)
-                                } with an id of ", Toast.LENGTH_SHORT
-                            ).show()
-                        }
-            }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onItemClick(
-                    parent: AdapterView<*>?,
+            //ao selecionar um item
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                @SuppressLint("Range")
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
                     view: View?,
                     position: Int,
-                    id: Long
+                    _id: Long
                 ) {
-                    TODO("Not yet implemented")
+                    if (view?.context != null) {
+                        id = _id.toInt()
+                        overrideDataBlock(id) //inicia metodo passando o id do item selecionado
+                        Toast.makeText(
+                            view.context,
+                            "Você selecionou ${
+                                cursor!!.getString(cursor!!.getColumnIndex("descProduto"))
+                            } com o código $_id", Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
                 }
 
-                // Set the CursorToStringconverter, to provide the values for the choices to be displayed
-                // in the AutoCompleteTextview.
-
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
             }
+        } else {
+            /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
+            simpleCursorAdapter!!.swapCursor(cursor)
+        }
+    }
 
-            fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
+    override fun onResume() {
+        super.onResume()
+        setOrRefreshSpinner()
+    }
+
+    /* When the activity is destroyed then close the cursor as it will not be used again */
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!cursor!!.isClosed) {
+            cursor!!.close()
         }
     }
 
 
-
-
-
-    /*fun setOrRefreshSpinner() {
-                    cursor = db.getProdutos()
-                    val DESC_PROD = "descProduto"
-                    if (simpleCursorAdapter == null) {
-                        simpleCursorAdapter = SimpleCursorAdapter(
-                            this,
-                            android.R.layout.select_dialog_item,
-                            cursor,
-                            arrayOf(DESC_PROD),
-                            intArrayOf(android.R.id.text1),
-                            0
-                        )
-                        simpleCursorAdapter!!.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
-                        spinner.adapter = simpleCursorAdapter
-
-                        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                            @SuppressLint("Range")
-                            override fun onItemSelected(
-                                p0: AdapterView<*>?,
-                                view: View?,
-                                position: Int,
-                                _id: Long
-                            ) {
-                                if (view?.context != null) {
-                                    id = _id.toInt()
-                                    overrideDataBlock()
-                                    Toast.makeText(
-                                        view.context,
-                                        "You selected ${
-                                            cursor!!.getString(cursor!!.getColumnIndex("descProduto"))
-                                        } with an id of $_id", Toast.LENGTH_SHORT
-                                    ).show()
-
-                                }
-                            }
-
-                            override fun onNothingSelected(p0: AdapterView<*>?) {
-                            }
-                        }
-                    } else {
-                        /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
-                        simpleCursorAdapter!!.swapCursor(cursor)
-                    }
-                }
-
-                override fun onResume() {
-                    super.onResume()
-                    setOrRefreshSpinner()
-                }
-
-                /* When the activity is destroyed then close the cursor as it will not be used again */
-                override fun onDestroy() {
-                    super.onDestroy()
-                    if (!cursor!!.isClosed) {
-                        cursor!!.close()
-                    }
-                }*/
-
-
-    fun overrideDataBlock(id: Long) {
+    fun overrideDataBlock(id: Int) {
         var qeProduto: String //findViewById<EditText>(R.id.editTextEmbalagemCaixa)
         var validProduto: Int = 0
         var tipoVProduto: String = ""
@@ -410,10 +335,8 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         var validF: String
         var btnValidade = findViewById<EditText>(R.id.btnValidade)
 
-        //var cursor: Cursor = db.execSQL("SELECT * FROM ${SQLiteHelper.TBL_PRODUTO} WHERE ID = " + id)
 
         var cursor2 = db.getDetailProdutos(id.toInt())
-        //var descProdutosadapter = 1+1
         cursor2.moveToFirst()
         findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("0")
         if (cursor2 != null) {
@@ -422,8 +345,6 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             validProduto = cursor2!!.getInt(2)
             tipoVProduto = cursor2!!.getString(3).toString()
         }
-
-        //var qeProduto = findViewById<EditText>(R.id.editTextEmbalagemCaixa).apply { text = cursor2.getInt(1)  }
 
 
         if (validProduto != null) {
@@ -454,12 +375,12 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         }
     }
 
-
     //método do botão de voltar da Action Bar
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
 }
+
 
 

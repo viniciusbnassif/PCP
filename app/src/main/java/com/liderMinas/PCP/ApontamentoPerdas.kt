@@ -1,62 +1,51 @@
 package com.liderMinas.PCP
 
-import android.R
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.database.Cursor
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cursoradapter.widget.SimpleCursorAdapter
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
 
 class ApontamentoPerdas : AppCompatActivity() {
+
+
     lateinit var db: SQLiteHelper
-    //lateinit var simpleCursorAdapterPrd: SimpleCursorAdapter
+
     var simpleCursorAdapterPrd: SimpleCursorAdapter? = null
-    //lateinit var spinnerM1: AutoCompleteTextView
-    /*lateinit var spinnerM2: AutoCompleteTextView
-    lateinit var spinnerM3: AutoCompleteTextView
-    lateinit var spinnerM4: AutoCompleteTextView
-    lateinit var spinnerM5: AutoCompleteTextView
-    lateinit var spinnerM6: AutoCompleteTextView*/
-
-
     var cursorPrd: Cursor? = null
-    var id: Int = 0
+    var idPerdas: Int = 0
+
+    lateinit var motivo1: Spinner
+    lateinit var motivo2: Spinner
+    lateinit var motivo3: Spinner
+    lateinit var motivo4: Spinner
+    lateinit var motivo5: Spinner
+    lateinit var motivo6: Spinner
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_apontamento_perdas)
-
-        // Hide the status bar.
-        /*window.decorView.apply {
-            // Hide both the navigation bar and the status bar.
-            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-            // a general rule, you should design your app to hide the status bar whenever you
-            // hide the navigation bar.
-            systemUiVisibility =
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
-        }*/
+        setContentView(com.liderMinas.PCP.R.layout.activity_apontamento_perdas)
 
         db = SQLiteHelper(this)
+        motivo1 = findViewById(R.id.motivo1)
+        motivo2 = findViewById(R.id.motivo2)
+        motivo3 = findViewById(R.id.motivo3)
+        motivo4 = findViewById(R.id.motivo4)
+        motivo5 = findViewById(R.id.motivo5)
+        motivo6 = findViewById(R.id.motivo6)
 
 
-        /*
 
-        spinnerM2 = this.findViewById(R.id.motivo2)
-        spinnerM3 = this.findViewById(R.id.motivo3)
-        spinnerM4 = this.findViewById(R.id.motivo4)
-        spinnerM5 = this.findViewById(R.id.motivo5)
-        spinnerM6 = this.findViewById(R.id.motivo6)*/
-        setOrRefreshSpinnerPrd()
-
-
-            // calling the action bar
-        val toolbar = findViewById<BottomAppBar?>(R.id.bottomAppBar)
+        // calling the action bar
+        val toolbar = findViewById<BottomAppBar?>(com.liderMinas.PCP.R.id.bottomAppBar)
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             // show back button on toolbar
@@ -65,99 +54,88 @@ class ApontamentoPerdas : AppCompatActivity() {
             setDisplayShowCustomEnabled(true)
         }
 
-        /*var motivo1 = findViewById<AutoCompleteTextView>(R.id.motivo1)
-        val items = arrayOf("Item 1", "Item 2dois", "Item 3sasdasdasd", "Item 4aaaaaaaaaaaaaaaaaaa")
-        (motivo1 as? MaterialAutoCompleteTextView)?.setSimpleItems(items)
 
-        //motivo1.setInputType(InputType.TYPE_NULL)*/
+        /*val items = arrayOf("Item 1", "Item 2dois", "Item 3sasdasdasd", "Item 4aaaaaaaaaaaaaaaaaaa")
+        (motivo1 as? MaterialAutoCompleteTextView)?.setSimpleItems(items)*/
 
-            /*var back = findViewById<Button>(R.id.fabBack)
-        back.setOnClickListener {
+        //motivo1.setInputType(InputType.TYPE_NULL)
 
-
-        }*/
-
-            intent = getIntent();
-
-            var name = intent.getStringExtra("messageIntent")
+        /*var back = findViewById<Button>(R.id.fabBack)
+    back.setOnClickListener {
 
 
-            val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
-            val dty = dateFormatter.format(Date())
-
-            findViewById<TextView>(R.id.finalDate).apply { text = dty }
-
-            val dateFormatter0 = SimpleDateFormat("kk:mm")
-            val time = dateFormatter0.format(Date())
-
-            findViewById<TextView>(R.id.finalTime).apply { text = time }
-
-        }
+    }*/
 
 
-    private fun setOrRefreshSpinnerPrd() {
-        // Get AutoCompleteTextView
-        cursorPrd = db.getMotivo()
+/*var motivo1 = findViewById<AutoCompleteTextView>(R.id.motivo1)
+val items = arrayOf("Item 1", "Item 2dois", "Item 3sasdasdasd", "Item 4aaaaaaaaaaaaaaaaaaa")
+(motivo1 as? MaterialAutoCompleteTextView)?.setSimpleItems(items)
 
-        var spinnerM2 = findViewById<AutoCompleteTextView>(R.id.motivo2)
-        // Define from/to info
-        //val nsColumns = arrayOf<String>(nameColumn)
-        //val nsTo = intArrayOf(R.id.simpleDropdownItem)
-        // Create adapter. Cursor set in setFilterQueryProvider() below.
-        if (simpleCursorAdapterPrd == null) {
-            simpleCursorAdapterPrd = SimpleCursorAdapter(
-                this, android.R.layout.select_dialog_item,
-                cursorPrd,
-                arrayOf("descMotivo"),
-                intArrayOf(android.R.id.text1), 0
-            )
-            // Set adapter on view.
-            spinnerM2.setAdapter(simpleCursorAdapterPrd)
+//motivo1.setInputType(InputType.TYPE_NULL)*/
 
-            // OnItemClickListener - User selected value from DropDown
-            spinnerM2.setOnItemClickListener { listView, view, position, id ->
-                // Get the cursor. Positioned to the corresponding row in the result set.
-                val cursor = listView.getItemAtPosition(position) as Cursor
-                // Get the name selected
-                val selectedName = cursor.getString(cursor.getColumnIndexOrThrow("descMotivo"))
-                // Do something with this value...
-            }
+        /*var back = findViewById<Button>(R.id.fabBack)
+back.setOnClickListener {
 
-            // Set the CursorToStringconverter, to provide the values for the choices to be displayed
-            // in the AutoCompleteTextview.
-            simpleCursorAdapterPrd!!.setCursorToStringConverter(object :
-                SimpleCursorAdapter.CursorToStringConverter {
-                override fun convertToString(cursor: Cursor): CharSequence? {
-                    return cursor.getString(cursor.getColumnIndexOrThrow("descMotivo"))
-                }
-            })
-        }
 
-        // Set the FilterQueryProvider, to run queries for choices
-        /*SimpleCursorAdapterPrd.setFilterQueryProvider(FilterQueryProvider { constraint ->
-            dbHelper.getMatchingNames(
-                outingId, checklistId, nameColumn,
-                constraint?.toString()
-            )
-        })*/
+}*/
+
+        intent = getIntent();
+
+        var name = intent.getStringExtra("messageIntent")
+
+
+        val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
+        val dty = dateFormatter.format(Date())
+
+        findViewById<TextView>(R.id.finalDate).apply { text = dty }
+
+        val dateFormatter0 = SimpleDateFormat("kk:mm")
+        val time = dateFormatter0.format(Date())
+
+        findViewById<TextView>(R.id.finalTime).apply { text = time }
+
+        var adapter = setOrRefreshSpinnerPrd1()
+        /*setOrRefreshSpinnerPrd2()
+        setOrRefreshSpinnerPrd3()
+        setOrRefreshSpinnerPrd4()
+        setOrRefreshSpinnerPrd5()
+        setOrRefreshSpinnerPrd6()*/
+
+        var idP1: Int
+        var idP2: Int = 0
+        var idP3: Int = 0
+        var idP4: Int = 0
+        var idP5: Int = 0
+        var idP6: Int = 0
+
+        //cursorPrd = db.getMotivo()
+
+        //val DESC_MOTIVO = "descMotivo"
     }
 
-    /*fun setOrRefreshSpinner() {
-        cursor = db.getProdutos()
-        val DESC_PROD = "descProduto"
-        if (simpleCursorAdapter == null) {
-            simpleCursorAdapter = SimpleCursorAdapter(
-                this,
-                android.R.layout.select_dialog_item,
-                cursor,
-                arrayOf(DESC_PROD),
-                intArrayOf(android.R.id.text1),
-                0
-            )
-            simpleCursorAdapter!!.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
-            spinner.adapter = simpleCursorAdapter
 
-            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        fun setOrRefreshSpinnerPrd1() {
+            cursorPrd = db.getMotivo()
+            if (simpleCursorAdapterPrd == null) {
+                simpleCursorAdapterPrd = SimpleCursorAdapter(
+                    this,
+                    android.R.layout.select_dialog_item,
+                    cursorPrd,
+                    arrayOf("descMotivo"),
+                    intArrayOf(android.R.id.text1),
+                    0
+                )
+                motivo1.adapter = simpleCursorAdapterPrd
+                motivo2.adapter = simpleCursorAdapterPrd
+                motivo3.adapter = simpleCursorAdapterPrd
+                motivo4.adapter = simpleCursorAdapterPrd
+                motivo5.adapter = simpleCursorAdapterPrd
+                motivo6.adapter = simpleCursorAdapterPrd
+            } else {
+                /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
+                simpleCursorAdapterPrd!!.swapCursor(cursorPrd)
+            }
+            /*motivo1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 @SuppressLint("Range")
                 override fun onItemSelected(
                     p0: AdapterView<*>?,
@@ -166,64 +144,279 @@ class ApontamentoPerdas : AppCompatActivity() {
                     _id: Long
                 ) {
                     if (view?.context != null) {
-                        id = _id.toInt()
-                        overrideDataBlock()
+                        var idP1 = _id.toInt()
                         Toast.makeText(
                             view.context,
                             "You selected ${
-                                cursor!!.getString(cursor!!.getColumnIndex("descProduto"))
+                                cursorPrd!!.getString(cursorPrd!!.getColumnIndex("descMotivo"))
                             } with an id of $_id", Toast.LENGTH_SHORT
                         ).show()
-
                     }
                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("Not yet implemented")
                 }
-            }
+            }*/
+        }
+
+
+        /*
+
+    fun setOrRefreshSpinnerPrd2() {
+        //cursorPrd = db.getMotivo()
+        //cursorPrd = db.getMotivo()
+
+        if (simpleCursorAdapterPrd == null) {
+            simpleCursorAdapterPrd = SimpleCursorAdapter(
+                this,
+                android.R.layout.select_dialog_item,
+                cursorPrd,
+                arrayOf("descMotivo"),
+                intArrayOf(android.R.id.text1),
+                0
+            )
+            motivo2.adapter = simpleCursorAdapterPrd
+
+
         } else {
             /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
-            simpleCursorAdapter!!.swapCursor(cursor)
+            simpleCursorAdapterPrd!!.swapCursor(cursorPrd)
+        }
+        motivo2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            @SuppressLint("Range")
+            override fun onItemSelected(
+                p0: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                _id: Long
+            ) {
+                if (view?.context != null) {
+                    var idP2 = _id.toInt()
+                    Toast.makeText(
+                        view.context,
+                        "You selected ${
+                            cursorPrd!!.getString(cursorPrd!!.getColumnIndex("descMotivo"))
+                        } with an id of $_id", Toast.LENGTH_SHORT
+                    ).show()
+
+
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        setOrRefreshSpinner()
-    }
+    fun setOrRefreshSpinnerPrd3() {
 
-    /* When the activity is destroyed then close the cursor as it will not be used again */
-    override fun onDestroy() {
-        super.onDestroy()
-        if (!cursor!!.isClosed) {
-            cursor!!.close()
+        //cursorPrd = db.getMotivo()
+        if (simpleCursorAdapterPrd == null) {
+            simpleCursorAdapterPrd = SimpleCursorAdapter(
+                this,
+                android.R.layout.select_dialog_item,
+                cursorPrd,
+                arrayOf("descMotivo"),
+                intArrayOf(android.R.id.text1),
+                0
+            )
+            motivo3.adapter = simpleCursorAdapterPrd
+
+
+        } else {
+            /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
+            simpleCursorAdapterPrd!!.swapCursor(cursorPrd)
+        }
+        motivo3.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            @SuppressLint("Range")
+            override fun onItemSelected(
+                p0: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                _id: Long
+            ) {
+                if (view?.context != null) {
+                    var idP3 = _id.toInt()
+                    Toast.makeText(
+                        view.context,
+                        "You selected ${
+                            cursorPrd!!.getString(cursorPrd!!.getColumnIndex("descMotivo"))
+                        } with an id of $_id", Toast.LENGTH_SHORT
+                    ).show()
+
+
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
         }
     }
 
-    override fun onResume() {
+    fun setOrRefreshSpinnerPrd4() {
+
+        //cursorPrd = db.getMotivo()
+        if (simpleCursorAdapterPrd == null) {
+            simpleCursorAdapterPrd = SimpleCursorAdapter(
+                this,
+                android.R.layout.select_dialog_item,
+                cursorPrd,
+                arrayOf("descMotivo"),
+                intArrayOf(android.R.id.text1),
+                0
+            )
+            motivo4.adapter = simpleCursorAdapterPrd
+
+
+        } else {
+            /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
+            simpleCursorAdapterPrd!!.swapCursor(cursorPrd)
+        }
+        motivo4.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            @SuppressLint("Range")
+            override fun onItemSelected(
+                p0: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                _id: Long
+            ) {
+                if (view?.context != null) {
+                    var idP4 = _id.toInt()
+                    Toast.makeText(
+                        view.context,
+                        "You selected ${
+                            cursorPrd!!.getString(cursorPrd!!.getColumnIndex("descMotivo"))
+                        } with an id of $_id", Toast.LENGTH_SHORT
+                    ).show()
+
+
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+    }
+
+    fun setOrRefreshSpinnerPrd5() {
+
+        if (simpleCursorAdapterPrd == null) {
+            simpleCursorAdapterPrd = SimpleCursorAdapter(
+                this,
+                android.R.layout.select_dialog_item,
+                cursorPrd,
+                arrayOf("descMotivo"),
+                intArrayOf(android.R.id.text1),
+                0
+            )
+            motivo5.adapter = simpleCursorAdapterPrd
+
+
+        } else {
+            /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
+            simpleCursorAdapterPrd!!.swapCursor(cursorPrd)
+        }
+        motivo5.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            @SuppressLint("Range")
+            override fun onItemSelected(
+                p0: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                _id: Long
+            ) {
+                if (view?.context != null) {
+                    var idP5 = _id.toInt()
+                    Toast.makeText(
+                        view.context,
+                        "You selected ${
+                            cursorPrd!!.getString(cursorPrd!!.getColumnIndex("descMotivo"))
+                        } with an id of $_id", Toast.LENGTH_SHORT
+                    ).show()
+
+
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+    }
+
+    fun setOrRefreshSpinnerPrd6() {
+
+        if (simpleCursorAdapterPrd == null) {
+            simpleCursorAdapterPrd = SimpleCursorAdapter(
+                this,
+                android.R.layout.select_dialog_item,
+                cursorPrd,
+                arrayOf("descMotivo"),
+                intArrayOf(android.R.id.text1),
+                0
+            )
+            motivo6.adapter = simpleCursorAdapterPrd
+
+
+        } else {
+            /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
+            simpleCursorAdapterPrd!!.swapCursor(cursorPrd)
+        }
+        motivo6.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            @SuppressLint("Range")
+            override fun onItemSelected(
+                p0: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                _id: Long
+            ) {
+                if (view?.context != null) {
+                    var idP6 = _id.toInt()
+                    Toast.makeText(
+                        view.context,
+                        "You selected ${
+                            cursorPrd!!.getString(cursorPrd!!.getColumnIndex("descMotivo"))
+                        } with an id of $_id", Toast.LENGTH_SHORT
+                    ).show()
+
+
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+    }
+
+    */
+
+
+        /*override fun onResume() {
         super.onResume()
         setOrRefreshSpinnerPrd()
-    }
-
-    /* When the activity is destroyed then close the cursor as it will not be used again */
-    override fun onDestroy() {
-        super.onDestroy()
-        if (!cursorPrd!!.isClosed) {
-            cursorPrd!!.close()
-        }
     }*/
 
+        /* When the activity is destroyed then close the cursor as it will not be used again */
+        override fun onSupportNavigateUp(): Boolean {
+            onBackPressed()
+            Animatoo.animateSlideRight(this);
+            return true
+        }
 
-
+}
 
 
 
 
     //método do botão de voltar da Action Bar
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        Animatoo.animateSlideRight(this);
-        return true
-    }
-}
+
 

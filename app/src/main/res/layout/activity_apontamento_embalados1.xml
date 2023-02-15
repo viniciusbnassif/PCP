@@ -47,7 +47,7 @@
             android:layout_margin="5dp"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <!--<com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/optmenu"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
@@ -66,9 +66,9 @@
                     android:inputType="none"
                     app:boxCornerRadiusBottomEnd="5dp"
                     app:boxCornerRadiusBottomStart="5dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayou-->
 
-            <!--LinearLayout
+            <LinearLayout
                 android:id="@+id/LLAPEM"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -89,15 +89,15 @@
 
                 <Spinner
                     android:id="@+id/menu"
-                    style="android.R.layout.select_dialog_singlechoice"
+                    style="@android:style/Widget.Holo.Light.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:outlineAmbientShadowColor="@color/black"
+                    android:hapticFeedbackEnabled="true"
                     android:outlineProvider="background"
-                    android:spinnerMode="dialog">
+                    android:spinnerMode="dropdown">
 
                 </Spinner>
-            </LinearLayout-->
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout17"
