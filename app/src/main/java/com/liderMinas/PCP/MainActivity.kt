@@ -1,7 +1,9 @@
 package com.liderMinas.PCP
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +13,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+//import com.liderMinas.PCP.database.connectMSSQL
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +33,23 @@ class MainActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(false)
             setDisplayShowCustomEnabled(false)
         }
+
+        /*if (ContextCompat.checkSelfPermission(this@MainActivity,
+                Manifest.permission.INTERNET) !==
+            PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity,
+                    Manifest.permission.INTERNET)) {
+                ActivityCompat.requestPermissions(this@MainActivity,
+                    arrayOf(Manifest.permission.INTERNET), 1)
+            } else {
+                Toast.makeText(this, "Permissão de acesso a rede negada pelo Sistema Operacional", Toast.LENGTH_SHORT).show()
+
+            }*/
+
+
+       // var connector = connectMSSQL()
+        //connector.startConn()
+        //connector.startDBExtConnection()
 
         //Exibir número de versão + revisão
         var versionCode = BuildConfig.VERSION_CODE

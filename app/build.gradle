@@ -45,7 +45,14 @@ android {
 
 dependencies {
 
+    implementation 'net.sourceforge.jtds:jtds:1.3.1'
+    implementation 'junit:junit:4.13.2'
+
+    /*implementation("com.microsoft.sqlserver:mssql-jdbc:6.4.0.jre7")
     implementation 'com.github.Mamoon-Alhawamdeh:AmazingSpinner:2.0.0'
+    implementation("org.jetbrains.exposed:exposed-core:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")*/
 
     implementation 'net.danlew:android.joda:2.12.1.1'
 

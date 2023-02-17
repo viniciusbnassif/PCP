@@ -6,22 +6,29 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.database.sqlite.SQLiteQuery
 import android.provider.BaseColumns
 import com.liderMinas.PCP.database.ProdutoModelo
+import com.liderMinas.PCP.database.queryProdutoExt
+
+//import com.liderMinas.PCP.database.connectMSSQL
 
 
 /*import android.database.sqlite.SQLiteQuery*/
 
 
-class SQLiteHelper(context: Context):
+class SQLiteHelper(context: Context?):
+
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION)
     {
+        //var dbConnectExt = queryProdutoExt()
+        //var connector = connectMSSQL()
         val db = this.writableDatabase
         companion object {
 
             private const val DATABASE_VERSION = 1
             private const val DATABASE_NAME = "pcp.db"
-            private const val TBL_USUARIO = "usuario"
+            private const val TBL_USUARIO = "Usuario"
             private const val ID_USUARIO = "idUsuario"
             private const val USERNAME = "username"
             private const val PASSWORD = "password"
@@ -29,7 +36,7 @@ class SQLiteHelper(context: Context):
 
             /*========================================================================*/
 
-            const val TBL_PRODUTO = "produto"
+            const val TBL_PRODUTO = "Produto"
             private const val ID_PRODUTO = "idProduto"
             private const val DESC_PROD = "descProduto"
             private const val QE_PROD = "qeProduto"
@@ -38,13 +45,13 @@ class SQLiteHelper(context: Context):
 
             /*========================================================================*/
 
-            private const val TBL_MOTIVO = "motivo"
+            private const val TBL_MOTIVO = "Motivo"
             private const val ID_MOTIVO = "idMotivo"
             private const val DESC_MOTIVO = "descMotivo"
 
             /*========================================================================*/
 
-            private const val TBL_APONTEMBALADO = "apontEmbalado"
+            private const val TBL_APONTEMBALADO = "ApontEmbalado"
             private const val ID_AE = "idApontEmbalado"
             private const val PILHA_AE = "pilhaApontada"
             private const val DATA_AE = "dataHoraApontamento"
@@ -55,14 +62,14 @@ class SQLiteHelper(context: Context):
 
             /*========================================================================*/
 
-            private const val TBL_APONTPERDA = "apontPerda"
+            private const val TBL_APONTPERDA = "ApontPerda"
             private const val ID_AP = "idApontPerda"
             private const val QTD_AP = "qtdPerda"
             private const val DATA_AP = "dataHoraPerda"
 
             /*========================================================================*/
 
-            private const val TBL_SYNC = "sync"
+            private const val TBL_SYNC = "Sync"
             private const val ID_SYNC = "idSync"
             private const val DATA_SYNC = "dataHoraSync"
             private const val STATUS_SYNC = "statusSync"
@@ -130,6 +137,8 @@ class SQLiteHelper(context: Context):
 
         }
 
+
+
         override fun onCreate(db: SQLiteDatabase?) {
             db?.execSQL(createDBUSUARIO)
             db?.execSQL(createDBMOTIVO)
@@ -137,11 +146,14 @@ class SQLiteHelper(context: Context):
             db?.execSQL(createDBAE)
             db?.execSQL(createDBAP)
             db?.execSQL(createDBSYNC)
-            db?.execSQL("INSERT INTO usuario (username, password, nome) VALUES ('kane','123', 'Kane Garcia'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
-            db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
-            db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
-            db?.execSQL("INSERT INTO motivo (descMotivo) VALUES ('Preguiça'), ('Soninho'), ('Queimou a rosca');")
+            db?.execSQL("INSERT INTO Usuario (username, password, nome) VALUES ('kane','123', 'Kane Garcia'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
+            //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
+            //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
+        }
 
+        fun externalExecSQL(query: String){
+            val db = this.writableDatabase
+            db?.execSQL(query)
         }
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -157,6 +169,7 @@ class SQLiteHelper(context: Context):
 
         fun insertProduto(prd: ProdutoModelo): Long {
             val db= this.writableDatabase
+           //            var prdInsertExt = dbConnectExt
 
             val contentValues = ContentValues()
             contentValues.put(ID_PRODUTO, prd.idProduto)

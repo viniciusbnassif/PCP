@@ -5,6 +5,8 @@ import android.content.Intent
 import android.database.Cursor
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.app.Application.*
+import android.content.Context
 import android.text.Editable
 import android.view.View
 import android.widget.*
@@ -15,6 +17,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.liderMinas.PCP.database.queryProdutoExt
 import java.time.LocalDate
 import java.util.*
 import java.text.*
@@ -26,12 +29,20 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
     var simpleCursorAdapter: SimpleCursorAdapter? = null
     var cursor: Cursor? = null
     var id: Int = 0
+    //lateinit var connector: Connection()
+    //lateinit var allProducts: java.sql.Array
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apontamento_embalados1)
 
         db = SQLiteHelper(this)
+        queryProdutoExt(this)
+
+
+        //var allProducts = connector.databaseConnection()
+
+        //connector.firstInit()
 
         spinner = findViewById<Spinner>(R.id.menu)
         var adapter =
