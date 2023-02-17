@@ -12,6 +12,7 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
+import com.liderMinas.PCP.database.queryMotivoExt
 import java.util.*
 
 
@@ -33,6 +34,8 @@ class ApontamentoPerdas : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.liderMinas.PCP.R.layout.activity_apontamento_perdas)
+
+        queryMotivoExt(this)
 
         db = SQLiteHelper(this)
         motivo1 = findViewById(R.id.motivo1)

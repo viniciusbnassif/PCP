@@ -13,6 +13,7 @@ import java.io.Closeable
 import java.sql.*
 import java.sql.Connection
 import kotlin.coroutines.coroutineContext
+//import java.sql.SQLException;
 
 //import com.liderMinas.PCP.database
 
@@ -71,8 +72,7 @@ class Connection(private val coreConnection: java.sql.Connection) :
 
     }*/
 }
-
-fun connect(): com.liderMinas.PCP.database.Connection? {
+fun connect(): java.sql.Connection? {
     var ip = "192.168.1.10:1433" //local server running MSSQL Server [Porta 1433]
     var dbExt = "APP_PCP"
     var user = "APP_PCP"
@@ -85,15 +85,32 @@ fun connect(): com.liderMinas.PCP.database.Connection? {
 
     val policy = Builder().permitAll().build()
     StrictMode.setThreadPolicy(policy)
-    //try {
-        Class.forName(Classes)
-        val c = DriverManager.getConnection(url, user, password)
+    Class.forName(Classes)
+    lateinit var c : Connection
+    try {
+        c = DriverManager.getConnection(url, user, password)// <---------
         c.autoCommit = false
-
-        Log.d("Debug", "Connected")
         return Connection(c)
+        Log.d("Debug", "Connected")
+    } catch (e: ClassNotFoundException){
+        e.printStackTrace();
+        Log.d("Connection State:", "${e}, ERRO Class")
+    }catch (e: SQLException) {
+        e.printStackTrace();
+        Log.d("Connection State:", "${e}, ERRO SQL")
 
+    }
+    return null
 }
+
+
+
+
+
+
+
+
+
 
 fun main(args: Array<String>) {
     //queryProdutoExt()
@@ -104,12 +121,7 @@ fun main(args: Array<String>) {
 
 
 fun queryProdutoExt(context: Context) {
-    var dbLcl: SQLiteHelper = SQLiteHelper(context)
-    var arrayProdutoIdExt: MutableList<Any> = ArrayList()
-    var arrayProdutoDescExt: MutableList<Any> = ArrayList()
-    var arrayProdutoQeExt: MutableList<Any> = ArrayList()
-    var arrayProdutoValExt: MutableList<Any> = ArrayList()
-    var arrayProdutoTipoExt: MutableList<Any> = ArrayList()
+    var dbIntrn: SQLiteHelper = SQLiteHelper(context)
     connect().use {
         var st1 = it?.createStatement()!!
         var resultSet1 = st1.executeQuery(
@@ -127,10 +139,11 @@ fun queryProdutoExt(context: Context) {
             arrayProdutoTipoExt.add(resultSet1.getString("tipoVProduto")) // same as resultSet1.getString(2)
             // process
         }*/
-        dbLcl.externalExecSQL("DELETE FROM Produto")// <---------------------
+        dbIntrn.externalExecSQL("DELETE FROM Produto")
         while (resultSet1.next()){
-            var query = "INSERT INTO Produto (idProduto, descProduto, qeProduto, validProduto, tipoVProduto) VALUES (${resultSet1.getInt("idProduto")}, '${resultSet1.getString("descProduto")}', ${resultSet1.getInt("qeProduto")}, ${resultSet1.getInt("validProduto")}, '${resultSet1.getString("tipoVProduto")}');"
-            dbLcl.externalExecSQL(query)
+            var query = "INSERT INTO Produto (idProduto, descProduto, qeProduto, validProduto, tipoVProduto) VALUES (${resultSet1.getInt("idProduto")}, '${resultSet1.getString("descProduto")}', ${resultSet1.getInt("qeProduto")}, ${resultSet1.getInt("validProduto")}, '${resultSet1.getString("tipoVProduto")}')"
+            dbIntrn.externalExecSQL(query)
+            Log.d("SQL Insert", "${resultSet1.getString("descProduto")} inserido com sucesso")
         }
 
         resultSet1.close()
@@ -140,6 +153,37 @@ fun queryProdutoExt(context: Context) {
 
     }
 }
+
+fun queryMotivoExt(context: Context) {
+    var dbIntrn: SQLiteHelper = SQLiteHelper(context) //variavel dbIntrn recebe classe do Banco de dados localizado no dispositivo (Database.kt)
+    connect().use {//Conexão ao banco de dados externo.
+        var st1 = it?.createStatement()!!
+        var resultSet1 = st1.executeQuery(
+            """
+            SELECT *
+              FROM Motivo
+             ORDER BY idMotivo
+            """.trimIndent()
+        )
+        /*while (resultSet1.next()) {
+            arrayProdutoIdExt.add(resultSet1.getInt("idProduto"))   // same as resultSet1.getLong(1)
+            arrayProdutoDescExt.add(resultSet1.getString("descProduto")) // same as resultSet1.getString(2)
+            arrayProdutoQeExt.add(resultSet1.getInt("qeProduto")) // same as resultSet1.getString(2)
+            arrayProdutoValExt.add(resultSet1.getInt("validProduto")) // same as resultSet1.getString(2)
+            arrayProdutoTipoExt.add(resultSet1.getString("tipoVProduto")) // same as resultSet1.getString(2)
+            // process
+        }*/
+        dbIntrn.externalExecSQL("DELETE FROM Motivo")// <---------------------
+        while (resultSet1.next()){
+            var query = "INSERT INTO Motivo (idMotivo, descMotivo) VALUES (${resultSet1.getInt("idMotivo")}, '${resultSet1.getString("descMotivo")}');"
+            dbIntrn.externalExecSQL(query)
+        }
+
+        resultSet1.close()
+        st1.close()
+    }
+}
+
 
     /*val st2 = it?.prepareStatement(
         """
