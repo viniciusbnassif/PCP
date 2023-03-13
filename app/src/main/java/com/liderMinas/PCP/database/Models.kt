@@ -18,6 +18,7 @@ data class ProdutoModelo(
     }
 }
 
+
 data class UsuarioModel(
     var idUsuario: Int = getAutoId(),
     var username: String = "",
@@ -46,12 +47,20 @@ data class MotivoModel(
 
 data class ApontEmbaladoModel(
     var idApontEmbalado: Int = getAutoId(),
-    var pilhaApontada: Int,
-    var dataHoraApontamento: String,
+    var qtdApontada: Int,
+    var tipoUnitizador: String,
+    var dataHoraApontamento: Int,
     var lote: Int,
     var caixaAvulsa: Int,
     var unidadeAvulsa: Int,
-    var validade: String
+    var validade: String,
+    var total: Int,
+    var statusSync: Int,
+    var idProduto: Int,
+    var qeProduto: Int,
+    var validProduto: Int,
+    var tipoVProduto: String,
+    var username: String,
 ){
     companion object{
         fun getAutoId(): Int{

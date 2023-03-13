@@ -13,8 +13,8 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnPrimaryContainer">@color/blue_700</item>
         <item name="colorPrimaryContainer">@color/blue_0</item>
-        <item name="colorOnSecondaryContainer">@color/blue_200</item>
-        <item name="colorSecondaryContainer">@color/blue_500</item>
+        <item name="colorSecondaryContainer">@color/blue_700</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
         <item name="android:shadowColor">@color/blue_200</item>
         <item name="colorContainer">@color/blue_200</item>
         <item name="android:textColorHighlight">@color/blue_100</item>
@@ -34,5 +34,8 @@
 
     <style name="ToolbarColoredBackArrow" parent="Theme.PCP">
         <item name="android:colorControlNormal">@color/white</item>
+    </style>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="buttonSuccess">@style/buttonSuccess</item>
     </style>
 </resources>

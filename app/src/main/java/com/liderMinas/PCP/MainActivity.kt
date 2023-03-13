@@ -1,20 +1,24 @@
 package com.liderMinas.PCP
 
-import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
+import android.view.inputmethod.EditorInfo
+import android.widget.*
+import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
+import com.liderMinas.PCP.database.*
+
+
 //import com.liderMinas.PCP.database.connectMSSQL
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +26,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         SQLiteHelper(this);
+        var db = SQLiteHelper(this)
+
+
+
+
+        val user = findViewById<EditText>(R.id.editTextUsername)
+        val userView = findViewById<TextInputLayout>(R.id.viewUser)
+
+        val pw = findViewById<EditText>(R.id.editTextPassword)
+        val pwView = findViewById<TextInputLayout>(R.id.viewPassword)
+
+        var progress = findViewById<ProgressBar>(R.id.progress)
+        progress.setVisibility(INVISIBLE)
+
+
+        var teste = findViewById<Button>(R.id.teste)
+        teste.setOnClickListener(){
+            queryExternalServerAE(this)
+        }
+
 
 
         //Criar barra de ações
@@ -34,27 +58,14 @@ class MainActivity : AppCompatActivity() {
             setDisplayShowCustomEnabled(false)
         }
 
-        /*if (ContextCompat.checkSelfPermission(this@MainActivity,
-                Manifest.permission.INTERNET) !==
-            PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity,
-                    Manifest.permission.INTERNET)) {
-                ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(Manifest.permission.INTERNET), 1)
-            } else {
-                Toast.makeText(this, "Permissão de acesso a rede negada pelo Sistema Operacional", Toast.LENGTH_SHORT).show()
-
-            }*/
-
-
-       // var connector = connectMSSQL()
-        //connector.startConn()
-        //connector.startDBExtConnection()
 
         //Exibir número de versão + revisão
         var versionCode = BuildConfig.VERSION_CODE
         var versionName = BuildConfig.VERSION_NAME
         var version = "Versão: $versionName. Revisão: $versionCode"
+
+        var query: String
+
 
 
 
@@ -62,22 +73,67 @@ class MainActivity : AppCompatActivity() {
         //val user = String
         //val pw = String
 
-        val button0: Button = findViewById(R.id.apontamentoAbrir)
-        button0.setOnClickListener {
-            val intent = Intent(this, ApontamentoEmbalados1::class.java)
-            startActivity(intent)
+        var elementsOnLogin = findViewById<LinearLayout>(R.id.elementsOnLogin)
+
+        fun authUser() {
+
+
+            var validation = confirmUnPw(user.text.toString(), pw.text.toString())
+            if (validation == 201) {
+                Snackbar.make(
+                    elementsOnLogin,
+                    "Usuário autenticado \nAtualizando tabelas...",
+                    Snackbar.LENGTH_LONG
+                ).show()
+                query = "DELETE FROM Usuario WHERE username = '${user}'"
+                db.externalExecSQL(query)
+                query = "INSERT INTO Usuario(username, password) VALUES ('${user}', '${pw}')"
+                db.externalExecSQL(query)
+                queryProdutoExt(this)
+                queryMotivoExt(this)
+
+                var username = user.text.toString()
+                var mainMenu = Intent(this, MainMenu::class.java).apply {
+                    putExtra(EXTRA_MESSAGE, username)}
+                startActivity(mainMenu)
+                finish()
+
+
+            } else if (validation == 401) {
+                userView.setError(" ")
+                pwView.setError("Nome de usuário ou senha incorretos")
+                pw.setText("")
+                Snackbar.make(
+                    elementsOnLogin,
+                    "Nome de usuário e/ou senha incorretos",
+                    Snackbar.LENGTH_LONG
+                ).show()
+                progress.setVisibility(INVISIBLE)
+            } else if (validation == 901 || validation == 900) {
+                Snackbar.make(
+                    elementsOnLogin,
+                    "Não foi possivel conectar ao servidor. Verifique as configurações de rede e tente novamente.",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Abrir Configurações") {
+                    startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+                }.show()
+                progress.setVisibility(INVISIBLE)
+            }
         }
 
-        val button1: Button = findViewById(R.id.apontamentoFinal)
-        button1.setOnClickListener {
-            val intent = Intent(this, ApontamentoPerdas::class.java)
-            startActivity(intent)
+
+
+        pw.setOnEditorActionListener{ v, actionId, event ->
+            progress.setVisibility(VISIBLE)
+            authUser()
+            true
         }
 
         val button: Button = findViewById(R.id.loginscreen_login)
         button.setOnClickListener {
-            val user = findViewById<EditText>(R.id.editTextUsername).toString()
-            val pw = findViewById<EditText>(R.id.editTextPassword).toString()
+            progress.setVisibility(VISIBLE)
+            authUser()
+        }
 
 
             //Variaveis testadas e funcionando
@@ -130,7 +186,7 @@ class MainActivity : AppCompatActivity() {
             }
             builder.show() */
 
-        }
+
 
     }
 

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQuery
 import android.provider.BaseColumns
+import com.liderMinas.PCP.database.ApontEmbaladoModel
 import com.liderMinas.PCP.database.ProdutoModelo
 import com.liderMinas.PCP.database.queryProdutoExt
 
@@ -26,13 +27,12 @@ class SQLiteHelper(context: Context?):
         val db = this.writableDatabase
         companion object {
 
-            private const val DATABASE_VERSION = 1
+            private const val DATABASE_VERSION = 4
             private const val DATABASE_NAME = "pcp.db"
             private const val TBL_USUARIO = "Usuario"
             private const val ID_USUARIO = "idUsuario"
             private const val USERNAME = "username"
             private const val PASSWORD = "password"
-            private const val NOME = "nome"
 
             /*========================================================================*/
 
@@ -53,19 +53,26 @@ class SQLiteHelper(context: Context?):
 
             private const val TBL_APONTEMBALADO = "ApontEmbalado"
             private const val ID_AE = "idApontEmbalado"
-            private const val PILHA_AE = "pilhaApontada"
+            private const val QTD_AE = "qtdApontada"
+            private const val TIPO_AE = "tipoUnitizador"
             private const val DATA_AE = "dataHoraApontamento"
             private const val LOTE_AE = "lote"
             private const val CAIXA_AE = "caixaAvulsa"
             private const val UNID_AE = "unidadeAvulsa"
             private const val VALID_AE = "validade"
+            private const val TOTAL = "total"
+            private const val STATUS_SYNC_AE = "statusSync"
+
+
 
             /*========================================================================*/
 
             private const val TBL_APONTPERDA = "ApontPerda"
             private const val ID_AP = "idApontPerda"
             private const val QTD_AP = "qtdPerda"
+            private const val UN_AP = "unidPerda"
             private const val DATA_AP = "dataHoraPerda"
+            private const val STATUS_SYNC_AP = "statusSync"
 
             /*========================================================================*/
 
@@ -78,19 +85,18 @@ class SQLiteHelper(context: Context?):
 
             val createDBUSUARIO = (
                     "CREATE TABLE " + TBL_USUARIO + " (" +
-                    ID_USUARIO + " INTEGER NOT NULL PRIMARY KEY, " +
+                    ID_USUARIO + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                     USERNAME + " VARCHAR(64) NOT NULL, " +
-                    PASSWORD + " VARCHAR(64) NOT NULL, " +
-                    NOME + " VARCHAR(64) NOT NULL " +
+                    PASSWORD + " VARCHAR(64) NOT NULL " +
                     "); ")
-            val createDBMOTIVO=(
+            val createDBMOTIVO = (
                     "CREATE TABLE "+ TBL_MOTIVO + " (" +
-                    ID_MOTIVO + " INTEGER NOT NULL PRIMARY KEY," +
+                    ID_MOTIVO + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                     DESC_MOTIVO + " VARCHAR(128) NOT NULL" +
                     ");")
             val createDBPRODUTO = (
                     "CREATE TABLE "+ TBL_PRODUTO + " (" +
-                    ID_PRODUTO + " INTEGER NOT NULL PRIMARY KEY," +
+                    ID_PRODUTO + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                     DESC_PROD + " VARCHAR(64)NOT NULL," +
                     QE_PROD + " INTEGER NOT NULL," +
                     VALID_PROD + " INTEGER NOT NULL," +
@@ -98,40 +104,45 @@ class SQLiteHelper(context: Context?):
                     ");" )
             val createDBAE = (
                     "CREATE TABLE "+ TBL_APONTEMBALADO+ " (" +
-                    ID_AE + " INTEGER NOT NULL PRIMARY KEY," +
-                    PILHA_AE + " INTEGER NOT NULL," +
-                    DATA_AE + " VARCHAR(14) NOT NULL," +
+                    ID_AE + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    QTD_AE + " INTEGER NOT NULL," +
+                    TIPO_AE + " VARCHAR(10) NOT NULL," +
+                    DATA_AE + " VARCHAR(13) NOT NULL," +
                     LOTE_AE + " INTEGER NOT NULL," +
                     CAIXA_AE + " INTEGER NOT NULL," +
                     UNID_AE + " INTEGER NOT NULL," +
                     VALID_AE + " VARCHAR(8) NOT NULL," +
+                    TOTAL + " INTEGER NOT NULL," +
                     ID_PRODUTO + " INTEGER NOT NULL," +
                     QE_PROD + " INTEGER NOT NULL," +
-                    VALID_PROD + " VARCHAR(2) NOT NULL," +
-                    ID_USUARIO + " INTEGER NOT NULL," +
+                    VALID_PROD + " INTEGER NOT NULL," +
+                    TIPOV_PROD + " VARCHAR(1) NOT NULL," +
+                    USERNAME + " VARCHAR(64) NOT NULL," +
+                    STATUS_SYNC_AE + " INTEGER NOT NULL," +
                     "FOREIGN KEY("+ ID_PRODUTO +") REFERENCES "+TBL_PRODUTO+" ("+ ID_PRODUTO +")," +
                     "FOREIGN KEY("+ QE_PROD +") REFERENCES "+TBL_PRODUTO+" ("+ QE_PROD +")," +
                     "FOREIGN KEY("+ VALID_PROD +") REFERENCES "+TBL_PRODUTO+" ("+ VALID_PROD +")," +
-                    "FOREIGN KEY("+ ID_USUARIO +") REFERENCES "+ TBL_USUARIO +" ("+ ID_USUARIO +")" +
+                    "FOREIGN KEY("+ TIPOV_PROD +") REFERENCES "+TBL_PRODUTO+" ("+ TIPOV_PROD +")," +
+                    "FOREIGN KEY("+ USERNAME +") REFERENCES "+ TBL_USUARIO +" ("+ USERNAME +")" +
                     ");" )
             val createDBAP = (
                     "CREATE TABLE "+ TBL_APONTPERDA +" (" +
-                    ID_AP +" INTEGER NOT NULL PRIMARY KEY," +
+                    ID_AP +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                     QTD_AP +" FLOAT," +
-                    DATA_AP +" VARCHAR(14)," +
-                    ID_USUARIO +" INTEGER NOT NULL," +
+                    UN_AP + " TEXT," +
+                    DATA_AP +" VARCHAR(13)," +
+                    USERNAME +" VARCHAR(64) NOT NULL," +
                     ID_PRODUTO +" INTEGER NOT NULL," +
                     ID_MOTIVO +" INTEGER NOT NULL," +
-                    ID_AE +" INTEGER NOT NULL," +
-                    "FOREIGN KEY("+ ID_USUARIO +") REFERENCES "+TBL_USUARIO+" ("+ ID_USUARIO +")," +
+                    STATUS_SYNC_AP + " INTEGER NOT NULL," +
+                    "FOREIGN KEY("+ USERNAME +") REFERENCES "+TBL_USUARIO+" ("+ USERNAME +")," +
                     "FOREIGN KEY("+ID_PRODUTO+") REFERENCES "+TBL_PRODUTO+" ("+ID_PRODUTO+")," +
-                    "FOREIGN KEY("+ID_MOTIVO+") REFERENCES "+ TBL_MOTIVO+" ("+ID_MOTIVO+")," +
-                    "FOREIGN KEY("+ID_AE+") REFERENCES "+ TBL_APONTEMBALADO +" ("+ID_AE+")" +
+                    "FOREIGN KEY("+ID_MOTIVO+") REFERENCES "+ TBL_MOTIVO+" ("+ID_MOTIVO+")" +
                     ");" )
             val createDBSYNC = (
                     "CREATE TABLE "+TBL_SYNC+" (" +
-                    ID_SYNC +" INTEGER NOT NULL PRIMARY KEY," +
-                    DATA_SYNC +" VARCHAR(14)," +
+                    ID_SYNC +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    DATA_SYNC +" INTEGER," +
                     STATUS_SYNC +" INTEGER" +
                     ");")
 
@@ -146,7 +157,7 @@ class SQLiteHelper(context: Context?):
             db?.execSQL(createDBAE)
             db?.execSQL(createDBAP)
             db?.execSQL(createDBSYNC)
-            db?.execSQL("INSERT INTO Usuario (username, password, nome) VALUES ('kane','123', 'Kane Garcia'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
+            //db?.execSQL("INSERT INTO Usuario (username, password) VALUES ('kane','123'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
             //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
             //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
         }
@@ -155,14 +166,21 @@ class SQLiteHelper(context: Context?):
             val db = this.writableDatabase
             db?.execSQL(query)
         }
+        /*fun externalExecSQLSelect(query: String): Unit? {
+            var resultSelect = ArrayList<String>()
+            val db = this.writableDatabase
+            //var result = db?.rawQuery(query,)
+            return result
+        }*/
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
 
-            var dropDBPCP = ("DROP TABLE IF EXISTS $TBL_PRODUTO;" +
-                             "DROP TABLE IF EXISTS $TBL_APONTPERDA;" +
-                             "DROP TABLE IF EXISTS $TBL_APONTEMBALADO;" +
-                             "DROP TABLE IF EXISTS $TBL_MOTIVO;" +
-                             "DROP TABLE IF EXISTS $TBL_USUARIO;")
+            var dropDBPCP = ("DROP TABLE IF EXISTS $TBL_USUARIO; " +
+                             "DROP TABLE IF EXISTS $TBL_MOTIVO; " +
+                             "DROP TABLE IF EXISTS $TBL_PRODUTO; " +
+                             "DROP TABLE IF EXISTS $TBL_APONTEMBALADO; " +
+                             "DROP TABLE IF EXISTS $TBL_APONTPERDA; " +
+                             "DROP TABLE IF EXISTS $TBL_SYNC; ")
             db.execSQL(dropDBPCP)
             onCreate(db)
         }
@@ -235,6 +253,65 @@ class SQLiteHelper(context: Context?):
                 null /* GROUP BY clause, null if no GROUP BY clause */,
                 null /* HAVING CLAUSE, null if no HAVING clause */,
                 null /* ORDER BY clause products will be shown alphabetically a->z*/
+            )
+        }
+        @SuppressLint("Range")
+        fun getAE(): MutableList<ApontEmbaladoModel> {
+            val aE: MutableList<ApontEmbaladoModel> = ArrayList()
+            val selectQuery =
+                "SELECT $ID_AE, $QTD_AE, $TIPO_AE, $DATA_AE, $LOTE_AE, $CAIXA_AE, $UNID_AE, $VALID_AE, $TOTAL, " +
+                        "$ID_PRODUTO, $QE_PROD, $VALID_PROD, $TIPOV_PROD, $USERNAME, $STATUS_SYNC_AE FROM $TBL_APONTEMBALADO WHERE $STATUS_SYNC_AE = 0 ORDER BY $ID_AE ASC;"
+            val result = db.rawQuery(selectQuery, null)
+
+            while (result.moveToNext()) {
+                aE.add(
+                    ApontEmbaladoModel(
+                        result.getInt(result.getColumnIndex(ID_AE)),
+                        result.getInt(result.getColumnIndex(QTD_AE)),
+                        result.getString(result.getColumnIndex(TIPO_AE)),
+                        result.getInt(result.getColumnIndex(DATA_AE)),
+                        result.getInt(result.getColumnIndex(LOTE_AE)),
+                        result.getInt(result.getColumnIndex(CAIXA_AE)),
+                        result.getInt(result.getColumnIndex(UNID_AE)),
+                        result.getString(result.getColumnIndex(VALID_AE)),
+                        result.getInt(result.getColumnIndex(TOTAL)),
+                        result.getInt(result.getColumnIndex(STATUS_SYNC_AE)),
+                        result.getInt(result.getColumnIndex(ID_PRODUTO)),
+                        result.getInt(result.getColumnIndex(QTD_AE)),
+                        result.getInt(result.getColumnIndex(VALID_PROD)),
+                        result.getString(result.getColumnIndex(TIPOV_PROD)),
+                        result.getString(result.getColumnIndex(USERNAME)),
+                    )
+                )
+            }
+            result.close()
+            return aE
+        }
+
+        fun getDetailAE(): Cursor {
+            return db.query(
+                TBL_APONTEMBALADO,
+                arrayOf("$ID_AE AS ${BaseColumns._ID}",
+                    QTD_AE,
+                    TIPO_AE,
+                    DATA_AE,
+                    LOTE_AE,
+                    CAIXA_AE,
+                    UNID_AE,
+                    VALID_AE,
+                    TOTAL,
+                    ID_PRODUTO,
+                    QE_PROD,
+                    VALID_PROD,
+                    TIPOV_PROD,
+                    USERNAME,
+                    STATUS_SYNC_AE
+                ),
+                "statusSync = 0" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                null /* GROUP BY clause, null if no GROUP BY clause */,
+                null /* HAVING CLAUSE, null if no HAVING clause */,
+                "$ID_AE ASC"/* ORDER BY clause products will be shown alphabetically a->z*/
             )
         }
 

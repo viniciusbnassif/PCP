@@ -15,4 +15,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="spacegray">#44444444</color>
+    <color name="errorRed">#FF8282</color>
+    <color name="suErrorRed">#741919</color>
+    <color name="lightErrorRed">#FDDADA</color>
+    <color name="suSuccessGreen">#197419</color>
+    <color name="lightSuccessGreen">#DAFDDA</color>
 </resources>

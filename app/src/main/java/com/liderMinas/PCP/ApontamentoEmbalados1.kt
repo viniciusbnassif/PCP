@@ -1,31 +1,40 @@
 package com.liderMinas.PCP
 
 import android.annotation.SuppressLint
+import android.app.Application.*
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.app.Application.*
-import android.content.Context
+import android.provider.AlarmClock
 import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.text.font.FontWeight
+import androidx.core.widget.doOnTextChanged
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.queryProdutoExt
+import java.lang.Integer.parseInt
+import java.text.*
 import java.time.LocalDate
 import java.util.*
-import java.text.*
 
 
-class ApontamentoEmbalados1 : AppCompatActivity() {
+public class ApontamentoEmbalados1 : AppCompatActivity() {
     lateinit var db: SQLiteHelper
     lateinit var spinner: Spinner
+    //lateinit var spinnerPrd: AutoCompleteTextView
     var simpleCursorAdapter: SimpleCursorAdapter? = null
     var cursor: Cursor? = null
     var id: Int = 0
@@ -36,17 +45,84 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apontamento_embalados1)
 
+
+        val username = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)
+
+        var viewTotal = findViewById<TextView>(R.id.total)
+
+        var pilha: EditText = findViewById(R.id.finalResult)
+        var btnValidade = findViewById<EditText>(R.id.btnValidade)
+        spinner = findViewById<Spinner>(R.id.menu)
+        var spinnerID = findViewById<TextView>(R.id.spinnerIdSaver)
+        var transporteID = findViewById<TextView>(R.id.tipoTransporteID)
+        transporteID.text = "0"
+
+        //spinnerPrd = findViewById<AutoCompleteTextView>(R.id.spinnerPrd)
+        val dateVal: TextInputEditText = findViewById(R.id.btnValidade)
+        var lote = findViewById<EditText>(R.id.editTextLote)
+        var qeProduto = findViewById<EditText>(R.id.editTextEmbalagemCaixa)
+
         db = SQLiteHelper(this)
         queryProdutoExt(this)
 
+        var valueCxAvulsa = "0"
+        var valueQtAvulsa = "0"
+        val cxAvulsa = findViewById<TextView>(R.id.caixasAvulsas)
+        val qtdAvulsa = findViewById<TextView>(R.id.qtdAvulsas)
 
-        //var allProducts = connector.databaseConnection()
+        cxAvulsa.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-        //connector.firstInit()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                setTotal()
+            }
 
-        spinner = findViewById<Spinner>(R.id.menu)
-        var adapter =
-            setOrRefreshSpinner()
+            override fun afterTextChanged(s: Editable?) {
+                setTotal()
+            }
+        })
+
+        qtdAvulsa.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                setTotal()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                setTotal()
+            }
+        })
+
+        var tipoTranporte = arrayOf<String>("Pilha", "Pallet")
+
+        var SpTipoTransporte = findViewById<AutoCompleteTextView>(R.id.tipoTransporte)
+
+        var adapterTransporte = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, tipoTranporte)
+        SpTipoTransporte.setAdapter(adapterTransporte)
+        SpTipoTransporte.setText(SpTipoTransporte.getAdapter().getItem(0).toString(), false)
+        SpTipoTransporte.onItemClickListener =
+            AdapterView.OnItemClickListener { p0, view, position, _id ->
+                if (view?.context != null) {
+                    transporteID.text = _id.toInt().toString()
+                    id = _id.toInt()
+                    setTotal()
+                    //findViewById<TextView>(R.id.tipoTransporteID).apply { text = "$id" }
+                    if (id == 1){
+                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = "Pallet" }
+                    }
+                    else if (id==0){
+                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = "Pilhas" }
+                    }
+                    //inicia metodo passando o id do item selecionado
+
+                }
+            }
+
+
+        setOrRefreshSpinner()
 
         //Criar barra de ações
         val toolbar = findViewById<BottomAppBar?>(R.id.apontEmbaladosBottomBar)
@@ -68,7 +144,12 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         var dty0 = findViewById<TextView>(R.id.editTextData).apply { text = dty }
 
 
-        val dateVal: TextInputEditText = findViewById(R.id.btnValidade)
+        val dateFormatterProtheus = SimpleDateFormat("yyyyMMdd") //formatar data no formato padrão
+        val dtyProtheus = dateFormatterProtheus.format(Date())
+        var dtytime0 = "$dtyProtheus" + "$time"
+
+
+
         dateVal.setOnClickListener {
             //Exibir barra de progresso, pois nos testes o Date Picker demorou entre 1 a 2 segundos para aparecer.
             val progress =
@@ -193,9 +274,9 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
         //====================================================================================================
 
+        /* Adicionar valor ao campo pilha quando clicar ou segurar o botão + */
         val plusRtn: Button = findViewById(R.id.plusBtn)
         plusRtn.setOnClickListener {
-            var pilha: EditText = findViewById(R.id.finalResult)
 
             //se o campo estiver vazio, para evitar crash ao pressionar +, preencher com 0
             if (pilha.length() == 0) {
@@ -205,6 +286,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             if (result >= 0) {
                 var finalResult = result + 1
                 pilha.text = Editable.Factory.getInstance().newEditable(finalResult.toString())
+                setTotal()
                 if (finalResult > 0) {
                     var minusBtnAble =
                         findViewById<Button>(R.id.minusBtn).apply { isEnabled = true }
@@ -215,10 +297,31 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             }
         }
 
+        plusRtn.setOnLongClickListener{
+            //se o campo estiver vazio, para evitar crash ao pressionar -, preencher com 0
+            if (pilha.length() == 0) {
+                pilha.text = Editable.Factory.getInstance().newEditable(0.toString())
+            }
+            var result = pilha.text.toString().toInt()
+            if (result >= 0) {
+                var finalResult = result + 10
+                pilha.text = Editable.Factory.getInstance().newEditable(finalResult.toString())
+                setTotal()
+                if (finalResult > 0) {
+                    var minusBtnAble =
+                        findViewById<Button>(R.id.minusBtn).apply { isEnabled = true }
+                } else if (finalResult <= 0) {
+                    var minusBtnAble =
+                        findViewById<Button>(R.id.minusBtn).apply { isEnabled = false }
+                }
+            }
+            true
+        }
 
+
+        //Subtrair valor do campo pilha quando clicar ou segurar o botão -
         val minusRtn: Button = findViewById(R.id.minusBtn)
         minusRtn.setOnClickListener {
-            var pilha: EditText = findViewById(R.id.finalResult)
 
             //se o campo estiver vazio, para evitar crash ao pressionar -, preencher com 0
             if (pilha.length() == 0) {
@@ -228,6 +331,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             if (result >= 1) {
                 var finalResult = result - 1
                 pilha.text = Editable.Factory.getInstance().newEditable(finalResult.toString())
+                setTotal()
                 if (finalResult > 0) {
                     var minusBtnAble =
                         findViewById<Button>(R.id.minusBtn).apply { isEnabled = true }
@@ -237,24 +341,172 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 }
             }
         }
+        minusRtn.setOnLongClickListener{
+            //se o campo estiver vazio, para evitar crash ao pressionar -, preencher com 0
+            if (pilha.length() == 0) {
+                pilha.text = Editable.Factory.getInstance().newEditable(0.toString())
+            }
+            var result = pilha.text.toString().toInt()
+            if (result >= 10) {
+                var finalResult = result - 10
+                pilha.text = Editable.Factory.getInstance().newEditable(finalResult.toString())
+                setTotal()
+                if (finalResult > 0) {
+                    var minusBtnAble =
+                        findViewById<Button>(R.id.minusBtn).apply { isEnabled = true }
+                } else if (finalResult <= 0) {
+                    var minusBtnAble =
+                        findViewById<Button>(R.id.minusBtn).apply { isEnabled = false }
+                }
+            }else if (result >= 1){
+                result = 0
+                pilha.text = Editable.Factory.getInstance().newEditable(result.toString())
+            }
+            true
+        }
+
+
+
+
 
         val messageIntent = ""
 
-        val buttonAvancar: FloatingActionButton = findViewById(R.id.startActivityApontamentoPerdas)
-        buttonAvancar.setOnClickListener {
-            val intent = Intent(this, ApontamentoPerdas::class.java)
-            intent.putExtra("messageIntent", messageIntent)
-            startActivity(intent)
-            Animatoo.animateSlideLeft(this)
+        val buttonFinalizar: FloatingActionButton = findViewById(R.id.startActivityApontamentoPerdas)
+        buttonFinalizar.setOnClickListener {
+            if ((spinnerID.text != "")
+                && (lote.length() != 0)
+                && (pilha.length() != 0)
+                && (qeProduto.length() != 0)
+                && (dty0.length() != 0)
+                && (time0.length() != 0)
+                && (dateVal.length() != 0)
+                && (username != null)
+            ) {
+
+                "name, 2012, 2017".split(",").toTypedArray()
+                var validade = "${btnValidade.text}".split("/").toTypedArray()
+                var validadeProtheus = (validade[2] + validade[1] + validade[0]).toInt()
+
+
+                var finalQuery: String = "INSERT INTO ApontEmbalado (pilhaApontada, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, idProduto, qeProduto, validProduto, tipoVProduto, username, statusSync) " +
+                                         "VALUES (${pilha.text}, '${dtytime0}', ${Integer.parseInt(lote.text.toString())}, ${parseInt(cxAvulsa.text.toString())}, ${parseInt(qtdAvulsa.text.toString())}, ${validadeProtheus}, ${Integer.parseInt(findViewById<TextView>(R.id.total).text.toString())}, ${Integer.parseInt(spinnerID.text.toString())}," +
+                                         " ${Integer.parseInt(qeProduto.text.toString())}, ${parseInt(findViewById<TextView>(R.id.validProdutoSaver).text.toString())}," +
+                                         "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text.toString()}', '${username}', 0);"
+                db.externalExecSQL(finalQuery)
+                Toast.makeText(this, "${spinnerID.text}, ${spinner}", Toast.LENGTH_LONG).show()
+                finish()
+            } else{
+                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_LONG).show()
+                if (pilha.length() == 0){
+                    pilha.setBackgroundColor(Color.parseColor("#FF8282"))
+                }
+                if (qeProduto.length() == 0){
+                    findViewById<TextInputLayout>(R.id.textInputLayout17).setError(getString(R.string.campo_obrigatorio))
+                    //qeProduto.setBackgroundColor(Color.parseColor("#FF8282"))
+                }
+                if (dty0.length() == 0){
+                    findViewById<TextInputLayout>(R.id.textInputLayout19).setError(getString(R.string.campo_obrigatorio))
+                    //dty0.setBackgroundColor(Color.parseColor("#FF8282"))
+                }
+                if (time0.length() == 0){
+                    findViewById<TextInputLayout>(R.id.textInputLayout18).setError(getString(R.string.campo_obrigatorio))
+                    //time0.setBackgroundColor(Color.parseColor("#FF8282"))
+                }
+                if (dateVal.length() == 0){
+                    findViewById<TextInputLayout>(R.id.textInputLayout21).setError(getString(R.string.campo_obrigatorio))
+                    //dateVal.setBackgroundColor(Color.parseColor("#FF8282"))
+                }
+                if (lote.length() == 0){
+                    findViewById<TextInputLayout>(R.id.textInputLayout20).setError(getString(R.string.campo_obrigatorio))
+                }
+                if ((spinnerID.text == "")){
+                    findViewById<TextInputLayout>(R.id.viewSpinner).setError(getString(R.string.campo_obrigatorio))}
+                }
+
+
         }
 
 
     }
+    fun setTotal(){
+        val spinner: Int
+        val cxAvulsa = findViewById<TextView>(R.id.caixasAvulsas)
+        val qtdAvulsa = findViewById<TextView>(R.id.qtdAvulsas)
+        var viewTotal = findViewById<TextView>(R.id.total)
 
+        var valueCxAvulsa = "0"
+        var valueQtAvulsa = "0"
+
+        var pilha: EditText = findViewById(R.id.finalResult)
+        var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
+
+        //spinnerPrd = findViewById<AutoCompleteTextView>(R.id.spinnerPrd)
+        var qeProduto = findViewById<EditText>(R.id.editTextEmbalagemCaixa)
+
+        if (cxAvulsa.text.length == 0){
+            valueCxAvulsa = "0"
+        }else if (cxAvulsa.text.length > 0){
+            valueCxAvulsa = "${cxAvulsa.text}"
+        }
+        if (qtdAvulsa.text.length == 0){
+            valueQtAvulsa = "0"
+        }else if (qtdAvulsa.text.length > 0){
+            valueQtAvulsa = "${qtdAvulsa.text}"
+        }
+
+        if ((qeProduto.length() > 0) && ((tipoID.text == "0") or (tipoID.text == "1"))){
+            if (tipoID.text == "0") {
+                spinner = 10
+                var total = (parseInt(qeProduto.text.toString()) * spinner * parseInt(pilha.text.toString())) + parseInt(valueQtAvulsa.toString()) + (parseInt(valueCxAvulsa.toString()) * parseInt(qeProduto.text.toString()))
+                Log.d("Debug campo total", "$total")
+                viewTotal.text = total.toString()
+            }
+            else if (tipoID.text == "1"){
+                spinner = 54
+                var total = (parseInt(qeProduto.text.toString()) * spinner * parseInt(pilha.text.toString())) + parseInt(valueQtAvulsa.toString()) + ((parseInt(valueCxAvulsa.toString()) * parseInt(qeProduto.text.toString())))
+                Log.d("Debug campo total", "$total")
+                viewTotal.text = total.toString()
+            }
+
+        }
+    }
+
+
+
+
+
+    fun setOrRefreshSpinner() {
+        var spinnerID = findViewById<TextView>(R.id.spinnerIdSaver)
+        var idintern: Int
+        cursor = db.getProdutos()
+        var t = 1
+        var cursorArray = ArrayList<Any>()
+        while (cursor!!.moveToNext()) {
+            cursorArray.add(cursor!!.getString(1))
+        }
+        var spinnerPrd: AutoCompleteTextView = findViewById(R.id.spinnerPrd)
+        val DESC_PROD = "descProduto"
+        var simpleCursorAdapter =
+            ArrayAdapter<Any>(this, android.R.layout.simple_dropdown_item_1line, cursorArray)
+        spinnerPrd.setAdapter(simpleCursorAdapter) //spinner recebe os dados para exibição
+
+        //ao selecionar um item
+        spinnerPrd.onItemClickListener =
+            AdapterView.OnItemClickListener { p0, view, position, _id ->
+                if (view?.context != null) {
+                    spinnerID.text = _id.toInt().toString()
+                    id = _id.toInt()
+                    overrideDataBlock(id) //inicia metodo passando o id do item selecionado
+                    setTotal()
+                }
+
+            }
+
+    }
 
 
     //Insere dados no Spinner
-    fun setOrRefreshSpinner() {
+    /*fun setOrRefreshSpinner() {
         cursor = db.getProdutos()
         val DESC_PROD = "descProduto"
         if (simpleCursorAdapter == null) {
@@ -266,6 +518,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 intArrayOf(android.R.id.text1),
                 0
             )
+            spinner.adapter = simpleCursorAdapter //spinner recebe os dados para exibição
             spinner.adapter = simpleCursorAdapter //spinner recebe os dados para exibição
 
             //ao selecionar um item
@@ -310,11 +563,10 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         if (!cursor!!.isClosed) {
             cursor!!.close()
         }
-    }
-
+    }*/
 
     fun overrideDataBlock(id: Int) {
-        var qeProduto: String //findViewById<EditText>(R.id.editTextEmbalagemCaixa)
+
         var validProduto: Int = 0
         var tipoVProduto: String = ""
         var diasValidade: Int = 0
@@ -338,8 +590,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         if (lote2.length <= 4) {
             loteF = "0${lote2}"
         } else {
-            loteF = lote2
-        }
+            loteF = lote2}
         findViewById<EditText>(R.id.editTextLote).setText(loteF)
 
 
@@ -355,6 +606,8 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("${cursor2!!.getInt(1)}")
             validProduto = cursor2!!.getInt(2)
             tipoVProduto = cursor2!!.getString(3).toString()
+            findViewById<TextView>(R.id.validProdutoSaver).apply { text = validProduto.toString() }
+            findViewById<TextView>(R.id.tipoVProdutoSaver).apply { text = tipoVProduto }
         }
 
 
@@ -386,9 +639,23 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         }
     }
 
-    //método do botão de voltar da Action Bar
+    override fun onBackPressed() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Parece que você está tentando sair...")
+            .setMessage("Ao sair desta tela usando o botão voltar, todas as informações preenchidas serão perdidas. \nDeseja sair mesmo assim?")
+            .setNegativeButton("Cancelar") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("Sair mesmo assim") { dialog, which ->
+                super.onBackPressed()
+                Animatoo.animateSlideRight(this);
+            }
+            .show()
+    }
+    /* When the activity is destroyed then close the cursor as it will not be used again */
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        Animatoo.animateSlideRight(this);
         return true
     }
 }

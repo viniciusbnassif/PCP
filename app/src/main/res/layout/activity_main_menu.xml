@@ -7,11 +7,56 @@
     tools:context=".MainMenu">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/saudacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Bem-vindo"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/apEmbalados"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+
+    <Button
+        android:id="@+id/apEmbalados"
+        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
+        android:layout_width="0dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="8dp"
+        android:text="Apontar produtos embalados"
+        android:textSize="20sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/apPerdas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saudacao" />
+
+    <Button
+        android:id="@+id/apPerdas"
+        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
+        android:layout_width="0dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="8dp"
+        android:text="Apontar perdas de produtos"
+        android:textSize="20sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apEmbalados" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
