@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.util.Log
+import androidx.core.database.getIntOrNull
 import com.liderMinas.PCP.SQLiteHelper
 import kotlinx.coroutines.*
 import okhttp3.FormBody
@@ -94,16 +95,16 @@ fun connect(): java.sql.Connection? {
     lateinit var c : Connection
     try {
         c = DriverManager.getConnection(url, user, password)// <---------
-        c.autoCommit = false
         return Connection(c)
         Log.d("Debug", "Connected")
     } catch (e: ClassNotFoundException){
         e.printStackTrace();
         Log.d("Connection State:", "${e}, ERRO Class")
+        return null
     }catch (e: SQLException) {
         e.printStackTrace();
         Log.d("Connection State:", "${e}, ERRO SQL")
-
+        return null
     }
     return null
 }
@@ -177,33 +178,57 @@ fun queryMotivoExt(context: Context) {
     }
 }
 
-fun queryExternalServerAE(context: Context){
+fun queryExternalServerAE(context: Context) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
-    var query = "SELECT qtdApontada, tipoUnitizador, dataHoraApontamento," +
-            " lote, caixaAvulsa, unidadeAvulsa, validade, total, idProduto, qeProduto, validProduto, tipoVProduto, username" +
-            " FROM ApontEmbalado WHERE statusSync = 0 ORDER BY idApontEmbalado ASC"
-    var result = dbIntrn.getDetailAE()
-    connect().use {
-        var st1 = it?.createStatement()!!
-        var t = 0
-        if (result.moveToFirst() != null) {
-            result.moveToFirst()
-                while (!result.isAfterLast()) {
-                    st1.executeQuery(
-                        """
-                        INSERT INTO ApontEmbalado 
-                        (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, statusSync, idProduto, qeProduto, validProduto, tipoVProduto, username)
-                        VALUES
-                        (${result.getInt(1)}, '${result.getString(2)}', '${result.getString(3)}', ${result.getInt(4)},
-                         ${result.getInt(5)}, ${result.getInt(6)}, ${result.getString(7)}, ${result.getInt(8)}, 
-                         ${result.getInt(9)}, ${result.getInt(10)}, ${result.getInt(11)}, ${result.getInt(12)}, ${result.getString(13)}, ${result.getString(14)})
-                        """.trimIndent()
-                    )
-                    result.moveToNext()
-            }
 
+    var result = dbIntrn.getAE()
+    var localResult = result
+
+    connect().use {
+
+        var st1 = it?.createStatement()!!
+            if (localResult != null) {
+                localResult.moveToFirst()
+                do {
+
+                    var produto = dbIntrn.getDescProdutos(localResult.getInt(9))
+                    var produtoDesc = produto!!.getString(1)
+                    Log.d("ProdDesc", "$produtoDesc")
+                    try {
+
+                        var insert = (
+                            """
+                            INSERT INTO ApontEmbalado 
+                            (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, produto, qeProduto, validProduto, tipoVProduto, username)
+                            VALUES
+                            (${localResult.getInt(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', ${localResult.getInt(4)},
+                             ${localResult.getInt(5)}, ${localResult.getInt(6)}, '${localResult.getString(7)}', ${localResult.getInt(8)},
+                             '${produtoDesc}', ${localResult.getInt(10)}, ${localResult.getInt(11)}, '${localResult.getString(12)}', 
+                             '${localResult.getString(13)}');
+                            """.trimIndent())
+                        Log.d("Debugggggg", insert)
+
+                        var comm = st1.connection.prepareStatement(insert)
+                        comm.executeUpdate()
+                        //comm.connection.commit()
+                    } catch (e: ClassNotFoundException){
+                        Log.e("Error SQL CNFE", e.toString())
+                    }
+                    catch (se: SQLException){
+                        Log.e("Error SQLE", se.toString())
+                    }
+
+                    //result.moveToNext()
+                }while (localResult.moveToNext())
+
+
+            } else {
+                Log.d("Debug", "Erro ;-;")
+
+            }
+        st1.close()
+        connect()?.close()
         }
-    }
 }
 
 
@@ -211,43 +236,8 @@ fun queryExternalServerAE(context: Context){
 
 
 
-    /*val st2 = it?.prepareStatement(
-        """
-            SELECT a, b
-              FROM table_name
-             WHERE value = 5
-               AND filter_1 = ?
-               AND filter_2 = ?
-             ORDER BY id
-            """.trimIndent()
-    )
-    st2.setLong(1, 1L)
-    st2.setString(2, "text")
-    resultSet2 = st2.executeQuery()
-    while (resultSet2.next()) {
-        val a = resultSet1.getLong("a")   // same as resultSet1.getLong(1)
-        val b = resultSet1.getString("b") // same as resultSet1.getString(2)
-        // process
-    }
-    resultSet2.close()
-    st2?.close()*/
 
 
-
-
-/*class query {
-    fun queryToServer2{
-        var connectionClass = connectMSSQL();
-        try {
-            var con = connectionClass.startConn();
-            var query = "INSERT INTO TableName(ColumnName) VALUES ('+text+') ";
-            var stmt: Statement = con.createStatement();
-            stmt.executeUpdate(query);
-        } catch (SQLException e) {
-            Log.e("ERROR", e.getMessage());
-        }
-    }
-}*/
 
 fun confirmUnPw(username: String, password: String): Int {
     // Create an OkHttpClient object

@@ -63,7 +63,6 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
         var qeProduto = findViewById<EditText>(R.id.editTextEmbalagemCaixa)
 
         db = SQLiteHelper(this)
-        queryProdutoExt(this)
 
         var valueCxAvulsa = "0"
         var valueQtAvulsa = "0"
@@ -373,6 +372,8 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
 
         val buttonFinalizar: FloatingActionButton = findViewById(R.id.startActivityApontamentoPerdas)
         buttonFinalizar.setOnClickListener {
+            var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
+
             if ((spinnerID.text != "")
                 && (lote.length() != 0)
                 && (pilha.length() != 0)
@@ -388,8 +389,8 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
                 var validadeProtheus = (validade[2] + validade[1] + validade[0]).toInt()
 
 
-                var finalQuery: String = "INSERT INTO ApontEmbalado (pilhaApontada, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, idProduto, qeProduto, validProduto, tipoVProduto, username, statusSync) " +
-                                         "VALUES (${pilha.text}, '${dtytime0}', ${Integer.parseInt(lote.text.toString())}, ${parseInt(cxAvulsa.text.toString())}, ${parseInt(qtdAvulsa.text.toString())}, ${validadeProtheus}, ${Integer.parseInt(findViewById<TextView>(R.id.total).text.toString())}, ${Integer.parseInt(spinnerID.text.toString())}," +
+                var finalQuery: String = "INSERT INTO ApontEmbalado (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, idProduto, qeProduto, validProduto, tipoVProduto, username, statusSync) " +
+                                         "VALUES (${pilha.text}, ${tipoID.text}, '${dtytime0}', ${Integer.parseInt(lote.text.toString())}, ${parseInt(cxAvulsa.text.toString())}, ${parseInt(qtdAvulsa.text.toString())}, ${validadeProtheus}, ${Integer.parseInt(findViewById<TextView>(R.id.total).text.toString())}, ${Integer.parseInt(spinnerID.text.toString())}," +
                                          " ${Integer.parseInt(qeProduto.text.toString())}, ${parseInt(findViewById<TextView>(R.id.validProdutoSaver).text.toString())}," +
                                          "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text.toString()}', '${username}', 0);"
                 db.externalExecSQL(finalQuery)

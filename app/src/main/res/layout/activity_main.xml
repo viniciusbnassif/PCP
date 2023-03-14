@@ -40,25 +40,35 @@
             android:layout_marginRight="20sp"
             android:orientation="vertical">
 
+            <Space
+                android:id="@+id/space1"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                app:layout_constraintBottom_toTopOf="@+id/viewUser"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/viewUser"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:autofillHints="username"
-                android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@id/viewPassword"
-                app:layout_constraintEnd_toStartOf="@+id/loginscreen_login"
-                app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextUsername"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/viewUser"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:hint="Nome de Usuário"
-                    android:inputType="textVisiblePassword"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:autofillHints="username"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@+id/space1"
+                    app:layout_constraintBottom_toTopOf="@id/viewPassword"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/loginscreen_login">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Nome de Usuário"
+                        android:inputType="textVisiblePassword"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/viewPassword"
@@ -116,11 +126,6 @@
                 android:text="Entrar"
                 app:icon="@drawable/ic_outline_login_24_white" /-->
 
-
-            <Space
-                android:id="@+id/space2"
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
 
             <ProgressBar
                 android:id="@+id/progress"

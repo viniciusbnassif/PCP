@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQuery
 import android.provider.BaseColumns
+import android.util.Log
 import com.liderMinas.PCP.database.ApontEmbaladoModel
 import com.liderMinas.PCP.database.ProdutoModelo
 import com.liderMinas.PCP.database.queryProdutoExt
@@ -113,12 +114,12 @@ class SQLiteHelper(context: Context?):
                     UNID_AE + " INTEGER NOT NULL," +
                     VALID_AE + " VARCHAR(8) NOT NULL," +
                     TOTAL + " INTEGER NOT NULL," +
+                    STATUS_SYNC_AE + " INTEGER NOT NULL," +
                     ID_PRODUTO + " INTEGER NOT NULL," +
                     QE_PROD + " INTEGER NOT NULL," +
                     VALID_PROD + " INTEGER NOT NULL," +
                     TIPOV_PROD + " VARCHAR(1) NOT NULL," +
                     USERNAME + " VARCHAR(64) NOT NULL," +
-                    STATUS_SYNC_AE + " INTEGER NOT NULL," +
                     "FOREIGN KEY("+ ID_PRODUTO +") REFERENCES "+TBL_PRODUTO+" ("+ ID_PRODUTO +")," +
                     "FOREIGN KEY("+ QE_PROD +") REFERENCES "+TBL_PRODUTO+" ("+ QE_PROD +")," +
                     "FOREIGN KEY("+ VALID_PROD +") REFERENCES "+TBL_PRODUTO+" ("+ VALID_PROD +")," +
@@ -129,7 +130,7 @@ class SQLiteHelper(context: Context?):
                     "CREATE TABLE "+ TBL_APONTPERDA +" (" +
                     ID_AP +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                     QTD_AP +" FLOAT," +
-                    UN_AP + " TEXT," +
+                    UN_AP + " VARCHAR(2)," +
                     DATA_AP +" VARCHAR(13)," +
                     USERNAME +" VARCHAR(64) NOT NULL," +
                     ID_PRODUTO +" INTEGER NOT NULL," +
@@ -169,9 +170,64 @@ class SQLiteHelper(context: Context?):
         /*fun externalExecSQLSelect(query: String): Unit? {
             var resultSelect = ArrayList<String>()
             val db = this.writableDatabase
-            //var result = db?.rawQuery(query,)
+            var result = db?.(query)
+            Log.d("Debug", "Resultado ExtExecSQLSelect = ${result}")
             return result
         }*/
+        fun externalExecSQLSelect(username: String, pw: String): Boolean {
+            var checked = false
+            var result = db.query(
+                "Usuario",
+                arrayOf("username",
+                    "password",
+                    /*QE_PROD,
+                    VALID_PROD,
+                    TIPOV_PROD*/
+                ),
+                "username = '$username' AND password = '$pw'"/* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                null /* GROUP BY clause, null if no GROUP BY clause */,
+                null /* HAVING CLAUSE, null if no HAVING clause */,
+                null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+            )
+            if (result.moveToFirst() == true) {
+                checked = true
+                Log.d("Debug", "Result $result")
+                var gg = result
+                return checked
+            }else{
+                return checked
+            }
+
+        }
+
+        fun getAllApontEmbalado(): Cursor {
+            var checked = false
+            var result = db.query(
+                "$TBL_APONTEMBALADO",
+                arrayOf("$ID_AE AS ${BaseColumns._ID}",
+                    "$QTD_AE",
+                    "$TIPO_AE",
+                    "$DATA_AE",
+                    "$LOTE_AE",
+                    "$CAIXA_AE",
+                    "$UNID_AE",
+                    "$VALID_AE",
+                    "$TOTAL",
+                    "$ID_PRODUTO",
+                    "$QE_PROD",
+                    "$VALID_PROD",
+                    "$TIPOV_PROD",
+                    "$USERNAME"
+                ),
+                "$STATUS_SYNC_AE = 0"/* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                null /* GROUP BY clause, null if no GROUP BY clause */,
+                null /* HAVING CLAUSE, null if no HAVING clause */,
+                null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+            )
+            return result
+        }
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
 
@@ -246,7 +302,8 @@ class SQLiteHelper(context: Context?):
                 arrayOf("$ID_PRODUTO AS ${BaseColumns._ID}",
                     QE_PROD,
                     VALID_PROD,
-                    TIPOV_PROD
+                    TIPOV_PROD,
+                    DESC_PROD
                 ),
                 "idProduto = $idPrd" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
                 null /* arguments to replace ? place holder in the WHERE clause, null if none */,
@@ -255,15 +312,49 @@ class SQLiteHelper(context: Context?):
                 null /* ORDER BY clause products will be shown alphabetically a->z*/
             )
         }
+
+        fun getDescProdutos(idPrd: Int): Cursor? {
+            var cursor = db.query(
+                TBL_PRODUTO,
+                arrayOf("$ID_PRODUTO AS ${BaseColumns._ID}",
+                    DESC_PROD,
+                ),
+                "idProduto = $idPrd" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                null /* GROUP BY clause, null if no GROUP BY clause */,
+                null /* HAVING CLAUSE, null if no HAVING clause */,
+                null /* ORDER BY clause products will be shown alphabetically a->z*/
+            )
+
+            if (cursor == null || !cursor.moveToFirst()) {
+                return null
+            }
+            return cursor
+
+        }
         @SuppressLint("Range")
-        fun getAE(): MutableList<ApontEmbaladoModel> {
+        fun getAE(): Cursor? {
             val aE: MutableList<ApontEmbaladoModel> = ArrayList()
             val selectQuery =
-                "SELECT $ID_AE, $QTD_AE, $TIPO_AE, $DATA_AE, $LOTE_AE, $CAIXA_AE, $UNID_AE, $VALID_AE, $TOTAL, " +
-                        "$ID_PRODUTO, $QE_PROD, $VALID_PROD, $TIPOV_PROD, $USERNAME, $STATUS_SYNC_AE FROM $TBL_APONTEMBALADO WHERE $STATUS_SYNC_AE = 0 ORDER BY $ID_AE ASC;"
+                "SELECT $ID_AE, " +
+                        "$QTD_AE, " +
+                        "$TIPO_AE, " +
+                        "$DATA_AE," +
+                        "$LOTE_AE, " +
+                        "$CAIXA_AE, " +
+                        "$UNID_AE, " +
+                        "$VALID_AE, " +
+                        "$TOTAL, " +
+                        "$ID_PRODUTO, " +
+                        "$QE_PROD, " +
+                        "$VALID_PROD, " +
+                        "$TIPOV_PROD, " +
+                        "$USERNAME, " +
+                        "$STATUS_SYNC_AE " +
+                        "FROM $TBL_APONTEMBALADO WHERE $STATUS_SYNC_AE = 0;"
             val result = db.rawQuery(selectQuery, null)
 
-            while (result.moveToNext()) {
+            /*while (result.moveToNext()) {
                 aE.add(
                     ApontEmbaladoModel(
                         result.getInt(result.getColumnIndex(ID_AE)),
@@ -283,9 +374,9 @@ class SQLiteHelper(context: Context?):
                         result.getString(result.getColumnIndex(USERNAME)),
                     )
                 )
-            }
-            result.close()
-            return aE
+            */
+            //result.close()
+            return result
         }
 
         fun getDetailAE(): Cursor {

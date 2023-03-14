@@ -99,8 +99,6 @@ class ApontamentoPerdas : AppCompatActivity() {
 
         var produtoSpinner = findViewById<AutoCompleteTextView>(R.id.produto)
 
-        queryMotivoExt(this)
-
         db = SQLiteHelper(this)
 
         // calling the action bar

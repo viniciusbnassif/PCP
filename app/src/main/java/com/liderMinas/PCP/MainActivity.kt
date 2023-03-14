@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.*
+import kotlinx.coroutines.delay
 
 
 //import com.liderMinas.PCP.database.connectMSSQL
@@ -76,8 +78,6 @@ class MainActivity : AppCompatActivity() {
         var elementsOnLogin = findViewById<LinearLayout>(R.id.elementsOnLogin)
 
         fun authUser() {
-
-
             var validation = confirmUnPw(user.text.toString(), pw.text.toString())
             if (validation == 201) {
                 Snackbar.make(
@@ -85,9 +85,9 @@ class MainActivity : AppCompatActivity() {
                     "Usuário autenticado \nAtualizando tabelas...",
                     Snackbar.LENGTH_LONG
                 ).show()
-                query = "DELETE FROM Usuario WHERE username = '${user}'"
+                query = "DELETE FROM Usuario WHERE username = '${user.text}'"
                 db.externalExecSQL(query)
-                query = "INSERT INTO Usuario(username, password) VALUES ('${user}', '${pw}')"
+                query = "INSERT INTO Usuario(username, password) VALUES ('${user.text}', '${pw.text}')"
                 db.externalExecSQL(query)
                 queryProdutoExt(this)
                 queryMotivoExt(this)
@@ -98,8 +98,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(mainMenu)
                 finish()
 
-
             } else if (validation == 401) {
+
                 userView.setError(" ")
                 pwView.setError("Nome de usuário ou senha incorretos")
                 pw.setText("")
@@ -110,13 +110,29 @@ class MainActivity : AppCompatActivity() {
                 ).show()
                 progress.setVisibility(INVISIBLE)
             } else if (validation == 901 || validation == 900) {
-                Snackbar.make(
-                    elementsOnLogin,
-                    "Não foi possivel conectar ao servidor. Verifique as configurações de rede e tente novamente.",
-                    Snackbar.LENGTH_LONG
-                ).setAction("Abrir Configurações") {
-                    startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
-                }.show()
+                query = "SELECT username FROM Usuario WHERE username = '${user.text}' AND password = '${pw.text}'"
+                var auth = db.externalExecSQLSelect(user.text.toString(), pw.text.toString())
+                //Log.d("Debug", "Cursor = $cursor")
+                if (auth == true) {
+                    /*queryProdutoExt(this)
+                    queryMotivoExt(this)*/
+
+                    var username = user.text.toString()
+                    var mainMenu = Intent(this, MainMenu::class.java).apply {
+                        putExtra(EXTRA_MESSAGE, username)}
+                    startActivity(mainMenu)
+                    finish()
+                }
+                else {
+                    Snackbar.make(
+                        elementsOnLogin,
+                        "Não foi possivel conectar ao servidor. Verifique as configurações de rede e tente novamente.",
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Abrir Configurações") {
+                        startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+                    }.show()
+                }
+
                 progress.setVisibility(INVISIBLE)
             }
         }
