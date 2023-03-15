@@ -5,9 +5,7 @@ import android.content.Context
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.util.Log
-import androidx.core.database.getIntOrNull
 import com.liderMinas.PCP.SQLiteHelper
-import kotlinx.coroutines.*
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -113,7 +111,7 @@ fun main(args: Array<String>) {
     //queryProdutoExt()
 }
 
-fun queryProdutoExt(context: Context) {
+fun queryProdutoExt(context: Context?) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
     connect().use {
         var st1 = it?.createStatement()!!
@@ -184,53 +182,110 @@ fun queryExternalServerAE(context: Context) {
     var result = dbIntrn.getAE()
     var localResult = result
 
+
     connect().use {
 
         var st1 = it?.createStatement()!!
-            if (localResult != null) {
-                localResult.moveToFirst()
-                do {
+        if (localResult != null && localResult.getCount() > 0) {
+            localResult.moveToFirst()
+            do {
+                var id = localResult.getInt(0)
 
-                    var produto = dbIntrn.getDescProdutos(localResult.getInt(9))
-                    var produtoDesc = produto!!.getString(1)
-                    Log.d("ProdDesc", "$produtoDesc")
-                    try {
+                var produto = dbIntrn.getDescProdutos(localResult.getInt(9))
+                var produtoDesc = produto!!.getString(1)
+                Log.d("ProdDesc", "$produtoDesc")
+                try {
 
-                        var insert = (
-                            """
-                            INSERT INTO ApontEmbalado 
-                            (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, produto, qeProduto, validProduto, tipoVProduto, username)
-                            VALUES
-                            (${localResult.getInt(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', ${localResult.getInt(4)},
-                             ${localResult.getInt(5)}, ${localResult.getInt(6)}, '${localResult.getString(7)}', ${localResult.getInt(8)},
-                             '${produtoDesc}', ${localResult.getInt(10)}, ${localResult.getInt(11)}, '${localResult.getString(12)}', 
-                             '${localResult.getString(13)}');
-                            """.trimIndent())
-                        Log.d("Debugggggg", insert)
+                    var insert = (
+                        """
+                        INSERT INTO ApontEmbalado 
+                        (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, produto, qeProduto, validProduto, tipoVProduto, username)
+                        VALUES
+                        (${localResult.getInt(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', ${localResult.getInt(4)},
+                         ${localResult.getInt(5)}, ${localResult.getInt(6)}, '${localResult.getString(7)}', ${localResult.getInt(8)},
+                         '${produtoDesc}', ${localResult.getInt(10)}, ${localResult.getInt(11)}, '${localResult.getString(12)}', 
+                         '${localResult.getString(13)}');
+                        """.trimIndent())
+                    Log.d("Debugggggg", insert)
 
-                        var comm = st1.connection.prepareStatement(insert)
-                        comm.executeUpdate()
-                        //comm.connection.commit()
-                    } catch (e: ClassNotFoundException){
-                        Log.e("Error SQL CNFE", e.toString())
-                    }
-                    catch (se: SQLException){
-                        Log.e("Error SQLE", se.toString())
-                    }
+                    var comm = st1.connection.prepareStatement(insert)
+                    comm.executeUpdate()
+                    //comm.connection.commit()
+                } catch (e: ClassNotFoundException){
+                    Log.e("Error SQL CNFE", e.toString())
+                }
+                catch (se: SQLException){
+                    Log.e("Error SQLE", se.toString())
+                }
+                dbIntrn.insertDone("ApontEmbalado", id)
 
-                    //result.moveToNext()
-                }while (localResult.moveToNext())
+                //result.moveToNext()
+            }while (localResult.moveToNext())
 
 
-            } else {
-                Log.d("Debug", "Erro ;-;")
-
-            }
+        }
         st1.close()
         connect()?.close()
         }
 }
 
+fun queryExternalServerAP(context: Context) {
+    var dbIntrn: SQLiteHelper = SQLiteHelper(context)
+
+    var result = dbIntrn.getAP()
+    var localResult = result
+
+
+    connect().use {
+
+        var st1 = it?.createStatement()!!
+        if (localResult != null && localResult.getCount() > 0) {
+            localResult.moveToFirst()
+            var id = localResult?.getInt(0)
+            do {
+
+                var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
+                var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
+                var produtoDesc = produto!!.getString(1)
+                var motivoDesc = motivo!!.getString(1)
+                Log.d("ProdDesc", "$produtoDesc")
+                try {
+
+                    var insert = (
+                            """
+                            INSERT INTO ApontPerda 
+                            (qtdPerda, unidPerda, dataHoraPerda, username, produto, motivo)
+                            VALUES
+                            (${localResult.getInt(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', '${localResult.getString(4)}',
+                             '${produtoDesc}', '${motivoDesc}');
+                            """.trimIndent())
+                    Log.d("Debugggggg", insert)
+
+                    var comm = st1.connection.prepareStatement(insert)
+                    comm.executeUpdate()
+
+
+                    //comm.connection.commit()
+                } catch (e: ClassNotFoundException){
+                    Log.e("Error SQL CNFE", e.toString())
+                }
+                catch (se: SQLException){
+                    Log.e("Error SQLE", se.toString())
+                }
+                dbIntrn.insertDone("ApontEmbalado", id)
+
+                //result.moveToNext()
+            }while (localResult.moveToNext())
+
+
+        } else {
+            Log.d("Debug", "Erro ;-;")
+
+        }
+        st1.close()
+        connect()?.close()
+    }
+}
 
 
 

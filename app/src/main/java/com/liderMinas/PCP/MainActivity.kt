@@ -1,24 +1,22 @@
 package com.liderMinas.PCP
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.inputmethod.EditorInfo
 import android.widget.*
-import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.api.Context
 import com.liderMinas.PCP.database.*
-import kotlinx.coroutines.delay
+import com.liderMinas.PCP.database.Sync
 
 
 //import com.liderMinas.PCP.database.connectMSSQL
@@ -29,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         SQLiteHelper(this);
         var db = SQLiteHelper(this)
+
+        var sync = Sync()
 
 
 
@@ -43,10 +43,6 @@ class MainActivity : AppCompatActivity() {
         progress.setVisibility(INVISIBLE)
 
 
-        var teste = findViewById<Button>(R.id.teste)
-        teste.setOnClickListener(){
-            queryExternalServerAE(this)
-        }
 
 
 
@@ -77,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         var elementsOnLogin = findViewById<LinearLayout>(R.id.elementsOnLogin)
 
-        fun authUser() {
+        fun authUser(ctxt: android.content.Context) {
             var validation = confirmUnPw(user.text.toString(), pw.text.toString())
             if (validation == 201) {
                 Snackbar.make(
@@ -89,13 +85,14 @@ class MainActivity : AppCompatActivity() {
                 db.externalExecSQL(query)
                 query = "INSERT INTO Usuario(username, password) VALUES ('${user.text}', '${pw.text}')"
                 db.externalExecSQL(query)
-                queryProdutoExt(this)
-                queryMotivoExt(this)
+                sync.sync(0, ctxt)
 
                 var username = user.text.toString()
                 var mainMenu = Intent(this, MainMenu::class.java).apply {
                     putExtra(EXTRA_MESSAGE, username)}
                 startActivity(mainMenu)
+
+
                 finish()
 
             } else if (validation == 401) {
@@ -114,8 +111,7 @@ class MainActivity : AppCompatActivity() {
                 var auth = db.externalExecSQLSelect(user.text.toString(), pw.text.toString())
                 //Log.d("Debug", "Cursor = $cursor")
                 if (auth == true) {
-                    /*queryProdutoExt(this)
-                    queryMotivoExt(this)*/
+                    sync.sync(0, ctxt)
 
                     var username = user.text.toString()
                     var mainMenu = Intent(this, MainMenu::class.java).apply {
@@ -141,78 +137,22 @@ class MainActivity : AppCompatActivity() {
 
         pw.setOnEditorActionListener{ v, actionId, event ->
             progress.setVisibility(VISIBLE)
-            authUser()
+            authUser(this)
             true
         }
 
         val button: Button = findViewById(R.id.loginscreen_login)
         button.setOnClickListener {
             progress.setVisibility(VISIBLE)
-            authUser()
+            authUser(this)
         }
 
-
-            //Variaveis testadas e funcionando
-            //Por aqui o que vai faltar é comparar os dados
-            // com o banco de dados para liberar ou negar o acesso
-
-
-
-            /*
-
-
-            val conn =
-                "Select *NOME DE USUARIO*, *SENHA* from *NOME DA TABELA DE LOGINS* WHERE *NOME DE USUARIO* = '${user}' AND *SENHA* = '${pw}';";
-            */
-            //databaseLogin(user, pw)
-
-
-            /*if (DBHelper.$queryResult.length == 0){
-                val mySnackbar = Snackbar.make(R.id.elementsOnLogin, "Login ou senha incorretos", 5000)
-                mySnackbar.show()
-                Snackbar.make(
-                    findViewById(R.id.elementsOnLogin),
-                    "Login ou senha incorretos",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-
-            elif databaseLogin()
-
-             */
-
-            /* val builder = AlertDialog.Builder(this)
-            builder.setTitle("Androidly Alert")
-            builder.setMessage("We have a message")
-
-
-            builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                Toast.makeText(applicationContext,
-                    android.R.string.yes, Toast.LENGTH_SHORT).show()
-            }
-
-            builder.setNegativeButton(android.R.string.no) { dialog, which ->
-                Toast.makeText(applicationContext,
-                    android.R.string.no, Toast.LENGTH_SHORT).show()
-            }
-
-            builder.setNeutralButton("Maybe") { dialog, which ->
-                Toast.makeText(applicationContext,
-                    user, Toast.LENGTH_SHORT).show()
-            }
-            builder.show() */
-
-
-
     }
 
-    private fun setContentView(versionView: TextView?, version: String) {
-
-    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
+        menuInflater.inflate(R.menu.main_actv, menu)
         return true
     }
     var versionCode = BuildConfig.VERSION_CODE
@@ -224,7 +164,12 @@ class MainActivity : AppCompatActivity() {
             // User chose the "Settings" item, show the app settings UI...
 
             Toast.makeText(applicationContext,
-                "Versão: $versionName. Revisão: $versionCode", Toast.LENGTH_SHORT).show()
+                "Versão: $versionName.", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        R.id.closeApp -> {
+            finish()
             true
         }
 

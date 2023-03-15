@@ -24,7 +24,7 @@ import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt
 import java.util.*
 import androidx.activity.addCallback
-
+import com.liderMinas.PCP.database.Sync
 
 
 class ApontamentoPerdas : AppCompatActivity() {
@@ -673,6 +673,8 @@ class ApontamentoPerdas : AppCompatActivity() {
 
         fun finalizarPerda(option: Int){
 
+            var sync = Sync()
+
             var unit1: String
             var unit2: String
             var unit3: String
@@ -712,9 +714,9 @@ class ApontamentoPerdas : AppCompatActivity() {
                     "un"
                 }
                 var query =
-                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo)" +
+                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo, statusSync)" +
                             "VALUES (${parseFloat(qtdPerda1.text.toString())}, '${unit1}', '${timeProtheus}', '${username}'," +
-                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID1.text.toString())} );"
+                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID1.text.toString())}, 0 );"
                 db.externalExecSQL(query)
             }
             if (stats2.contentDescription == "success") {
@@ -724,9 +726,9 @@ class ApontamentoPerdas : AppCompatActivity() {
                 }
 
                 var query =
-                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo)" +
+                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo, statusSync)" +
                             "VALUES (${parseFloat(qtdPerda2.text.toString())}, '${unit2}', '${timeProtheus}', '${username}'," +
-                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID2.text.toString())} );"
+                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID2.text.toString())}, 0);"
                 db.externalExecSQL(query)
             }
             if (stats3.contentDescription == "success") {
@@ -748,9 +750,9 @@ class ApontamentoPerdas : AppCompatActivity() {
                 }
 
                 var query =
-                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo)" +
+                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo, statusSync)" +
                             "VALUES (${parseFloat(qtdPerda4.text.toString())}, '${unit4}', '${timeProtheus}', '${username}'," +
-                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID4.text.toString())} );"
+                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID4.text.toString())}, 0);"
                 db.externalExecSQL(query)
             }
             if (stats5.contentDescription == "success") {
@@ -760,9 +762,9 @@ class ApontamentoPerdas : AppCompatActivity() {
                 }
 
                 var query =
-                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo)" +
+                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo, statusSync)" +
                             "VALUES (${parseFloat(qtdPerda5.text.toString())}, '${unit5}', '${timeProtheus}', '${username}'," +
-                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID5.text.toString())} );"
+                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID5.text.toString())}, 0 );"
                 db.externalExecSQL(query)
             }
             if (stats6.contentDescription == "success") {
@@ -772,13 +774,14 @@ class ApontamentoPerdas : AppCompatActivity() {
                 }
 
                 var query =
-                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo)" +
+                    "INSERT INTO ApontPerda (qtdPerda, unidPerda, dataHoraPerda, username, idProduto, idMotivo, statusSync)" +
                             "VALUES (${parseFloat(qtdPerda6.text.toString())}, '${unit6}', '${timeProtheus}', '${username}'," +
-                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID6.text.toString())} );"
+                            "${parseInt(produtoID.text.toString())}, ${parseInt(motivoID6.text.toString())}, 0);"
                 db.externalExecSQL(query)
             }
             if (option == 2){
                 Toast.makeText(this, "Perdas salvas", Toast.LENGTH_LONG).show()
+                sync.sync(1, this)
                 finish()
                 return
             }
@@ -793,8 +796,8 @@ class ApontamentoPerdas : AppCompatActivity() {
                 clearPerda(6)
                 timeProtheus = updateTime().toString()
                 Snackbar.make(appBottomBar, "Perdas salvas", Snackbar.LENGTH_LONG).show()
+                sync.sync(1, this)
             }
-
         }
 
 

@@ -24,6 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.liderMinas.PCP.database.Sync
 import com.liderMinas.PCP.database.queryProdutoExt
 import java.lang.Integer.parseInt
 import java.text.*
@@ -317,7 +318,6 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
             true
         }
 
-
         //Subtrair valor do campo pilha quando clicar ou segurar o botão -
         val minusRtn: Button = findViewById(R.id.minusBtn)
         minusRtn.setOnClickListener {
@@ -364,14 +364,9 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
             true
         }
 
-
-
-
-
-        val messageIntent = ""
-
         val buttonFinalizar: FloatingActionButton = findViewById(R.id.startActivityApontamentoPerdas)
         buttonFinalizar.setOnClickListener {
+            var sync = Sync()
             var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
 
             if ((spinnerID.text != "")
@@ -395,6 +390,7 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
                                          "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text.toString()}', '${username}', 0);"
                 db.externalExecSQL(finalQuery)
                 Toast.makeText(this, "${spinnerID.text}, ${spinner}", Toast.LENGTH_LONG).show()
+                sync.sync(1, this)
                 finish()
             } else{
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_LONG).show()
