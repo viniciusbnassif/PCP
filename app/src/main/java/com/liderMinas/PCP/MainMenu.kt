@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -14,26 +15,48 @@ import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.Toolbar
 import androidx.compose.ui.platform.InspectableModifier
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
 import org.w3c.dom.Text
 
 class MainMenu : AppCompatActivity() {
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
 
 
-        val toolbar = findViewById<Toolbar?>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.appBar)
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             // show back button on toolbar
             // on back button press, it will navigate to parent activity
-            setDisplayHomeAsUpEnabled(false)
+            setDisplayHomeAsUpEnabled(true)
             setDisplayShowCustomEnabled(false)
+
+        }
+        getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.ic_baseline_logout_24)
+
+
+
+        var cl = findViewById<ConstraintLayout>(R.id.CL)
+        var sync = Sync()
+
+        var syncBtn = findViewById<ExtendedFloatingActionButton>(R.id.syncBtn)
+        syncBtn.setOnClickListener{
+            Snackbar.make(
+                cl,
+                "Sincronizando...",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            sync.sync(0, this)
+
         }
 
         val username = intent.getStringExtra(EXTRA_MESSAGE)
@@ -64,35 +87,9 @@ class MainMenu : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        MaterialAlertDialogBuilder(this)
-            .setIcon(R.drawable.ic_baseline_logout_24_black)
-            .setTitle("Você escolheu sair...")
-            .setMessage("O aplicativo será encerrado e será necessário efetuar login novamente. \nDeseja sair mesmo assim?")
-            .setNeutralButton("Retornar ao menu principal") { dialog, which ->
-                dialog.dismiss()
-            }
-            .setNegativeButton("Fazer logout") { dialog, which ->
-                super.onBackPressed()
-                intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-
-            .setPositiveButton("Fechar app") { dialog, which ->
-                finish()
-            }
-            .show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-    var sync = Sync()
     //var btnSync = findViewById<MaterialButton>(R.id.syncBtn)
 
-    @SuppressLint("ResourceAsColor")
+    /*@SuppressLint("ResourceAsColor")
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
         R.id.syncBtn -> {
@@ -109,6 +106,29 @@ class MainMenu : AppCompatActivity() {
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }*/
+
+
+    /* When the activity is destroyed then close the cursor as it will not be used again */
+    override fun onBackPressed() {
+        MaterialAlertDialogBuilder(this)
+            .setIcon(R.drawable.ic_baseline_logout_24_black)
+            .setTitle("Você escolheu sair...")
+            .setMessage("O aplicativo será encerrado e será necessário efetuar login novamente. \nDeseja sair mesmo assim?")
+            .setNeutralButton("Permanecer no menu") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setNegativeButton("Fazer logout") { dialog, which ->
+                super.onBackPressed()
+                intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            .setPositiveButton("Fechar app") { dialog, which ->
+                finish()
+            }
+            .show()
     }
 
     /* When the activity is destroyed then close the cursor as it will not be used again */

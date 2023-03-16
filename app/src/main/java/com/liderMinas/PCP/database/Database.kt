@@ -178,7 +178,7 @@ class SQLiteHelper(context: Context?):
                 null /* HAVING CLAUSE, null if no HAVING clause */,
                 null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
             )
-            if (result.moveToFirst() == true) {
+            if (result != null && result.getCount() > 0) {
                 checked = true
                 Log.d("Debug", "Result $result")
                 var gg = result

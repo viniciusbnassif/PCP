@@ -363,7 +363,6 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
             }
             true
         }
-
         val buttonFinalizar: FloatingActionButton = findViewById(R.id.startActivityApontamentoPerdas)
         buttonFinalizar.setOnClickListener {
             var sync = Sync()
@@ -379,49 +378,69 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
                 && (username != null)
             ) {
 
+                var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
+
+                var tipoIDD: String
+                tipoIDD = (if (tipoID.text == "0") "Pilha" else "Pallet").toString()
+
                 "name, 2012, 2017".split(",").toTypedArray()
                 var validade = "${btnValidade.text}".split("/").toTypedArray()
                 var validadeProtheus = (validade[2] + validade[1] + validade[0]).toInt()
 
 
-                var finalQuery: String = "INSERT INTO ApontEmbalado (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, idProduto, qeProduto, validProduto, tipoVProduto, username, statusSync) " +
-                                         "VALUES (${pilha.text}, ${tipoID.text}, '${dtytime0}', ${Integer.parseInt(lote.text.toString())}, ${parseInt(cxAvulsa.text.toString())}, ${parseInt(qtdAvulsa.text.toString())}, ${validadeProtheus}, ${Integer.parseInt(findViewById<TextView>(R.id.total).text.toString())}, ${Integer.parseInt(spinnerID.text.toString())}," +
-                                         " ${Integer.parseInt(qeProduto.text.toString())}, ${parseInt(findViewById<TextView>(R.id.validProdutoSaver).text.toString())}," +
-                                         "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text.toString()}', '${username}', 0);"
+                var finalQuery: String =
+                    "INSERT INTO ApontEmbalado (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, idProduto, qeProduto, validProduto, tipoVProduto, username, statusSync) " +
+                            "VALUES ('${pilha.text}', '${tipoIDD}', '${dtytime0}', ${
+                                Integer.parseInt(
+                                    lote.text.toString()
+                                )
+                            }, ${parseInt(cxAvulsa.text.toString())}, ${parseInt(qtdAvulsa.text.toString())}, ${validadeProtheus}, ${
+                                Integer.parseInt(
+                                    findViewById<TextView>(R.id.total).text.toString()
+                                )
+                            }, ${Integer.parseInt(spinnerID.text.toString())}," +
+                            " ${Integer.parseInt(qeProduto.text.toString())}, ${
+                                parseInt(
+                                    findViewById<TextView>(R.id.validProdutoSaver).text.toString()
+                                )
+                            }," +
+                            "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text.toString()}', '${username}', 0);"
                 db.externalExecSQL(finalQuery)
-                Toast.makeText(this, "${spinnerID.text}, ${spinner}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Apontamento salvo", Toast.LENGTH_LONG).show()
                 sync.sync(1, this)
                 finish()
-            } else{
+            } else {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_LONG).show()
-                if (pilha.length() == 0){
+                if (pilha.length() == 0) {
                     pilha.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
-                if (qeProduto.length() == 0){
+                if (qeProduto.length() == 0) {
                     findViewById<TextInputLayout>(R.id.textInputLayout17).setError(getString(R.string.campo_obrigatorio))
                     //qeProduto.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
-                if (dty0.length() == 0){
+                if (dty0.length() == 0) {
                     findViewById<TextInputLayout>(R.id.textInputLayout19).setError(getString(R.string.campo_obrigatorio))
                     //dty0.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
-                if (time0.length() == 0){
+                if (time0.length() == 0) {
                     findViewById<TextInputLayout>(R.id.textInputLayout18).setError(getString(R.string.campo_obrigatorio))
                     //time0.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
-                if (dateVal.length() == 0){
+                if (dateVal.length() == 0) {
                     findViewById<TextInputLayout>(R.id.textInputLayout21).setError(getString(R.string.campo_obrigatorio))
                     //dateVal.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
-                if (lote.length() == 0){
+                if (lote.length() == 0) {
                     findViewById<TextInputLayout>(R.id.textInputLayout20).setError(getString(R.string.campo_obrigatorio))
                 }
-                if ((spinnerID.text == "")){
-                    findViewById<TextInputLayout>(R.id.viewSpinner).setError(getString(R.string.campo_obrigatorio))}
+                if ((spinnerID.text == "")) {
+                    findViewById<TextInputLayout>(R.id.viewSpinner).setError(getString(R.string.campo_obrigatorio))
                 }
-
-
+            }
         }
+
+
+
 
 
     }
@@ -501,66 +520,6 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
 
     }
 
-
-    //Insere dados no Spinner
-    /*fun setOrRefreshSpinner() {
-        cursor = db.getProdutos()
-        val DESC_PROD = "descProduto"
-        if (simpleCursorAdapter == null) {
-            simpleCursorAdapter = SimpleCursorAdapter(
-                this,
-                android.R.layout.select_dialog_item,
-                cursor,
-                arrayOf(DESC_PROD),
-                intArrayOf(android.R.id.text1),
-                0
-            )
-            spinner.adapter = simpleCursorAdapter //spinner recebe os dados para exibição
-            spinner.adapter = simpleCursorAdapter //spinner recebe os dados para exibição
-
-            //ao selecionar um item
-            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                @SuppressLint("Range")
-                override fun onItemSelected(
-                    p0: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    _id: Long
-                ) {
-                    if (view?.context != null) {
-                        id = _id.toInt()
-                        overrideDataBlock(id) //inicia metodo passando o id do item selecionado
-                        Toast.makeText(
-                            view.context,
-                            "Você selecionou ${
-                                cursor!!.getString(cursor!!.getColumnIndex("descProduto"))
-                            } com o código $_id", Toast.LENGTH_SHORT
-                        ).show()
-
-                    }
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-        } else {
-            /* if refreshing rather than setting up, then tell the adapter about the changed cursor */
-            simpleCursorAdapter!!.swapCursor(cursor)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setOrRefreshSpinner()
-    }
-
-    /* When the activity is destroyed then close the cursor as it will not be used again */
-    override fun onDestroy() {
-        super.onDestroy()
-        if (!cursor!!.isClosed) {
-            cursor!!.close()
-        }
-    }*/
 
     fun overrideDataBlock(id: Int) {
 

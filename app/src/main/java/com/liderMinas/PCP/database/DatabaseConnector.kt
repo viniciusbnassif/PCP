@@ -224,6 +224,12 @@ fun queryExternalServerAE(context: Context) {
 
 
         }
+        if (result != null) {
+            result.close()
+        }
+        if (localResult != null) {
+            localResult.close()
+        }
         st1.close()
         connect()?.close()
         }
@@ -241,8 +247,9 @@ fun queryExternalServerAP(context: Context) {
         var st1 = it?.createStatement()!!
         if (localResult != null && localResult.getCount() > 0) {
             localResult.moveToFirst()
-            var id = localResult?.getInt(0)
             do {
+
+                var id = localResult?.getInt(0)
 
                 var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
                 var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
@@ -256,7 +263,7 @@ fun queryExternalServerAP(context: Context) {
                             INSERT INTO ApontPerda 
                             (qtdPerda, unidPerda, dataHoraPerda, username, produto, motivo)
                             VALUES
-                            (${localResult.getInt(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', '${localResult.getString(4)}',
+                            (${localResult.getFloat(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', '${localResult.getString(4)}',
                              '${produtoDesc}', '${motivoDesc}');
                             """.trimIndent())
                     Log.d("Debugggggg", insert)
@@ -272,7 +279,7 @@ fun queryExternalServerAP(context: Context) {
                 catch (se: SQLException){
                     Log.e("Error SQLE", se.toString())
                 }
-                dbIntrn.insertDone("ApontEmbalado", id)
+                dbIntrn.insertDone("ApontPerda", id)
 
                 //result.moveToNext()
             }while (localResult.moveToNext())
