@@ -1,14 +1,17 @@
 package com.liderMinas.PCP
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.provider.Settings
+import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -16,16 +19,18 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.Toolbar
 import androidx.compose.ui.platform.InspectableModifier
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
 import org.w3c.dom.Text
 
 class MainMenu : AppCompatActivity() {
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint("ResourceAsColor", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
@@ -45,7 +50,20 @@ class MainMenu : AppCompatActivity() {
 
 
 
+        //var coordinator = findViewById<ConstraintLayout>(R.id.parent)
         var cl = findViewById<ConstraintLayout>(R.id.CL)
+
+        /*Snackbar.make(coordinator, "OIOIOIOIOI", Snackbar.LENGTH_INDEFINITE)
+            .setAction("TESTETESTETESTE"){
+
+            }
+            .show()*/
+
+
+
+
+
+
         var sync = Sync()
 
         var syncBtn = findViewById<ExtendedFloatingActionButton>(R.id.syncBtn)
@@ -82,7 +100,7 @@ class MainMenu : AppCompatActivity() {
         buttonAP.setOnClickListener {
             intent = Intent(this, ApontamentoPerdas::class.java)
                 .apply {
-                putExtra(EXTRA_MESSAGE, username)}
+                    putExtra(EXTRA_MESSAGE, username)}
             startActivity(intent)
         }
     }
@@ -137,3 +155,27 @@ class MainMenu : AppCompatActivity() {
         return true
     }
 }
+
+/*class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :
+    CoordinatorLayout.Behavior<FloatingActionButton?>() {
+    fun layoutDependsOn(
+        parent: CoordinatorLayout?,
+        child: FloatingActionButton?,
+        dependency: View?
+    ): Boolean {
+        return dependency is Snackbar.SnackbarLayout
+    }
+
+    fun onDependentViewChanged(
+        parent: CoordinatorLayout?,
+        child: FloatingActionButton,
+        dependency: View
+    ): Boolean {
+        val translationY =
+            Math.min( dependency.getTranslationY().toFloat(), dependency.getHeight().toFloat())
+        child.translationY = translationY
+        return true
+    }
+}*/
+
+
