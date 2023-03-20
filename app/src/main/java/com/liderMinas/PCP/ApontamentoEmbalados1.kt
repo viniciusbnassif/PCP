@@ -16,12 +16,15 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
+import com.androidadvance.topsnackbar.TSnackbar
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.Sync
@@ -32,7 +35,7 @@ import java.time.LocalDate
 import java.util.*
 
 
-public class ApontamentoEmbalados1 : AppCompatActivity() {
+class ApontamentoEmbalados1 : AppCompatActivity() {
     lateinit var db: SQLiteHelper
     lateinit var spinner: Spinner
     //lateinit var spinnerPrd: AutoCompleteTextView
@@ -102,7 +105,7 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
 
         var adapterTransporte = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, tipoTranporte)
         SpTipoTransporte.setAdapter(adapterTransporte)
-        SpTipoTransporte.setText(SpTipoTransporte.getAdapter().getItem(0).toString(), false)
+        SpTipoTransporte.setText(SpTipoTransporte.adapter.getItem(0).toString(), false)
         SpTipoTransporte.onItemClickListener =
             AdapterView.OnItemClickListener { p0, view, position, _id ->
                 if (view?.context != null) {
@@ -404,7 +407,7 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
                                     findViewById<TextView>(R.id.validProdutoSaver).text.toString()
                                 )
                             }," +
-                            "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text.toString()}', '${username}', 0);"
+                            "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text}', '${username}', 0);"
                 db.externalExecSQL(finalQuery)
                 Toast.makeText(this, "Apontamento salvo", Toast.LENGTH_LONG).show()
                 sync.sync(1, this)
@@ -415,35 +418,46 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
                     pilha.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
                 if (qeProduto.length() == 0) {
-                    findViewById<TextInputLayout>(R.id.textInputLayout17).setError(getString(R.string.campo_obrigatorio))
+                    findViewById<TextInputLayout>(R.id.textInputLayout17).error = getString(R.string.campo_obrigatorio)
                     //qeProduto.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
                 if (dty0.length() == 0) {
-                    findViewById<TextInputLayout>(R.id.textInputLayout19).setError(getString(R.string.campo_obrigatorio))
+                    findViewById<TextInputLayout>(R.id.textInputLayout19).error = getString(R.string.campo_obrigatorio)
                     //dty0.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
                 if (time0.length() == 0) {
-                    findViewById<TextInputLayout>(R.id.textInputLayout18).setError(getString(R.string.campo_obrigatorio))
+                    findViewById<TextInputLayout>(R.id.textInputLayout18).error = getString(R.string.campo_obrigatorio)
                     //time0.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
                 if (dateVal.length() == 0) {
-                    findViewById<TextInputLayout>(R.id.textInputLayout21).setError(getString(R.string.campo_obrigatorio))
+                    findViewById<TextInputLayout>(R.id.textInputLayout21).error = getString(R.string.campo_obrigatorio)
                     //dateVal.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
                 if (lote.length() == 0) {
-                    findViewById<TextInputLayout>(R.id.textInputLayout20).setError(getString(R.string.campo_obrigatorio))
+                    findViewById<TextInputLayout>(R.id.textInputLayout20).error = getString(R.string.campo_obrigatorio)
                 }
                 if ((spinnerID.text == "")) {
-                    findViewById<TextInputLayout>(R.id.viewSpinner).setError(getString(R.string.campo_obrigatorio))
+                    findViewById<TextInputLayout>(R.id.viewSpinner).error = getString(R.string.campo_obrigatorio)
                 }
             }
         }
 
 
-
-
+        connectionView()
 
     }
+
+    fun connectionView(){
+        var result = Sync().testConnection()
+
+        if (result == "Falha ao conectar (Host and port combination not valid)" || result == "Sem conexão com o servidor/rede") {
+            Snackbar.make(findViewById(R.id.CL),
+                "Não foi possível estabelecer uma conexão com o servidor",
+                TSnackbar.LENGTH_INDEFINITE
+            ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
+        }
+    }
+
     fun setTotal(){
         val spinner: Int
         val cxAvulsa = findViewById<TextView>(R.id.caixasAvulsas)
@@ -529,6 +543,8 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
         var adcVal: Int
         val QE_PROD = "qeProduto"
 
+        connectionView()
+
 
         var dateNow = Calendar.getInstance()
         dateNow.set(
@@ -542,7 +558,7 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
 
         var lote0 = Calendar.getInstance().get(Calendar.DAY_OF_YEAR).toString()
         var lote1 = Calendar.getInstance().get(Calendar.YEAR).toString()
-        var lote2 = lote0 + "${lote1.subSequence(2, 4).toString()}"
+        var lote2 = lote0 + "${lote1.subSequence(2, 4)}"
         if (lote2.length <= 4) {
             loteF = "0${lote2}"
         } else {
@@ -559,9 +575,9 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
         findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("0")
         if (cursor2 != null) {
             //qeProduto = ("${cursor2.getInt(0)}")
-            findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("${cursor2!!.getInt(1)}")
-            validProduto = cursor2!!.getInt(2)
-            tipoVProduto = cursor2!!.getString(3).toString()
+            findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("${cursor2.getInt(1)}")
+            validProduto = cursor2.getInt(2)
+            tipoVProduto = cursor2.getString(3).toString()
             findViewById<TextView>(R.id.validProdutoSaver).apply { text = validProduto.toString() }
             findViewById<TextView>(R.id.tipoVProdutoSaver).apply { text = tipoVProduto }
         }
@@ -572,23 +588,23 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
                 if (tipoVProduto == "D") {
                     adcVal = validProduto
                     dateNow.add(Calendar.DAY_OF_MONTH, adcVal).toString()
-                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.getTime())
+                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.time)
                     btnValidade.setText(validF)
                 } else if (tipoVProduto == "S") {
                     adcVal = validProduto * 7
                     dateNow.add(Calendar.DAY_OF_MONTH, adcVal).toString()
-                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.getTime())
+                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.time)
                     btnValidade.setText(validF)
                 } else if (tipoVProduto == "M") {
                     adcVal = validProduto
                     adcVal = validProduto
                     dateNow.add(Calendar.MONTH, adcVal).toString()
-                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.getTime())
+                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.time)
                     btnValidade.setText(validF)
                 } else if (tipoVProduto == "A") {
                     adcVal = validProduto
                     dateNow.add(Calendar.YEAR, adcVal).toString()
-                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.getTime())
+                    validF = SimpleDateFormat("dd/MM/yyyy").format(dateNow.time)
                     btnValidade.setText(validF)
                 }
             }
@@ -604,14 +620,14 @@ public class ApontamentoEmbalados1 : AppCompatActivity() {
             }
             .setPositiveButton("Sair mesmo assim") { dialog, which ->
                 super.onBackPressed()
-                Animatoo.animateSlideRight(this);
+                Animatoo.animateSlideRight(this)
             }
             .show()
     }
     /* When the activity is destroyed then close the cursor as it will not be used again */
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
-        Animatoo.animateSlideRight(this);
+        Animatoo.animateSlideRight(this)
         return true
     }
 }

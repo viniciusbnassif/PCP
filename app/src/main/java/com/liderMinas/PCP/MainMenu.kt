@@ -3,37 +3,31 @@ package com.liderMinas.PCP
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
-import android.provider.Settings
 import android.util.AttributeSet
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.compose.ui.platform.InspectableModifier
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.blogspot.atifsoftwares.animatoolib.Animatoo
-import com.google.android.material.button.MaterialButton
+import com.androidadvance.topsnackbar.TSnackbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
-import org.w3c.dom.Text
+
 
 class MainMenu : AppCompatActivity() {
     @SuppressLint("ResourceAsColor", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
+
 
 
 
@@ -49,20 +43,34 @@ class MainMenu : AppCompatActivity() {
         getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.ic_baseline_logout_24)
 
 
-
-        //var coordinator = findViewById<ConstraintLayout>(R.id.parent)
+        var coordinator = findViewById<ConstraintLayout>(R.id.parent)
         var cl = findViewById<ConstraintLayout>(R.id.CL)
 
-        /*Snackbar.make(coordinator, "OIOIOIOIOI", Snackbar.LENGTH_INDEFINITE)
-            .setAction("TESTETESTETESTE"){
+        fun connectionView(){
+            var result = Sync().testConnection()
 
+            if (result == "Falha ao conectar (Host and port combination not valid)" || result == "Sem conexão com o servidor/rede") {
+                /*Snackbar.make(coordinator, "OIOIOIOIOI", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("TESTETESTETESTE") {
+
+                    }calc
+                    .show()*/
+
+                val snackbar = Snackbar.make(findViewById(R.id.CL),
+                    "Não foi possível estabelecer uma conexão com o servidor",
+                    TSnackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
+                //snackbar.setActionTextColor(Color.WHITE)
+                //val snackbarView = snackbar.view
+                //snackbarView.setBackgroundColor(Color.parseColor("#741919"))
+                /*val textView =
+                    snackbarView.findViewById<View>(com.androidadvance.topsnackbar.R.id.snackbar_text) as TextView
+                textView.setTextColor(Color.WHITE)
+                snackbar.show()*/
             }
-            .show()*/
+        }
 
-
-
-
-
+        connectionView()
 
         var sync = Sync()
 
@@ -74,6 +82,7 @@ class MainMenu : AppCompatActivity() {
                 Snackbar.LENGTH_SHORT
             ).show()
             sync.sync(0, this)
+            connectionView()
 
         }
 
@@ -156,7 +165,7 @@ class MainMenu : AppCompatActivity() {
     }
 }
 
-/*class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :
+class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :
     CoordinatorLayout.Behavior<FloatingActionButton?>() {
     fun layoutDependsOn(
         parent: CoordinatorLayout?,
@@ -176,6 +185,6 @@ class MainMenu : AppCompatActivity() {
         child.translationY = translationY
         return true
     }
-}*/
+}
 
 
