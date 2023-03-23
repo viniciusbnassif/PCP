@@ -2,25 +2,24 @@
     <!-- Base application theme. -->
     <style name="Theme.PCP" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue_700</item>
-        <item name="colorPrimaryVariant">@color/blue_500</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/blue_200</item>
-        <item name="colorSecondaryVariant">@color/blue_500</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <item name="colorSecondaryContainer">@color/blue_700</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorPrimary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnPrimaryContainer">@color/colorPrimary</item>
+        <item name="colorPrimaryContainer">@color/color_0</item>
+        <item name="colorSecondaryContainer">@color/colorPrimary</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
         <!-- Status bar color. -->
         <!--item name="android:statusBarColor">@color/blue_0</item-->
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="navigationIconTint">@color/spacegray</item>
         <!--item name="android:windowLightStatusBar">true</item-->
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
-        <item name="iconTint">@color/spacegray</item>
-        <!--choice your favorite color-->
-    </style>
 </resources>

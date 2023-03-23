@@ -1,3 +1,5 @@
+@file:Suppress("OverrideDeprecatedMigration")
+
 package com.liderMinas.PCP
 
 import android.annotation.SuppressLint
@@ -14,12 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.androidadvance.topsnackbar.TSnackbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
+import java.lang.Integer.parseInt
 
 
 class MainMenu : AppCompatActivity() {
@@ -28,8 +30,11 @@ class MainMenu : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
-
-
+        var relatorio = findViewById<FloatingActionButton>(R.id.relatorio)
+        relatorio.setOnClickListener{
+            var estatistica = Intent(this, Estatistica::class.java)
+            startActivity(estatistica)
+        }
 
         val toolbar = findViewById<Toolbar>(R.id.appBar)
         setSupportActionBar(toolbar)
@@ -49,41 +54,43 @@ class MainMenu : AppCompatActivity() {
         fun connectionView(){
             var result = Sync().testConnection()
 
-            if (result == "Falha ao conectar (Host and port combination not valid)" || result == "Sem conexão com o servidor/rede") {
-                /*Snackbar.make(coordinator, "OIOIOIOIOI", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("TESTETESTETESTE") {
-
-                    }calc
-                    .show()*/
-
+            if (result == "Falha" ) {
                 val snackbar = Snackbar.make(findViewById(R.id.CL),
                     "Não foi possível estabelecer uma conexão com o servidor",
-                    TSnackbar.LENGTH_INDEFINITE
+                    Snackbar.LENGTH_INDEFINITE
                 ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
-                //snackbar.setActionTextColor(Color.WHITE)
-                //val snackbarView = snackbar.view
-                //snackbarView.setBackgroundColor(Color.parseColor("#741919"))
-                /*val textView =
-                    snackbarView.findViewById<View>(com.androidadvance.topsnackbar.R.id.snackbar_text) as TextView
-                textView.setTextColor(Color.WHITE)
-                snackbar.show()*/
+            } else if (result == "Sem Conexão") {
+                Snackbar.make(findViewById(R.id.CL),
+                    "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(Color.parseColor("#E3B30C")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
+            }else {
+                Snackbar.make(findViewById(R.id.CL),
+                    "Sincronizado com sucesso!",
+                    Snackbar.LENGTH_LONG
+                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
             }
         }
 
         connectionView()
 
-        var sync = Sync()
+
+        //var sync = parseInt("")
+
+
 
         var syncBtn = findViewById<ExtendedFloatingActionButton>(R.id.syncBtn)
-        syncBtn.setOnClickListener{
-            Snackbar.make(
-                cl,
-                "Sincronizando...",
-                Snackbar.LENGTH_SHORT
-            ).show()
-            sync.sync(0, this)
-            connectionView()
+        syncBtn.setOnClickListener {
+            var sync = Sync().sync(0, this)
+            if (sync == "Sucesso") {
 
+                Snackbar.make(cl,
+                    "Sincronizado com sucesso!",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
+            } else if (sync == "Falha") {
+                connectionView()
+            }
         }
 
         val username = intent.getStringExtra(EXTRA_MESSAGE)

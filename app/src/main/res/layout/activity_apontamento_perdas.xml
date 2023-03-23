@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="@id/coordinatorLayoutTopBar" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:keepScreenOn="true"
@@ -912,8 +911,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="top"
-            android:background="@color/blue_700"
-            app:backgroundTint="@color/blue_700"
+            android:background="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimary"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -1005,7 +1004,6 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
@@ -1022,8 +1020,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="bottom"
-            android:background="@color/blue_700"
-            app:backgroundTint="@color/blue_700"
+            android:background="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimary"
             app:hideOnScroll="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_scrollFlags="scroll|enterAlways"

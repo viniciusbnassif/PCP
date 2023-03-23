@@ -4,20 +4,20 @@
     <style name="Theme.PCP" parent="Theme.Material3.Light.NoActionBar">
 
 
-        <item name="colorPrimary">@color/blue_700</item>
-        <item name="colorPrimaryVariant">@color/blue_500</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/blue_200</item>
-        <item name="colorSecondaryVariant">@color/blue_500</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorOnPrimaryContainer">@color/blue_700</item>
-        <item name="colorPrimaryContainer">@color/blue_0</item>
-        <item name="colorSecondaryContainer">@color/blue_700</item>
+        <item name="colorOnPrimaryContainer">@color/colorPrimary</item>
+        <item name="colorPrimaryContainer">@color/color_0</item>
+        <item name="colorSecondaryContainer">@color/colorPrimary</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
-        <item name="android:shadowColor">@color/blue_200</item>
-        <item name="colorContainer">@color/blue_200</item>
-        <item name="android:textColorHighlight">@color/blue_100</item>
+        <item name="android:shadowColor">@color/colorSecondary</item>
+        <item name="colorContainer">@color/colorSecondary</item>
+        <item name="android:textColorHighlight">@color/color_100</item>
 
 
         <!-- Status bar color. -->
@@ -26,16 +26,11 @@
         <!-- Transparent system bars for edge-to-edge. -->
 
         <!--item name="android:navigationBarColor">@android:color/white</item-->
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">@color/blue_700</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
 
     </style>
 
-    <style name="ToolbarColoredBackArrow" parent="Theme.PCP">
-        <item name="android:colorControlNormal">@color/white</item>
-    </style>
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
-        <item name="buttonSuccess">@style/buttonSuccess</item>
-    </style>
 </resources>

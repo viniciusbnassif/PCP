@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clMA"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -50,47 +51,47 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/viewUser"
-                    android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/viewUser"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:autofillHints="username"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@id/viewPassword"
+                app:layout_constraintEnd_toStartOf="@+id/loginscreen_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/space1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextUsername"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:autofillHints="username"
-                    android:visibility="visible"
-                    app:layout_constraintTop_toBottomOf="@+id/space1"
-                    app:layout_constraintBottom_toTopOf="@id/viewPassword"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/loginscreen_login">
+                    android:hint="Nome de Usuário"
+                    android:inputType="textVisiblePassword"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextUsername"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="Nome de Usuário"
-                        android:inputType="textVisiblePassword"
-                        android:singleLine="true" />
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/viewPassword"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/loginscreen_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewUser"
+                app:passwordToggleEnabled="true">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/viewPassword"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:passwordToggleEnabled="true"
-                    app:layout_constraintTop_toBottomOf="@+id/viewUser"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/loginscreen_login">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Senha"
-                        android:imeOptions="actionSend"
-                        android:inputType="textNoSuggestions|textPassword" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Senha"
+                    android:imeOptions="actionSend"
+                    android:inputType="textNoSuggestions|textPassword" />
 
 
-                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button
@@ -108,10 +109,6 @@
                 app:layout_constraintTop_toTopOf="@+id/viewUser"></Button>
 
 
-
-
-
-
             <!--Button
                 android:id="@+id/loginscreen_login"
                 android:layout_width="wrap_content"
@@ -123,9 +120,9 @@
                 app:icon="@drawable/ic_outline_login_24_white" /-->
 
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progress"
-                style="?android:attr/progressBarStyle"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"

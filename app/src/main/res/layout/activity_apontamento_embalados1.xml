@@ -17,7 +17,7 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:indeterminateTint="@color/blue_700"
+        android:indeterminateTint="@color/colorPrimary"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,6 @@
 
 
     <ScrollView
-        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:keepScreenOn="true"
@@ -41,7 +40,6 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintapem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
@@ -71,7 +69,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewSpinner"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Selecione o produto"
@@ -80,6 +78,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:id="@+id/spinnerIdSaver"
                     android:layout_width="match_parent"
@@ -93,44 +92,12 @@
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:id="@+id/LLAPEM"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_background"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayout17"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/constraintapem"
-                android:visibility="gone">
-
-
-
-                <TextView
-                    android:id="@+id/textviewAPEM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="6dp"
-                    android:text="Selecione o produto:"></TextView>
-
-
-                <Spinner
-                    android:id="@+id/menu"
-                    style="@android:style/Widget.Holo.Light.Spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hapticFeedbackEnabled="true"
-                    android:outlineProvider="background"
-                    android:spinnerMode="dropdown">
-
-                </Spinner>
-            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout17"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
                 android:visibility="visible"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
@@ -177,6 +144,7 @@
                 android:id="@+id/textInputLayout18"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
                 android:visibility="visible"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout21"
@@ -201,8 +169,8 @@
                 android:id="@+id/textInputLayout20"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
                 android:visibility="visible"
-                app:errorEnabled="true"
                 app:layout_constraintBottom_toBottomOf="@+id/textInputLayout21"
                 app:layout_constraintEnd_toStartOf="@+id/textInputLayout21"
                 app:layout_constraintStart_toStartOf="parent"
@@ -212,9 +180,10 @@
                     android:id="@+id/editTextLote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:hint="Lote"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:nextFocusForward="@id/caixasAvulsas"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,13 +191,13 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout21"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:visibility="visible"
                 app:endIconMode="none"
-                app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout22"
-                app:layout_constraintEnd_toStartOf="@+id/textInputLayout210"
+                app:layout_constraintEnd_toStartOf="@+id/toggleButton"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayout20"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout19"
                 app:startIconDrawable="@drawable/ic_baseline_calendar_month_24">
@@ -259,12 +228,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout210"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                app:errorEnabled="true"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/plusBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayout21"
@@ -282,9 +250,42 @@
                     android:layout_height="wrap_content"
                     android:hint="Pilha ou Pallet"
                     android:inputType="none" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                app:layout_constraintBottom_toTopOf="@+id/plusBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textInputLayout21"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout18"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tButtonPilha"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:insetTop="5dp"
+                    android:insetBottom="0dp"
+                    android:text="Pilha"
+                    app:cornerRadius="5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tButtonPallet"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:insetTop="5dp"
+                    android:insetBottom="0dp"
+                    android:text="Pallet"
+                    app:cornerRadius="5dp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <Button
                 android:id="@+id/minusBtn"
@@ -292,10 +293,12 @@
                 android:layout_height="0dp"
                 android:enabled="false"
                 android:hapticFeedbackEnabled="true"
+                android:insetTop="5dp"
+                android:insetBottom="0dp"
                 android:text="-"
                 android:textSize="80sp"
                 android:tooltipText="Subtrair"
-                app:cornerRadius="15dp"
+                app:cornerRadius="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textInputLayout22"
                 app:layout_constraintEnd_toStartOf="@+id/textInputLayout22"
                 app:layout_constraintStart_toStartOf="parent"
@@ -309,10 +312,11 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:editable="false"
+                android:focusableInTouchMode="false"
                 android:minWidth="140dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/viewCaixasAvulsas"
+                app:layout_constraintBottom_toTopOf="@+id/viewQtdAvulsas"
                 app:layout_constraintEnd_toStartOf="@+id/plusBtn"
                 app:layout_constraintStart_toEndOf="@+id/minusBtn"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout20">
@@ -322,7 +326,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Pilhas"
-                    android:inputType="date"
+                    android:inputType="none"
+                    android:editable="false"
+                    android:focusableInTouchMode="false"
                     android:singleLine="true"
                     android:text="0"
                     android:textAlignment="center"
@@ -335,22 +341,23 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:hapticFeedbackEnabled="true"
+                android:insetTop="5dp"
+                android:insetBottom="0dp"
                 android:longClickable="false"
                 android:text="+"
                 android:textSize="80sp"
                 android:tooltipText="Adicionar 1"
-                app:cornerRadius="15dp"
+                app:cornerRadius="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textInputLayout22"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayout22"
                 app:layout_constraintTop_toTopOf="@+id/textInputLayout22" />
 
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewCaixasAvulsas"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
                 android:visibility="visible"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/space"
@@ -365,55 +372,57 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="2dp"
                     android:hint="@string/caixas_avulsas"
-                    android:text="0"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:keyboardNavigationCluster="true"
-                    android:longClickable="false"
+                    android:nextFocusForward="@id/qtdAvulsas"
                     android:singleLine="true"
+                    android:text="0"
                     android:tooltipText="@string/caixas_avulsas" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewQtdAvulsas"
                 android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="2dp"
-                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
                 android:visibility="visible"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/space"
                 app:layout_constraintEnd_toStartOf="@+id/viewTotal"
                 app:layout_constraintStart_toEndOf="@+id/viewCaixasAvulsas"
-                app:layout_constraintTop_toBottomOf="@+id/plusBtn">
+                app:layout_constraintTop_toBottomOf="@+id/minusBtn">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/qtdAvulsas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/quantidade_avulsas"
-                    android:text="0"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
                     android:singleLine="true"
+                    android:text="0"
                     android:tooltipText="@string/quantidade_avulsas" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewTotal"
                 android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="2dp"
-                android:layout_height="wrap_content"
                 android:visibility="visible"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/space"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/viewQtdAvulsas"
-                app:layout_constraintTop_toBottomOf="@+id/plusBtn">
+                app:layout_constraintTop_toBottomOf="@+id/minusBtn">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/total"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/total"
                     android:focusableInTouchMode="false"
+                    android:hint="@string/total"
                     android:inputType="number"
                     android:singleLine="true"
                     android:tooltipText="@string/quantidade_avulsas" />
@@ -433,7 +442,6 @@
     </ScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
@@ -448,24 +456,50 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="bottom"
-            android:background="@color/blue_700"
-            app:backgroundTint="@color/blue_700"
+            android:background="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimary"
             app:hideOnScroll="true"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIconTint="@color/white"
             app:titleTextColor="@color/white" />
 
 
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/startActivityApontamentoPerdas"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_margin="3dp"
-            android:contentDescription="Finalizar"
-            android:src="@drawable/ic_baseline_done_24"
-            android:tooltipText="Finalizar" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:elevation="15dp"
+                android:lines="2"
+                android:text="Finalizar e \n iniciar outro"
+                android:tooltipText="Finalizar"
+                app:icon="@drawable/ic_outline_library_add_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/fab2" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_margin="3dp"
+                android:text="@string/finalizar"
+                android:textSize="16sp"
+                android:tooltipText="Finalizar"
+                app:fabSize="normal"
+                app:icon="@drawable/ic_outline_library_add_check_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

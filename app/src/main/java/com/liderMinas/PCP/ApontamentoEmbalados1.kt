@@ -1,8 +1,5 @@
 package com.liderMinas.PCP
 
-import android.annotation.SuppressLint
-import android.app.Application.*
-import android.content.Intent
 import android.database.Cursor
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
@@ -11,67 +8,96 @@ import android.provider.AlarmClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.text.font.FontWeight
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.doOnTextChanged
-import com.androidadvance.topsnackbar.TSnackbar
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.Sync
-import com.liderMinas.PCP.database.queryProdutoExt
 import java.lang.Integer.parseInt
-import java.text.*
 import java.time.LocalDate
 import java.util.*
 
 
 class ApontamentoEmbalados1 : AppCompatActivity() {
     lateinit var db: SQLiteHelper
-    lateinit var spinner: Spinner
-    //lateinit var spinnerPrd: AutoCompleteTextView
-    var simpleCursorAdapter: SimpleCursorAdapter? = null
     var cursor: Cursor? = null
     var id: Int = 0
-    //lateinit var connector: Connection()
-    //lateinit var allProducts: java.sql.Array
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apontamento_embalados1)
 
+        // Hide the status bar.
+        /*window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        }*/
+
 
         val username = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)
 
-        var viewTotal = findViewById<TextView>(R.id.total)
 
-        var pilha: EditText = findViewById(R.id.finalResult)
-        var btnValidade = findViewById<EditText>(R.id.btnValidade)
-        spinner = findViewById<Spinner>(R.id.menu)
-        var spinnerID = findViewById<TextView>(R.id.spinnerIdSaver)
-        var transporteID = findViewById<TextView>(R.id.tipoTransporteID)
+
+        var tipoTransporte = ""
+
+        val cxAvulsa = findViewById<TextView>(R.id.caixasAvulsas)
+        val qtdAvulsa = findViewById<TextView>(R.id.qtdAvulsas)
+        val viewTotal = findViewById<TextView>(R.id.total)
+        val btnPilha = findViewById<MaterialButton>(R.id.tButtonPilha)
+        val btnPallet = findViewById<MaterialButton>(R.id.tButtonPallet)
+
+        btnPilha.addOnCheckedChangeListener { button, isChecked ->
+            if (isChecked == true){
+                tipoTransporte = "pilha"
+                setTotal()
+            } else if(btnPallet.isChecked == false) {
+                tipoTransporte = ""
+                viewTotal.setText("")
+            }
+        }
+
+
+        btnPallet.addOnCheckedChangeListener { button, isChecked ->
+            if (isChecked == true){
+                tipoTransporte = "pallet"
+                setTotal()
+            } else if(btnPilha.isChecked == false) {
+                tipoTransporte = ""
+                viewTotal.setText("")
+            }
+        }
+
+        val pilha: EditText = findViewById(R.id.finalResult)
+        val btnValidade = findViewById<EditText>(R.id.btnValidade)
+        //spinner = findViewById<Spinner>(R.id.menu)
+        val spinnerID = findViewById<TextView>(R.id.spinnerIdSaver)
+        val transporteID = findViewById<TextView>(R.id.tipoTransporteID)
         transporteID.text = "0"
 
         //spinnerPrd = findViewById<AutoCompleteTextView>(R.id.spinnerPrd)
         val dateVal: TextInputEditText = findViewById(R.id.btnValidade)
-        var lote = findViewById<EditText>(R.id.editTextLote)
-        var qeProduto = findViewById<EditText>(R.id.editTextEmbalagemCaixa)
+        val lote = findViewById<EditText>(R.id.editTextLote)
+        val qeProduto = findViewById<EditText>(R.id.editTextEmbalagemCaixa)
 
         db = SQLiteHelper(this)
 
-        var valueCxAvulsa = "0"
-        var valueQtAvulsa = "0"
-        val cxAvulsa = findViewById<TextView>(R.id.caixasAvulsas)
-        val qtdAvulsa = findViewById<TextView>(R.id.qtdAvulsas)
+
+
+        //var toggleButton = findViewById<ToggleButton>(R.id.toggleButton)
+
+
 
         cxAvulsa.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -99,11 +125,11 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             }
         })
 
-        var tipoTranporte = arrayOf<String>("Pilha", "Pallet")
+        val tipoTranporte = arrayOf<String>(getString(R.string.pilhas), getString(R.string.pallet))
 
-        var SpTipoTransporte = findViewById<AutoCompleteTextView>(R.id.tipoTransporte)
+        val SpTipoTransporte = findViewById<AutoCompleteTextView>(R.id.tipoTransporte)
 
-        var adapterTransporte = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, tipoTranporte)
+        val adapterTransporte = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, tipoTranporte)
         SpTipoTransporte.setAdapter(adapterTransporte)
         SpTipoTransporte.setText(SpTipoTransporte.adapter.getItem(0).toString(), false)
         SpTipoTransporte.onItemClickListener =
@@ -114,10 +140,12 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                     setTotal()
                     //findViewById<TextView>(R.id.tipoTransporteID).apply { text = "$id" }
                     if (id == 1){
-                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = "Pallet" }
+                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = context.getString(
+                                                    R.string.pallet) }
                     }
                     else if (id==0){
-                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = "Pilhas" }
+                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = context.getString(
+                                                    R.string.pilhas) }
                     }
                     //inicia metodo passando o id do item selecionado
 
@@ -137,32 +165,50 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             setDisplayShowCustomEnabled(true)
         }
 
-        val dateFormatter = SimpleDateFormat("dd/MM/yyyy") //formatar data no formato padrão
-        val dty = dateFormatter.format(Date())
 
-        val dateFormatter0 = SimpleDateFormat("kk:mm") //formatar tempo no formato 24h (kk)
-        val time = dateFormatter0.format(Date())
+        var dateFormatter = SimpleDateFormat()
+        var dty = ""
 
-        var time0 = findViewById<TextView>(R.id.editTextHora).apply { text = time }
-        var dty0 = findViewById<TextView>(R.id.editTextData).apply { text = dty }
+        var dateFormatter0 = SimpleDateFormat()
+        var time = ""
+
+        var time0 = findViewById<TextView>(R.id.editTextHora)
+        var dty0 = findViewById<TextView>(R.id.editTextData)
+
+        var dateFormatterProtheus = SimpleDateFormat()
+        var dtyProtheus = ""
+        var dtytime0 = ""
+
+        fun date() {
+
+            dateFormatter = SimpleDateFormat("dd/MM/yyyy") //formatar data no formato padrão
+            dty = dateFormatter.format(Date())
+
+            dateFormatter0 = SimpleDateFormat("kk:mm") //formatar tempo no formato 24h (kk)
+            time = dateFormatter0.format(Date())
+
+            time0.setText(time)
+            dty0.setText(dty)
 
 
-        val dateFormatterProtheus = SimpleDateFormat("yyyyMMdd") //formatar data no formato padrão
-        val dtyProtheus = dateFormatterProtheus.format(Date())
-        var dtytime0 = "$dtyProtheus" + "$time"
+            dateFormatterProtheus =
+                SimpleDateFormat("yyyyMMdd") //formatar data no formato padrão
+            dtyProtheus = dateFormatterProtheus.format(Date())
+            dtytime0 = "$dtyProtheus" + "$time"
+        }
+        date()
 
 
 
         dateVal.setOnClickListener {
             //Exibir barra de progresso, pois nos testes o Date Picker demorou entre 1 a 2 segundos para aparecer.
-            val progress =
-                findViewById<ProgressBar>(R.id.progressInd).apply { visibility = View.VISIBLE }
+            findViewById<ProgressBar>(R.id.progressInd).apply { visibility = View.VISIBLE }
 
             //parametros para o popup de calendario
             var datePicker =
                 MaterialDatePicker.Builder.datePicker()
                     .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                    .setTitleText("Selecione a data de vencimento")
+                    .setTitleText(getString(R.string.selecioneADataDeVencimento))
                     .build()
 
             //abre popup para inserção/alteração da data
@@ -258,17 +304,17 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                     Editable.Factory.getInstance().newEditable(finalDate.toString())
 
                 //após colocar o valor em exibição e fechar o DatePicker, é necessário remover a barra de progresso da UI
-                val progress = findViewById<ProgressBar>(R.id.progressInd).apply {
+                findViewById<ProgressBar>(R.id.progressInd).apply {
                     visibility = View.INVISIBLE
                 }
             }
             datePicker.addOnCancelListener {
-                val progress = findViewById<ProgressBar>(R.id.progressInd).apply {
+                findViewById<ProgressBar>(R.id.progressInd).apply {
                     visibility = View.INVISIBLE
                 }
             }
             datePicker.addOnDismissListener {
-                val progress = findViewById<ProgressBar>(R.id.progressInd).apply {
+                findViewById<ProgressBar>(R.id.progressInd).apply {
                     visibility = View.INVISIBLE
                 }
             }
@@ -285,17 +331,15 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             if (pilha.length() == 0) {
                 pilha.text = Editable.Factory.getInstance().newEditable(0.toString())
             }
-            var result = pilha.text.toString().toInt()
+            val result = pilha.text.toString().toInt()
             if (result >= 0) {
-                var finalResult = result + 1
+                val finalResult = result + 1
                 pilha.text = Editable.Factory.getInstance().newEditable(finalResult.toString())
                 setTotal()
                 if (finalResult > 0) {
-                    var minusBtnAble =
-                        findViewById<Button>(R.id.minusBtn).apply { isEnabled = true }
+                    findViewById<Button>(R.id.minusBtn).apply { isEnabled = true }
                 } else if (finalResult <= 0) {
-                    var minusBtnAble =
-                        findViewById<Button>(R.id.minusBtn).apply { isEnabled = false }
+                    findViewById<Button>(R.id.minusBtn).apply { isEnabled = false }
                 }
             }
         }
@@ -305,9 +349,9 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             if (pilha.length() == 0) {
                 pilha.text = Editable.Factory.getInstance().newEditable(0.toString())
             }
-            var result = pilha.text.toString().toInt()
+            val result = pilha.text.toString().toInt()
             if (result >= 0) {
-                var finalResult = result + 10
+                val finalResult = result + 10
                 pilha.text = Editable.Factory.getInstance().newEditable(finalResult.toString())
                 setTotal()
                 if (finalResult > 0) {
@@ -366,8 +410,38 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             }
             true
         }
-        val buttonFinalizar: FloatingActionButton = findViewById(R.id.startActivityApontamentoPerdas)
-        buttonFinalizar.setOnClickListener {
+
+        fun clearAll(){
+            var spinnerPrd = findViewById<AutoCompleteTextView>(R.id.spinnerPrd)
+
+
+            cxAvulsa.setText("0")
+            qtdAvulsa.setText("0")
+            viewTotal.setText("")
+
+            spinnerPrd.setText("")
+            spinnerPrd.setAdapter(null)
+
+            setOrRefreshSpinner()
+
+            spinnerID.setText("")
+            lote.setText("")
+
+            btnPilha.isChecked = false
+            btnPallet.isChecked = false
+            pilha.setText("0")
+            qeProduto.setText("")
+            time0.setText("")
+
+            date()
+
+            dateVal.setText("")
+
+        }
+
+
+
+        fun finalizar(command: Int){
             var sync = Sync()
             var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
 
@@ -378,13 +452,29 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 && (dty0.length() != 0)
                 && (time0.length() != 0)
                 && (dateVal.length() != 0)
+                && (viewTotal.length() != 0)
+                && (cxAvulsa.length() != 0)
+                && (qtdAvulsa.length() != 0)
                 && (username != null)
             ) {
 
-                var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
+                if (cxAvulsa.text == ""){
+                    cxAvulsa.text = "0"
+                }
+                if (qtdAvulsa.text == ""){
+                    qtdAvulsa.text = "0"
+                }
+
+                //var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
+                var tipoID = ""
+                if (tipoTransporte == "pilha"){
+                    tipoID = "0"
+                } else if (tipoTransporte == "pallet"){
+                    tipoID = "1"
+                }
 
                 var tipoIDD: String
-                tipoIDD = (if (tipoID.text == "0") "Pilha" else "Pallet").toString()
+                tipoIDD = (if (tipoID == "0") "Pilha" else "Pallet").toString()
 
                 "name, 2012, 2017".split(",").toTypedArray()
                 var validade = "${btnValidade.text}".split("/").toTypedArray()
@@ -397,7 +487,9 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                                 Integer.parseInt(
                                     lote.text.toString()
                                 )
-                            }, ${parseInt(cxAvulsa.text.toString())}, ${parseInt(qtdAvulsa.text.toString())}, ${validadeProtheus}, ${
+                            }, ${parseInt(cxAvulsa.text.toString())}, " +
+                            "${parseInt(qtdAvulsa.text.toString())}, " +
+                            "${validadeProtheus}, ${
                                 Integer.parseInt(
                                     findViewById<TextView>(R.id.total).text.toString()
                                 )
@@ -411,9 +503,17 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 db.externalExecSQL(finalQuery)
                 Toast.makeText(this, "Apontamento salvo", Toast.LENGTH_LONG).show()
                 sync.sync(1, this)
-                finish()
+
+                if (command == 2){
+                    finish()
+                } else if (command == 1){
+                    clearAll()
+                }
+
             } else {
+
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_LONG).show()
+
                 if (pilha.length() == 0) {
                     pilha.setBackgroundColor(Color.parseColor("#FF8282"))
                 }
@@ -439,27 +539,62 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 if ((spinnerID.text == "")) {
                     findViewById<TextInputLayout>(R.id.viewSpinner).error = getString(R.string.campo_obrigatorio)
                 }
+                if ((viewTotal.text == "")) {
+                    findViewById<TextInputLayout>(R.id.viewTotal).error = "Preencha todos os campos corretamente e tente novamente"
+                }
+
             }
         }
 
+        val buttonResetar: ExtendedFloatingActionButton = findViewById(R.id.fab1)
+        buttonResetar.setOnClickListener {
+            finalizar(1)
+
+        }
+
+        val buttonFinalizar: ExtendedFloatingActionButton = findViewById(R.id.fab2)
+        buttonFinalizar.setOnClickListener {
+            finalizar(2)
+        }
 
         connectionView()
-
     }
 
     fun connectionView(){
         var result = Sync().testConnection()
 
-        if (result == "Falha ao conectar (Host and port combination not valid)" || result == "Sem conexão com o servidor/rede") {
-            Snackbar.make(findViewById(R.id.CL),
+        if (result == "Falha" ) {
+            val snackbar = Snackbar.make(findViewById(R.id.CL),
                 "Não foi possível estabelecer uma conexão com o servidor",
-                TSnackbar.LENGTH_INDEFINITE
-            ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
+                Snackbar.LENGTH_INDEFINITE
+            ).setBackgroundTint(Color.parseColor("#741919"))
+                .setTextColor(Color.WHITE)
+                .setActionTextColor(Color.WHITE)
+                .setAction("OK"){}.show()
+        } else if (result == "Sem Conexão") {
+            Snackbar.make(findViewById(R.id.CL),
+                "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
+                Snackbar.LENGTH_INDEFINITE
+            ).setBackgroundTint(Color.parseColor("#E3B30C"))
+                .setTextColor(Color.WHITE)
+                .setActionTextColor(Color.WHITE)
+                .setAction("OK"){}.show()
+        }else {
+            Snackbar.make(findViewById(R.id.CL),
+                "Sincronizado com sucesso!",
+                Snackbar.LENGTH_LONG
+            ).setBackgroundTint(Color.parseColor("#197419"))
+                .setTextColor(Color.WHITE)
+                .setActionTextColor(Color.WHITE)
+                .setAction("OK"){}.show()
         }
     }
 
+
     fun setTotal(){
+
         val spinner: Int
+
         val cxAvulsa = findViewById<TextView>(R.id.caixasAvulsas)
         val qtdAvulsa = findViewById<TextView>(R.id.qtdAvulsas)
         var viewTotal = findViewById<TextView>(R.id.total)
@@ -467,10 +602,25 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         var valueCxAvulsa = "0"
         var valueQtAvulsa = "0"
 
-        var pilha: EditText = findViewById(R.id.finalResult)
-        var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
 
-        //spinnerPrd = findViewById<AutoCompleteTextView>(R.id.spinnerPrd)
+        var btnPilha = findViewById<MaterialButton>(R.id.tButtonPilha)
+
+        var btnPallet = findViewById<MaterialButton>(R.id.tButtonPallet)
+
+
+
+        var tipoID = ""
+        if (btnPilha.isChecked){
+            tipoID = "0"
+        } else if (btnPallet.isChecked){
+            tipoID = "1"
+        }
+
+        var pilha: EditText = findViewById(R.id.finalResult)
+
+        //var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
+
+
         var qeProduto = findViewById<EditText>(R.id.editTextEmbalagemCaixa)
 
         if (cxAvulsa.text.length == 0){
@@ -484,20 +634,21 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             valueQtAvulsa = "${qtdAvulsa.text}"
         }
 
-        if ((qeProduto.length() > 0) && ((tipoID.text == "0") or (tipoID.text == "1"))){
-            if (tipoID.text == "0") {
+        if ((qeProduto.length() > 0) && ((tipoID == "0") or (tipoID == "1"))){
+            if (tipoID == "0") {
                 spinner = 10
                 var total = (parseInt(qeProduto.text.toString()) * spinner * parseInt(pilha.text.toString())) + parseInt(valueQtAvulsa.toString()) + (parseInt(valueCxAvulsa.toString()) * parseInt(qeProduto.text.toString()))
                 Log.d("Debug campo total", "$total")
                 viewTotal.text = total.toString()
             }
-            else if (tipoID.text == "1"){
+            else if (tipoID == "1"){
                 spinner = 54
                 var total = (parseInt(qeProduto.text.toString()) * spinner * parseInt(pilha.text.toString())) + parseInt(valueQtAvulsa.toString()) + ((parseInt(valueCxAvulsa.toString()) * parseInt(qeProduto.text.toString())))
                 Log.d("Debug campo total", "$total")
                 viewTotal.text = total.toString()
             }
-
+        }else {
+            viewTotal.text = ""
         }
     }
 
@@ -514,6 +665,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         while (cursor!!.moveToNext()) {
             cursorArray.add(cursor!!.getString(1))
         }
+
         var spinnerPrd: AutoCompleteTextView = findViewById(R.id.spinnerPrd)
         val DESC_PROD = "descProduto"
         var simpleCursorAdapter =
@@ -541,10 +693,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         var tipoVProduto: String = ""
         var diasValidade: Int = 0
         var adcVal: Int
-        val QE_PROD = "qeProduto"
-
-        connectionView()
-
+        //val QE_PROD = "qeProduto"
 
         var dateNow = Calendar.getInstance()
         dateNow.set(

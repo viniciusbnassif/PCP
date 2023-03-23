@@ -2,32 +2,6 @@
 
 
 <resources>
-    <style name="buttonSuccess" parent="Widget.Material3.Button">
-        <item name="android:textColor">@color/suSuccessGreen</item>
-        <item name="icon">@drawable/ic_baseline_check_circle_24</item>
-        <item name="iconTint">@color/suSuccessGreen</item>
-        <item name="backgroundTint">@color/lightSuccessGreen</item>
-        <item name="android:minWidth">60dip</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="iconPadding">2dp</item>
-        <item name="strokeColor">@color/suSuccessGreen</item>
-        <item name="strokeWidth">1dp</item>
-    </style>
-
-    <style name="buttonError">
-        <item name="android:textColor">@color/suErrorRed</item>
-        <item name="icon">@drawable/baseline_cancel_24</item>
-        <item name="iconTint">@color/suErrorRed</item>
-        <item name="backgroundTint">@color/lightErrorRed</item>
-        <item name="android:minWidth">60dip</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="iconPadding">2dp</item>
-        <item name="strokeColor">@color/suErrorRed</item>
-        <item name="strokeWidth">1dp</item>
-
-    </style>
 
     <style name="buttonNeutral">
         <item name="android:textColor">@color/black</item>

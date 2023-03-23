@@ -2,6 +2,7 @@ package com.liderMinas.PCP
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.provider.Settings
@@ -73,53 +74,77 @@ class MainActivity : AppCompatActivity() {
 
         var elementsOnLogin = findViewById<LinearLayout>(R.id.elementsOnLogin)
 
-        fun authUser(ctxt: android.content.Context) {
-            var validation = confirmUnPw(user.text.toString(), pw.text.toString())
-            if (validation == 201) {
-                Snackbar.make(
-                    elementsOnLogin,
-                    "Usuário autenticado \nAtualizando tabelas...",
+
+
+        fun connectionView(): String{
+            var result = Sync().testConnection()
+
+            if (result == "Falha" ) {
+                var xyz = Snackbar.make(findViewById(R.id.clMA),
+                    getString(R.string.connectionErroResult1),
                     Snackbar.LENGTH_LONG
-                ).show()
-                query = "DELETE FROM Usuario WHERE username = '${user.text}'"
-                db.externalExecSQL(query)
-                query = "INSERT INTO Usuario(username, password) VALUES ('${user.text}', '${pw.text}')"
-                db.externalExecSQL(query)
-                sync.sync(0, ctxt)
-
-                var username = user.text.toString()
-                var mainMenu = Intent(this, MainMenu::class.java).apply {
-                    putExtra(EXTRA_MESSAGE, username)}
-                startActivity(mainMenu)
-
-
-                finish()
-
-            } else if (validation == 401) {
-
-                userView.setError(" ")
-                pwView.setError("Nome de usuário ou senha incorretos")
-                pw.setText("")
-                Snackbar.make(
-                    elementsOnLogin,
-                    "Nome de usuário e/ou senha incorretos",
-                    Snackbar.LENGTH_LONG
-                ).show()
+                ).setBackgroundTint(Color.parseColor("#741919"))
+                    .setTextColor(Color.WHITE)
+                    .setActionTextColor(Color.WHITE)
+                    .setAction("OK"){}.show()
                 progress.setVisibility(INVISIBLE)
-            } else if (validation == 901 || validation == 900) {
+                return result
+            } else if (result == "Sem Conexão") {
+                progress.setVisibility(INVISIBLE)
+                return result
+            }else {
+                return "Sucesso"
+            }
+        }
+
+        fun authUser(ctxt: android.content.Context) {
+            var result = connectionView()
+            if (result == "Sucesso") {
+                var validation = confirmUnPw(user.text.toString(), pw.text.toString())
+                if (validation == 201) {
+                    Snackbar.make(
+                        elementsOnLogin,
+                        "Usuário autenticado \nAtualizando tabelas...",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    query = "DELETE FROM Usuario WHERE username = '${user.text}'"
+                    db.externalExecSQL(query)
+                    query =
+                        "INSERT INTO Usuario(username, password) VALUES ('${user.text}', '${pw.text}')"
+                    db.externalExecSQL(query)
+                    sync.sync(0, ctxt)
+
+                    var username = user.text.toString()
+                    var mainMenu = Intent(this, MainMenu::class.java).apply {
+                        putExtra(EXTRA_MESSAGE, username)
+                    }
+                    startActivity(mainMenu)
+
+                    finish()
+                } else if (validation == 401) {
+
+                    userView.setError(" ")
+                    pwView.setError("Nome de usuário ou senha incorretos")
+                    pw.setText("")
+                    Snackbar.make(
+                        elementsOnLogin,
+                        "Nome de usuário e/ou senha incorretos",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    progress.setVisibility(INVISIBLE)
+                }
+            }
+            if (result == "Falha" || result == "Sem Conexão") {
                 query = "SELECT username FROM Usuario WHERE username = '${user.text}' AND password = '${pw.text}'"
                 var auth = db.externalExecSQLSelect(user.text.toString(), pw.text.toString())
                 //Log.d("Debug", "Cursor = $cursor")
                 if (auth == true) {
-                    sync.sync(0, ctxt)
-
                     var username = user.text.toString()
                     var mainMenu = Intent(this, MainMenu::class.java).apply {
                         putExtra(EXTRA_MESSAGE, username)}
                     startActivity(mainMenu)
                     finish()
-                }
-                else {
+                } else if (auth == false) {
                     Snackbar.make(
                         elementsOnLogin,
                         "Não foi possivel conectar ao servidor. Verifique as configurações de rede e tente novamente.",
@@ -128,7 +153,6 @@ class MainActivity : AppCompatActivity() {
                         startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
                     }.show()
                 }
-
                 progress.setVisibility(INVISIBLE)
             }
         }
