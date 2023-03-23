@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PCP - PCP - Production Planning and Control</string>
+    <string name="app_name">PCP - Production Planning and Control</string>
     <string name="data_de_finalizacao">End data</string>
     <string name="hora_de_finalizacao">End time</string>
     <string name="caixas_avulsas">Single Boxes</string>
@@ -17,4 +17,11 @@
     <string name="pilhas">Pile/stack</string>
     <string name="selecioneADataDeVencimento">Valid Until</string>
     <string name="sincComSucesso">Successfully synced</string>
+    <string name="entrar">Sign in</string>
+    <string name="senha">Password</string>
+    <string name="nome_de_usuario">Username</string>
+    <string name="bem_vindo">Welcome</string>
+    <string name="apontar_produtos_embalados">Packaged products Note</string>
+    <string name="apontar_perdas_de_produtos">Products Losses Note</string>
+    <string name="sincronizar">Sync</string>
 </resources>

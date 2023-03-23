@@ -18,6 +18,14 @@
     <string name="pilhas">Pilhas</string>
     <string name="selecioneADataDeVencimento">Selecione a data de vencimento</string>
     <string name="sincComSucesso">Sincronizado com sucesso</string>
+    <string name="entrar">Entrar</string>
+    <string name="senha">Senha</string>
+    <string name="nome_de_usuario">Nome de Usuário</string>
+    <string name="bem_vindo">Bem-vindo</string>
+    <string name="apontar_produtos_embalados">Apontar produtos embalados</string>
+    <string name="apontar_perdas_de_produtos">Apontar perdas de produtos</string>
+    <string name="sincronizar">Sincronizar</string>
+    <string name="finalizar_e_n_iniciar_outro">Finalizar e \n iniciar outro</string>
 
 
 </resources>

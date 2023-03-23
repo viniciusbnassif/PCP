@@ -34,7 +34,7 @@ class Sync : AppCompatActivity(){
             val clientHTTP = OkHttpClient()
             val address = InetSocketAddress(host, port);
             val clientSocket = Socket()
-            clientSocket.connect(address, 5000)
+            clientSocket.connect(address, 1000)
             //clientSocket.soTimeout = 5000
 
             // do something with the successfully opened socket

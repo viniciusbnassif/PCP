@@ -42,7 +42,7 @@
             android:id="@+id/saudacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bem-vindo"
+            android:text="@string/bem_vindo"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
             android:layout_marginBottom="32dp"
-            android:text="Apontar produtos embalados"
+            android:text="@string/apontar_produtos_embalados"
             android:textSize="20sp"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toTopOf="@+id/apPerdas"
@@ -73,7 +73,7 @@
             android:layout_height="108dp"
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
-            android:text="Apontar perdas de produtos"
+            android:text="@string/apontar_perdas_de_produtos"
             android:textSize="20sp"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -108,7 +108,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="15dp"
-                android:text="Sincronizar"
+                android:text="@string/sincronizar"
                 app:icon="@drawable/ic_baseline_sync_24" />
         </LinearLayout>
 

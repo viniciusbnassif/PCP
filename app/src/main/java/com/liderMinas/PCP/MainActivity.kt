@@ -13,6 +13,8 @@ import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.api.Context
@@ -27,6 +29,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         SQLiteHelper(this);
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Hello Amazon")
+            .setMessage("This app is for internal use only, across most than one company. For this reason, a login is necessary and the sync will only work on the correct wi-fi network. Anyway, you can use the username 'test' and the password 'test' to look into the app." +
+                    "(The app is in Brazilian Portuguese for now, because the company where it will be used are Brazilian)")
+            .setNegativeButton("Dismiss") { dialog, which ->
+                dialog.dismiss()
+            }.show()
+
+
+
         var db = SQLiteHelper(this)
 
         var sync = Sync()

@@ -227,30 +227,6 @@
                     android:tooltipText="Clique para abrir o calendário e selecionar/editar a data" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/plusBtn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textInputLayout21"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout18">
-
-                <TextView
-                    android:id="@+id/tipoTransporteID"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"></TextView>
-
-                <AutoCompleteTextView
-                    android:id="@+id/tipoTransporte"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Pilha ou Pallet"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.button.MaterialButtonToggleGroup
@@ -272,7 +248,7 @@
                     android:layout_weight="1"
                     android:insetTop="5dp"
                     android:insetBottom="0dp"
-                    android:text="Pilha"
+                    android:text="@string/pilhas"
                     app:cornerRadius="5dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -283,7 +259,7 @@
                     android:layout_weight="1"
                     android:insetTop="5dp"
                     android:insetBottom="0dp"
-                    android:text="Pallet"
+                    android:text="@string/pallet"
                     app:cornerRadius="5dp" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -325,7 +301,7 @@
                     android:id="@+id/finalResult"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Pilhas"
+                    android:hint="@string/pilhas"
                     android:inputType="none"
                     android:editable="false"
                     android:focusableInTouchMode="false"
@@ -478,7 +454,7 @@
                 android:layout_marginBottom="3dp"
                 android:elevation="15dp"
                 android:lines="2"
-                android:text="Finalizar e \n iniciar outro"
+                android:text="@string/finalizar_e_n_iniciar_outro"
                 android:tooltipText="Finalizar"
                 app:icon="@drawable/ic_outline_library_add_24"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -492,7 +468,7 @@
                 android:layout_margin="3dp"
                 android:text="@string/finalizar"
                 android:textSize="16sp"
-                android:tooltipText="Finalizar"
+                android:tooltipText="@string/finalizar"
                 app:fabSize="normal"
                 app:icon="@drawable/ic_outline_library_add_check_24"
                 app:layout_constraintBottom_toBottomOf="parent"

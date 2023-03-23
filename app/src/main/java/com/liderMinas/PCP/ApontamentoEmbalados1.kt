@@ -83,8 +83,6 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         val btnValidade = findViewById<EditText>(R.id.btnValidade)
         //spinner = findViewById<Spinner>(R.id.menu)
         val spinnerID = findViewById<TextView>(R.id.spinnerIdSaver)
-        val transporteID = findViewById<TextView>(R.id.tipoTransporteID)
-        transporteID.text = "0"
 
         //spinnerPrd = findViewById<AutoCompleteTextView>(R.id.spinnerPrd)
         val dateVal: TextInputEditText = findViewById(R.id.btnValidade)
@@ -125,32 +123,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             }
         })
 
-        val tipoTranporte = arrayOf<String>(getString(R.string.pilhas), getString(R.string.pallet))
 
-        val SpTipoTransporte = findViewById<AutoCompleteTextView>(R.id.tipoTransporte)
-
-        val adapterTransporte = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, tipoTranporte)
-        SpTipoTransporte.setAdapter(adapterTransporte)
-        SpTipoTransporte.setText(SpTipoTransporte.adapter.getItem(0).toString(), false)
-        SpTipoTransporte.onItemClickListener =
-            AdapterView.OnItemClickListener { p0, view, position, _id ->
-                if (view?.context != null) {
-                    transporteID.text = _id.toInt().toString()
-                    id = _id.toInt()
-                    setTotal()
-                    //findViewById<TextView>(R.id.tipoTransporteID).apply { text = "$id" }
-                    if (id == 1){
-                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = context.getString(
-                                                    R.string.pallet) }
-                    }
-                    else if (id==0){
-                        findViewById<TextInputLayout>(R.id.textInputLayout22).apply { hint = context.getString(
-                                                    R.string.pilhas) }
-                    }
-                    //inicia metodo passando o id do item selecionado
-
-                }
-            }
 
 
         setOrRefreshSpinner()
@@ -443,7 +416,6 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
         fun finalizar(command: Int){
             var sync = Sync()
-            var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
 
             if ((spinnerID.text != "")
                 && (lote.length() != 0)
@@ -677,7 +649,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             AdapterView.OnItemClickListener { p0, view, position, _id ->
                 if (view?.context != null) {
                     spinnerID.text = _id.toInt().toString()
-                    id = _id.toInt()
+                    id = _id.toInt() + 1
                     overrideDataBlock(id) //inicia metodo passando o id do item selecionado
                     setTotal()
                 }
@@ -724,7 +696,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("0")
         if (cursor2 != null) {
             //qeProduto = ("${cursor2.getInt(0)}")
-            findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("${cursor2.getInt(1)}")
+            findViewById<EditText>(R.id.editTextEmbalagemCaixa).setText("${cursor2.getInt(1)}") //-----------------
             validProduto = cursor2.getInt(2)
             tipoVProduto = cursor2.getString(3).toString()
             findViewById<TextView>(R.id.validProdutoSaver).apply { text = validProduto.toString() }
