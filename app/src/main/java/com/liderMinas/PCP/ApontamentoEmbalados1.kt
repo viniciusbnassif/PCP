@@ -37,13 +37,13 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         setContentView(R.layout.activity_apontamento_embalados1)
 
         // Hide the status bar.
-        /*window.decorView.apply {
+        window.decorView.apply {
             // Hide both the navigation bar and the status bar.
             // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
             // a general rule, you should design your app to hide the status bar whenever you
             // hide the navigation bar.
-            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
-        }*/
+            systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
 
 
         val username = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)

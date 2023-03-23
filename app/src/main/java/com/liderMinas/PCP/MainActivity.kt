@@ -8,6 +8,7 @@ import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.*
@@ -25,6 +26,17 @@ import com.liderMinas.PCP.database.Sync
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
+
+
         setContentView(R.layout.activity_main)
         SQLiteHelper(this);
         var db = SQLiteHelper(this)

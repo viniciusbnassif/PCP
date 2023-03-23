@@ -7,6 +7,7 @@ import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.provider.AlarmClock
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.window.OnBackInvokedDispatcher
@@ -49,6 +50,15 @@ class ApontamentoPerdas : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.liderMinas.PCP.R.layout.activity_apontamento_perdas)
+
+
+        window.decorView.apply {
+            // Hide both the navigation bar and the status bar.
+            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+            // a general rule, you should design your app to hide the status bar whenever you
+            // hide the navigation bar.
+            systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
 
         val username = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)
 
