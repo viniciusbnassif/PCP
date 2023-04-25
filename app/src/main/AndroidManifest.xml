@@ -26,13 +26,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Estatistica"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".ApontamentoPerdas"
             android:configChanges="orientation"
             android:exported="false"
@@ -51,15 +44,6 @@
             android:label="Apontamento de produtos embalados"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".MainMenu"
-            android:exported="false"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="Página Inícial">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
