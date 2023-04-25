@@ -55,10 +55,10 @@
                 android:id="@+id/viewUser"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:autofillHints="username"
                 android:visibility="visible"
+                app:hintEnabled="false"
                 app:layout_constraintBottom_toTopOf="@id/viewPassword"
-                app:layout_constraintEnd_toStartOf="@+id/loginscreen_login"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/space1">
 
@@ -75,7 +75,14 @@
                 android:id="@+id/viewPassword"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
                 android:orientation="vertical"
+                android:textColorHint="@color/black"
+                app:counterTextColor="@color/black"
+                app:expandedHintEnabled="true"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:hintTextColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/loginscreen_login"
                 app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +93,8 @@
                     android:id="@+id/editTextPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:background="@drawable/login_acitivity_textview_corner"
                     android:hint="Senha"
                     android:imeOptions="actionSend"
                     android:inputType="textNoSuggestions|textPassword" />
@@ -98,15 +107,14 @@
                 android:id="@+id/loginscreen_login"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:insetLeft="4dp"
-                android:insetTop="5dp"
-                android:insetBottom="0dp"
+                android:background="@drawable/login_activity_button"
                 android:text="Entrar"
                 app:cornerRadius="5dp"
+                app:icon="@drawable/baseline_login_24"
+                app:iconGravity="start"
                 app:layout_constraintBottom_toBottomOf="@id/viewPassword"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/viewUser"
-                app:layout_constraintTop_toTopOf="@+id/viewUser"></Button>
+                app:layout_constraintTop_toTopOf="@+id/viewPassword"></Button>
 
 
             <!--Button
@@ -118,17 +126,6 @@
                 android:gravity="center|end"
                 android:text="Entrar"
                 app:icon="@drawable/ic_outline_login_24_white" /-->
-
-
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progress"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/loginscreen_login"
-                app:layout_constraintTop_toTopOf="@+id/loginscreen_login" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

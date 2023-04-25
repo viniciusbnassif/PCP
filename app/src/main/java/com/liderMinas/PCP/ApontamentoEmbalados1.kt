@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.button.MaterialButton
@@ -21,6 +22,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.Sync
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import java.lang.Integer.parseInt
 import java.time.LocalDate
 import java.util.*
@@ -37,13 +40,25 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         setContentView(R.layout.activity_apontamento_embalados1)
 
         // Hide the status bar.
-        window.decorView.apply {
+        /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
             // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
             // a general rule, you should design your app to hide the status bar whenever you
             // hide the navigation bar.
             systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
+        }*/
+
+
+        var bottomAppBar = findViewById<BottomAppBar>(R.id.apontEmbaladosBottomBar)
+        KeyboardVisibilityEvent.setEventListener(this, object : KeyboardVisibilityEventListener {
+            override fun onVisibilityChanged(isOpen: Boolean) {
+                if (isOpen) {
+                    bottomAppBar.isVisible = false
+                } else {
+                    bottomAppBar.isVisible = true
+                }
+            }
+        })
 
 
         val username = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)
@@ -546,13 +561,13 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             }
         }
 
-        val buttonResetar: ExtendedFloatingActionButton = findViewById(R.id.fab1)
+        val buttonResetar: MaterialButton = findViewById(R.id.fab1)
         buttonResetar.setOnClickListener {
             finalizar(1)
 
         }
 
-        val buttonFinalizar: ExtendedFloatingActionButton = findViewById(R.id.fab2)
+        val buttonFinalizar: MaterialButton = findViewById(R.id.fab2)
         buttonFinalizar.setOnClickListener {
             finalizar(2)
         }

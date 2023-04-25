@@ -451,7 +451,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
+        <!--com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/apontEmbaladosBottomBar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -497,7 +497,77 @@
                 app:icon="@drawable/ic_outline_library_add_check_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout-->
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/apontEmbaladosBottomBar"
+            style="@style/Widget.Material3.AppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:keepScreenOn="true"
+            app:backgroundTint="@color/colorPrimary"
+            app:hideOnScroll="true"
+            app:navigationIconTint="#FFFFFF"
+            app:titleTextColor="@color/white">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fab1"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="Finalizar e \niniciar outro"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimary"
+                    app:backgroundTint="@color/color_0"
+                    app:cornerRadius="8dp"
+                    app:icon="@drawable/ic_outline_library_add_24"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/fab2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#00FFFFFF" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fab2"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="Finalizar"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/color_0"
+                    app:cornerRadius="8dp"
+                    app:icon="@drawable/ic_outline_library_add_check_24"
+                    app:iconGravity="start"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/fab1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#00FFFFFF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

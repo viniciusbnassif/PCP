@@ -7,25 +7,23 @@ import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.provider.AlarmClock
 import android.util.Log
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import android.window.OnBackInvokedDispatcher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.cursoradapter.widget.SimpleCursorAdapter
-import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import com.liderMinas.PCP.database.queryMotivoExt
+import com.liderMinas.PCP.database.Sync
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt
 import java.util.*
-import androidx.activity.addCallback
-import com.liderMinas.PCP.database.Sync
 
 
 class ApontamentoPerdas : AppCompatActivity() {
@@ -45,20 +43,29 @@ class ApontamentoPerdas : AppCompatActivity() {
     lateinit var motivo5: AutoCompleteTextView
     lateinit var motivo6: AutoCompleteTextView
     lateinit var timeProtheus: String
-
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.liderMinas.PCP.R.layout.activity_apontamento_perdas)
 
 
-        window.decorView.apply {
+        var bottomAppBar = findViewById<BottomAppBar>(R.id.bottomAppBar)
+        KeyboardVisibilityEvent.setEventListener(this, object : KeyboardVisibilityEventListener {
+            override fun onVisibilityChanged(isOpen: Boolean) {
+                if (isOpen) {
+                    bottomAppBar.isVisible = false
+                } else {
+                    bottomAppBar.isVisible = true
+                }
+            }
+        })
+        /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
             // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
             // a general rule, you should design your app to hide the status bar whenever you
             // hide the navigation bar.
             systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
+        }*/
 
         val username = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)
 
@@ -835,14 +842,13 @@ class ApontamentoPerdas : AppCompatActivity() {
                 dialog.dismiss()
             }
             .setPositiveButton("Sair") { dialog, which ->
-                super.onBackPressed()
+                super.finishAfterTransition()
             }
             .show()
     }
         /* When the activity is destroyed then close the cursor as it will not be used again */
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
-        Animatoo.animateSlideRight(this);
         return true
     }
 

@@ -18,6 +18,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".MainNav"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Estatistica"
             android:exported="false">
             <meta-data
@@ -31,7 +39,7 @@
             android:label="Apontamento de perdas"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.PCP"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -42,7 +50,7 @@
             android:exported="false"
             android:label="Apontamento de produtos embalados"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -50,6 +58,7 @@
         <activity
             android:name=".MainMenu"
             android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="Página Inícial">
             <meta-data
                 android:name="android.app.lib_name"
@@ -64,7 +73,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -2,14 +2,18 @@ package com.liderMinas.PCP
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.widget.ActionBarContainer
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.evrencoskun.tableview.TableView
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.*
@@ -19,18 +23,19 @@ import java.util.Collections.EMPTY_LIST
 import java.util.Collections.list
 
 
-class Estatistica : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_estatistica)
+class Estatistica : Fragment() {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View?
+    = inflater.inflate(R.layout.activity_estatistica, container, false).apply {
 
-        window.decorView.apply {
+        /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
             // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
             // a general rule, you should design your app to hide the status bar whenever you
             // hide the navigation bar.
             systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
+        }*/
 
         val progress = findViewById<CircularProgressIndicator>(R.id.pIndicator)
         progress.visibility = VISIBLE
@@ -45,26 +50,13 @@ class Estatistica : AppCompatActivity() {
 
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            // show back button on toolbar
-            // on back button press, it will navigate to parent activity
-            setDisplayHomeAsUpEnabled(false)
-            setDisplayShowCustomEnabled(false)
-
-        }
-        getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.ic_baseline_logout_24)
 
         var refresh = findViewById<ImageView>(R.id.refresh)
 
         refresh.setOnClickListener{
             myWebView.reload()
         }
-
-        var close = findViewById<ImageView>(R.id.close)
-        close.setOnClickListener{
-            finish()
-        }
+        
 
 
         /*var contentContainer = findViewById<TableView>(R.id.content_container)

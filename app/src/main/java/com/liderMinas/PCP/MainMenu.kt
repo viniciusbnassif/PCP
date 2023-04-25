@@ -9,13 +9,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,28 +28,24 @@ import com.liderMinas.PCP.database.Sync
 import java.lang.Integer.parseInt
 
 
-class MainMenu : AppCompatActivity() {
+class MainMenu(var username: String) : Fragment() {
     @SuppressLint("ResourceAsColor", "MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_menu)
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View?
+    = inflater.inflate(R.layout.activity_main_menu, container, false).apply {
 
-
-        window.decorView.apply {
+        /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
             // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
             // a general rule, you should design your app to hide the status bar whenever you
             // hide the navigation bar.
             systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
+        }*/
+        var ctxt = getActivity()?.getApplicationContext()
 
-        var relatorio = findViewById<FloatingActionButton>(R.id.relatorio)
-        relatorio.setOnClickListener{
-            var estatistica = Intent(this, Estatistica::class.java)
-            startActivity(estatistica)
-        }
 
-        val toolbar = findViewById<Toolbar>(R.id.appBar)
+        /*val toolbar = findViewById<Toolbar>(R.id.appBar)
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             // show back button on toolbar
@@ -54,7 +54,7 @@ class MainMenu : AppCompatActivity() {
             setDisplayShowCustomEnabled(false)
 
         }
-        getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.ic_baseline_logout_24)
+        getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.ic_baseline_logout_24)*/
 
 
         var coordinator = findViewById<ConstraintLayout>(R.id.parent)
@@ -62,23 +62,44 @@ class MainMenu : AppCompatActivity() {
 
         fun connectionView(){
             var result = Sync().testConnection()
-
             if (result == "Falha" ) {
-                val snackbar = Snackbar.make(findViewById(R.id.CL),
+                Snackbar.make(
+                    cl,
+                    "Não foi possível estabelecer uma conexão com o servidor",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE)
+                    .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+            } else if (result == "Sem Conexão") {
+                Snackbar.make(
+                    cl,
+                    "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(Color.parseColor("#E3B30C")).setTextColor(Color.WHITE)
+                    .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+            }/* else {
+                Snackbar.make(cl,
+                    "Sincronizado com sucesso!",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
+
+            }*/
+
+            /*if (result == "Falha" ) {
+                val snackbar = Snackbar.make(cl,
                     "Não foi possível estabelecer uma conexão com o servidor",
                     Snackbar.LENGTH_INDEFINITE
                 ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
             } else if (result == "Sem Conexão") {
-                Snackbar.make(findViewById(R.id.CL),
+                Snackbar.make(cl,
                     "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
                     Snackbar.LENGTH_INDEFINITE
                 ).setBackgroundTint(Color.parseColor("#E3B30C")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
             }else {
-                Snackbar.make(findViewById(R.id.CL),
+                Snackbar.make(cl,
                     "Sincronizado com sucesso!",
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
-            }
+            }*/
         }
 
         connectionView()
@@ -88,9 +109,9 @@ class MainMenu : AppCompatActivity() {
 
 
 
-        var syncBtn = findViewById<ExtendedFloatingActionButton>(R.id.syncBtn)
+        var syncBtn = findViewById<MaterialButton>(R.id.syncBtn)
         syncBtn.setOnClickListener {
-            var sync = Sync().sync(0, this)
+            var sync = ctxt?.let { it1 -> Sync().sync(0, it1) }
             if (sync == "Sucesso") {
 
                 Snackbar.make(cl,
@@ -102,7 +123,7 @@ class MainMenu : AppCompatActivity() {
             }
         }
 
-        val username = intent.getStringExtra(EXTRA_MESSAGE)
+        //val username = username
         var saudacao = "Bem-vindo, ${username}"
         findViewById<TextView>(R.id.saudacao).apply { text = saudacao }
 
@@ -113,7 +134,7 @@ class MainMenu : AppCompatActivity() {
 
         val buttonAE: Button = findViewById(R.id.apEmbalados)
         buttonAE.setOnClickListener {
-            intent = Intent(this, ApontamentoEmbalados1::class.java)
+            intent = Intent(ctxt, ApontamentoEmbalados1::class.java)
                 .apply {
                     putExtra(EXTRA_MESSAGE, username)}
             startActivity(intent)
@@ -123,7 +144,7 @@ class MainMenu : AppCompatActivity() {
 
         val buttonAP: Button = findViewById(R.id.apPerdas)
         buttonAP.setOnClickListener {
-            intent = Intent(this, ApontamentoPerdas::class.java)
+            intent = Intent(ctxt, ApontamentoPerdas::class.java)
                 .apply {
                     putExtra(EXTRA_MESSAGE, username)}
             startActivity(intent)
@@ -153,8 +174,8 @@ class MainMenu : AppCompatActivity() {
 
 
     /* When the activity is destroyed then close the cursor as it will not be used again */
-    override fun onBackPressed() {
-        MaterialAlertDialogBuilder(this)
+    /*override fun onBackPressed() {
+        MaterialAlertDialogBuilder(ctxt)
             .setIcon(R.drawable.ic_baseline_logout_24_black)
             .setTitle("Você escolheu sair...")
             .setMessage("O aplicativo será encerrado e será necessário efetuar login novamente. \nDeseja sair mesmo assim?")
@@ -163,7 +184,7 @@ class MainMenu : AppCompatActivity() {
             }
             .setNegativeButton("Fazer logout") { dialog, which ->
                 super.onBackPressed()
-                intent = Intent(this, MainActivity::class.java)
+                intent = Intent(ctxt, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -178,10 +199,10 @@ class MainMenu : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
+    }*/
 }
 
-class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :
+/*class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :
     CoordinatorLayout.Behavior<FloatingActionButton?>() {
     fun layoutDependsOn(
         parent: CoordinatorLayout?,
@@ -201,6 +222,6 @@ class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :
         child.translationY = translationY
         return true
     }
-}
+}*/
 
 

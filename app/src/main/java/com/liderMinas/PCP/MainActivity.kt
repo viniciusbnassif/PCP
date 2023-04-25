@@ -3,6 +3,8 @@ package com.liderMinas.PCP
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.provider.Settings
@@ -52,8 +54,6 @@ class MainActivity : AppCompatActivity() {
         val pw = findViewById<EditText>(R.id.editTextPassword)
         val pwView = findViewById<TextInputLayout>(R.id.viewPassword)
 
-        var progress = findViewById<ProgressBar>(R.id.progress)
-        progress.setVisibility(INVISIBLE)
 
 
 
@@ -71,10 +71,6 @@ class MainActivity : AppCompatActivity() {
 
 
         //Exibir número de versão + revisão
-        var versionCode = BuildConfig.VERSION_CODE
-        var versionName = BuildConfig.VERSION_NAME
-        var version = "Versão: $versionName. Revisão: $versionCode"
-
         var query: String
 
 
@@ -99,10 +95,8 @@ class MainActivity : AppCompatActivity() {
                     .setTextColor(Color.WHITE)
                     .setActionTextColor(Color.WHITE)
                     .setAction("OK"){}.show()
-                progress.setVisibility(INVISIBLE)
                 return result
             } else if (result == "Sem Conexão") {
-                progress.setVisibility(INVISIBLE)
                 return result
             }else {
                 return "Sucesso"
@@ -127,10 +121,10 @@ class MainActivity : AppCompatActivity() {
                     sync.sync(0, ctxt)
 
                     var username = user.text.toString()
-                    var mainMenu = Intent(this, MainMenu::class.java).apply {
+                    var MainNav = Intent(this, MainNav::class.java).apply {
                         putExtra(EXTRA_MESSAGE, username)
                     }
-                    startActivity(mainMenu)
+                    startActivity(MainNav)
 
                     finish()
                 } else if (validation == 401) {
@@ -143,7 +137,6 @@ class MainActivity : AppCompatActivity() {
                         "Nome de usuário e/ou senha incorretos",
                         Snackbar.LENGTH_LONG
                     ).show()
-                    progress.setVisibility(INVISIBLE)
                 }
             }
             if (result == "Falha" || result == "Sem Conexão") {
@@ -152,9 +145,9 @@ class MainActivity : AppCompatActivity() {
                 //Log.d("Debug", "Cursor = $cursor")
                 if (auth == true) {
                     var username = user.text.toString()
-                    var mainMenu = Intent(this, MainMenu::class.java).apply {
+                    var MainNav = Intent(this, MainNav::class.java).apply {
                         putExtra(EXTRA_MESSAGE, username)}
-                    startActivity(mainMenu)
+                    startActivity(MainNav)
                     finish()
                 } else if (auth == false) {
                     Snackbar.make(
@@ -165,21 +158,19 @@ class MainActivity : AppCompatActivity() {
                         startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
                     }.show()
                 }
-                progress.setVisibility(INVISIBLE)
             }
         }
 
 
 
         pw.setOnEditorActionListener{ v, actionId, event ->
-            progress.setVisibility(VISIBLE)
             authUser(this)
             true
         }
 
         val button: Button = findViewById(R.id.loginscreen_login)
         button.setOnClickListener {
-            progress.setVisibility(VISIBLE)
+
             authUser(this)
         }
 
@@ -191,18 +182,11 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main_actv, menu)
         return true
     }
-    var versionCode = BuildConfig.VERSION_CODE
-    var versionName = BuildConfig.VERSION_NAME
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
-        R.id.versionView -> {
-            // User chose the "Settings" item, show the app settings UI...
 
-            Toast.makeText(applicationContext,
-                "Versão: $versionName.", Toast.LENGTH_SHORT).show()
-            true
-        }
 
         R.id.closeApp -> {
             finish()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,37 +10,124 @@
     android:windowSoftInputMode="adjustResize|adjustPan"
     tools:context=".ApontamentoPerdas">
 
-    <Space
-        android:id="@+id/space0"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        app:layout_constraintTop_toTopOf="@id/coordinatorLayoutTopBar" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
+            android:background="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimary"
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:keepScreenOn="true"
-        app:layout_constraintBottom_toTopOf="@id/spaceBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/space0">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIconTint="@color/white"
+            app:titleTextColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/fab1"
+                app:layout_constraintStart_toEndOf="@+id/spaceBottom">
+
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/stats1"
+                        style="@style/buttonNeutral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:contentDescription="neutral"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:shadowDy="15"
+                        android:text="1"
+                        app:iconPadding="2dp" />
+
+                    <Button
+                        android:id="@+id/stats2"
+                        style="@style/buttonNeutral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:contentDescription="neutral"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:text="2"
+                        app:iconPadding="2dp" />
+
+                    <Button
+                        android:id="@+id/stats3"
+                        style="@style/buttonNeutral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="neutral"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:text="3"
+                        app:iconPadding="2dp" />
+
+                    <Button
+                        android:id="@+id/stats4"
+                        style="@style/buttonNeutral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="neutral"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:text="4"
+                        app:iconPadding="2dp" />
+
+                    <Button
+                        android:id="@+id/stats5"
+                        style="@style/buttonNeutral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="neutral"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:text="5"
+                        app:iconPadding="2dp" />
+
+                    <Button
+                        android:id="@+id/stats6"
+                        style="@style/buttonNeutral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="neutral"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:text="6"
+                        app:iconPadding="2dp" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|clip_vertical"
+        android:fillViewport="false">
+
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewProduto"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
 
+                android:layout_marginTop="56dp"
                 android:hint="Selecione o produto para declarar a perda"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,85 +148,94 @@
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="24dp"
-                android:layout_weight="1"
-                android:visibility="visible"
-                app:helperText="Campo Automatico"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewProduto">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="1"
+            android:visibility="visible"
+            app:helperText="Campo Automatico"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewProduto">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/finalDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/data_de_finalizacao"
-                    android:singleLine="true"
-                    android:tooltipText="@string/data_de_finalizacao" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="24dp"
-                android:layout_weight="1"
-                android:visibility="visible"
-                app:helperText="Campo Automatico"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
-                app:layout_constraintTop_toBottomOf="@+id/viewProduto">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/finalTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/hora_de_finalizacao"
-                    android:singleLine="true"
-                    android:tooltipText="@string/hora_de_finalizacao" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <!-- Está pronto acima daqui-->
-
-            <TextView
-                android:id="@+id/textView2"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/finalDate"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="24dp"
-                android:gravity="center"
-                android:text="@string/perdas"
-                android:textAlignment="center"
-                android:textSize="25sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:hint="@string/data_de_finalizacao"
+                android:singleLine="true"
+                android:tooltipText="@string/data_de_finalizacao" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="1"
+            android:visibility="visible"
+            app:helperText="Campo Automatico"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/viewProduto">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/finalTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:hint="@string/hora_de_finalizacao"
+                android:singleLine="true"
+                android:tooltipText="@string/hora_de_finalizacao" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Está pronto acima daqui-->
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/perdas"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@id/card2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/custom_background"
-                android:padding="10dp"
-                app:layout_constraintBottom_toTopOf="@id/cl2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2">
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/title1"
@@ -175,10 +271,10 @@
                         android:id="@+id/motivo1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dropDownWidth = "match_parent"
                         android:layout_marginRight="4dp"
+                        android:dropDownWidth="match_parent"
                         android:inputType="none"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -254,18 +350,30 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/card3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card1">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/custom_background"
-                android:padding="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cl3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl1">
+                android:padding="10dp">
+
 
                 <TextView
                     android:id="@+id/title2"
@@ -301,7 +409,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
-                        android:dropDownWidth = "match_parent"
+                        android:dropDownWidth="match_parent"
                         android:inputType="none"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -379,18 +487,30 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/card4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/custom_background"
-                android:padding="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cl4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl2">
+                android:padding="10dp">
+
 
                 <TextView
                     android:id="@+id/title3"
@@ -425,10 +545,10 @@
                         android:id="@+id/motivo3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dropDownWidth = "match_parent"
                         android:layout_marginRight="4dp"
+                        android:dropDownWidth="match_parent"
                         android:inputType="none"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -504,18 +624,30 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/card5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card3">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/custom_background"
-                android:padding="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cl5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl3">
+                android:padding="10dp">
+
 
                 <TextView
                     android:id="@+id/title4"
@@ -550,10 +682,10 @@
                         android:id="@+id/motivo4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dropDownWidth = "match_parent"
                         android:layout_marginRight="4dp"
+                        android:dropDownWidth="match_parent"
                         android:inputType="none"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -629,18 +761,29 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/card6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card4">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/custom_background"
-                android:padding="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cl6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl4">
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/title5"
@@ -675,10 +818,10 @@
                         android:id="@+id/motivo5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dropDownWidth = "match_parent"
                         android:layout_marginRight="4dp"
+                        android:dropDownWidth="match_parent"
                         android:inputType="none"
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -754,18 +897,29 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@id/space1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card5">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/custom_background"
-                android:padding="10dp"
-                app:layout_constraintBottom_toTopOf="@id/space1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl5">
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/title6"
@@ -800,8 +954,8 @@
                         android:id="@+id/motivo6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dropDownWidth = "match_parent"
                         android:layout_marginRight="4dp"
+                        android:dropDownWidth="match_parent"
                         android:inputType="none"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -879,143 +1033,36 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
             <Space
                 android:id="@+id/space1"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="72dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cl6" />
+                app:layout_constraintTop_toBottomOf="@id/card6" />
 
 
-            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayoutTopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00FFFFFF"
-        android:backgroundTint="#00FFFFFF"
-        android:foregroundTint="#00FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/space0">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="top"
-            android:background="@color/colorPrimary"
-            app:backgroundTint="@color/colorPrimary"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIconTint="@color/white"
-            app:titleTextColor="@color/white">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:elevation="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/fab1"
-                app:layout_constraintStart_toEndOf="@+id/spaceBottom">
-
-
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/stats1"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:shadowDy="15"
-                        android:text="1"
-                        android:contentDescription="neutral"
-                        app:iconPadding="2dp" />
-
-                    <Button
-                        android:id="@+id/stats2"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="2"
-                        android:contentDescription="neutral"
-                        app:iconPadding="2dp" />
-
-                    <Button
-                        android:id="@+id/stats3"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="3"
-                        android:contentDescription="neutral"
-                        app:iconPadding="2dp" />
-
-                    <Button
-                        android:id="@+id/stats4"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="4"
-                        android:contentDescription="neutral"
-                        app:iconPadding="2dp" />
-
-                    <Button
-                        android:id="@+id/stats5"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="5"
-                        android:contentDescription="neutral"
-                        app:iconPadding="2dp" />
-
-                    <Button
-                        android:id="@+id/stats6"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="6"
-                        android:contentDescription="neutral"
-                        app:iconPadding="2dp" />
-                </com.google.android.material.button.MaterialButtonToggleGroup>
-
-
-            </LinearLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="#00FFFFFF"
         android:backgroundTint="#00FFFFFF"
         android:foregroundTint="#00FFFFFF"
         app:barrierMargin="15dp"
+        app:layout_anchorGravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_marginBaseline="15dp">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
+        <!--<com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -1061,7 +1108,77 @@
                 app:icon="@drawable/ic_outline_library_add_check_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/Widget.Material3.AppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:keepScreenOn="true"
+            app:backgroundTint="@color/colorPrimary"
+            app:hideOnScroll="true"
+            app:navigationIconTint="#FFFFFF"
+            app:titleTextColor="@color/white">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fab1"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="Finalizar e \niniciar outro"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimary"
+                    app:backgroundTint="@color/color_0"
+                    app:cornerRadius="8dp"
+                    app:icon="@drawable/ic_outline_library_add_24"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/fab2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#00FFFFFF" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fab2"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="Finalizar"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/color_0"
+                    app:cornerRadius="8dp"
+                    app:icon="@drawable/ic_outline_library_add_check_24"
+                    app:iconGravity="start"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/fab1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="#00FFFFFF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -1071,4 +1188,4 @@
         android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
