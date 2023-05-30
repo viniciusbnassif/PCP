@@ -25,6 +25,10 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Integer.parseInt
 
 
@@ -60,7 +64,7 @@ class MainMenu(var username: String) : Fragment() {
         var coordinator = findViewById<ConstraintLayout>(R.id.parent)
         var cl = findViewById<ConstraintLayout>(R.id.CL)
 
-        fun connectionView(){
+        suspend fun connectionView(){
             var result = Sync().testConnection()
             if (result == "Falha" ) {
                 Snackbar.make(
@@ -102,7 +106,7 @@ class MainMenu(var username: String) : Fragment() {
             }*/
         }
 
-        connectionView()
+         MainScope().launch{connectionView()}
 
 
         //var sync = parseInt("")
@@ -111,15 +115,26 @@ class MainMenu(var username: String) : Fragment() {
 
         var syncBtn = findViewById<MaterialButton>(R.id.syncBtn)
         syncBtn.setOnClickListener {
-            var sync = ctxt?.let { it1 -> Sync().sync(0, it1) }
-            if (sync == "Sucesso") {
+            MainScope().launch {
+                var sync = ctxt?.let { it1 ->
+                    withContext(Dispatchers.IO) {
+                        return@withContext Sync().sync(
+                            0,
+                            it1
+                        )
+                    }
+                }
+                if (sync == "Sucesso") {
 
-                Snackbar.make(cl,
-                    "Sincronizado com sucesso!",
-                    Snackbar.LENGTH_INDEFINITE
-                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
-            } else if (sync == "Falha") {
-                connectionView()
+                    Snackbar.make(
+                        cl,
+                        "Sincronizado com sucesso!",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
+                        .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+                } else if (sync == "Falha") {
+                    MainScope().launch { connectionView() }
+                }
             }
         }
 

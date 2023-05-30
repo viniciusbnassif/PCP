@@ -8,6 +8,7 @@ import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,6 +22,11 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.api.Context
 import com.liderMinas.PCP.database.*
 import com.liderMinas.PCP.database.Sync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.sql.SQLException
 
 
 //import com.liderMinas.PCP.database.connectMSSQL
@@ -30,13 +36,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
 
-        window.decorView.apply {
+        /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
             // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
             // a general rule, you should design your app to hide the status bar whenever you
             // hide the navigation bar.
             systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
+        }*/
 
 
         setContentView(R.layout.activity_main)
@@ -84,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        fun connectionView(): String{
+        suspend fun connectionView(): String{
             var result = Sync().testConnection()
 
             if (result == "Falha" ) {
@@ -103,7 +109,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fun authUser(ctxt: android.content.Context) {
+        fun afterSync(){
+            var username = user.text.toString()
+            var MainNav = Intent(this, MainNav::class.java).apply {
+                putExtra(EXTRA_MESSAGE, username)
+            }
+            startActivity(MainNav)
+
+            finish()
+        }
+
+        suspend fun authUser(ctxt: android.content.Context) {
             var result = connectionView()
             if (result == "Sucesso") {
                 var validation = confirmUnPw(user.text.toString(), pw.text.toString())
@@ -118,7 +134,17 @@ class MainActivity : AppCompatActivity() {
                     query =
                         "INSERT INTO Usuario(username, password) VALUES ('${user.text}', '${pw.text}')"
                     db.externalExecSQL(query)
-                    sync.sync(0, ctxt)
+                    return withContext(Dispatchers.IO) {
+                        try {
+                            sync.sync(0, ctxt)
+                        } catch (e: SQLException){
+                            Log.e("Sync MainActivity", e.toString())
+                        }
+                        withContext(Dispatchers.Main) {
+                            afterSync()
+                        }
+
+                    }
 
                     var username = user.text.toString()
                     var MainNav = Intent(this, MainNav::class.java).apply {
@@ -164,14 +190,19 @@ class MainActivity : AppCompatActivity() {
 
 
         pw.setOnEditorActionListener{ v, actionId, event ->
-            authUser(this)
+            var ctxt = this
+            MainScope().launch {
+                authUser(ctxt)
+            }
             true
         }
 
         val button: Button = findViewById(R.id.loginscreen_login)
         button.setOnClickListener {
-
-            authUser(this)
+            var ctxt = this
+            MainScope().launch {
+                authUser(ctxt)
+            }
         }
 
     }

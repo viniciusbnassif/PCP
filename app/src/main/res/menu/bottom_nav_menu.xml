@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_baseline_checklist_24"
         android:iconTint="@color/colorPrimary"
         android:title="Relatório" />
+    <item
+        android:id="@+id/requisicaoNav"
+        android:icon="@drawable/outline_move_up_24"
+        android:iconTint="@color/colorPrimary"
+        android:title="Requisições" />
 </menu>

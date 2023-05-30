@@ -19,6 +19,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.Sync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import java.lang.Float.parseFloat
@@ -688,7 +692,7 @@ class ApontamentoPerdas : AppCompatActivity() {
         setOrRefreshSpinnerProd()
 
 
-        fun finalizarPerda(option: Int){
+        suspend fun finalizarPerda(option: Int){
 
             var sync = Sync()
 
@@ -813,7 +817,8 @@ class ApontamentoPerdas : AppCompatActivity() {
                 clearPerda(6)
                 timeProtheus = updateTime().toString()
                 Snackbar.make(appBottomBar, "Perdas salvas", Snackbar.LENGTH_LONG).show()
-                sync.sync(1, this)
+                var ctxt = this
+                withContext(Dispatchers.IO){ sync.sync(1, ctxt)}
             }
         }
 
@@ -821,13 +826,13 @@ class ApontamentoPerdas : AppCompatActivity() {
 
         var fab1 = findViewById<Button>(R.id.fab1)
         fab1.setOnClickListener {
-            finalizarPerda(1)
+            MainScope().launch { finalizarPerda(1) }
         }
 
 
         var fab2 = findViewById<Button>(R.id.fab2)
         fab2.setOnClickListener {
-            finalizarPerda(2)
+            MainScope().launch { finalizarPerda(2) }
         }
 
 

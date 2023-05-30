@@ -40,6 +40,7 @@ class MainNav : AppCompatActivity() {
 
         val MainMenu=MainMenu(username)
         val Estatistica=Estatistica()
+        val Requisicao=Requisicao()
 
 
         setCurrentFragment(MainMenu)
@@ -49,6 +50,7 @@ class MainNav : AppCompatActivity() {
             when(it.itemId){
                 R.id.menu->setCurrentFragment(MainMenu)
                 R.id.relatorioNav->setCurrentFragment(Estatistica)
+                R.id.requisicaoNav->setCurrentFragment(Requisicao)
             }
             true
         }

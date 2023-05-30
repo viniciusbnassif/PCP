@@ -35,23 +35,6 @@ class Connection(private val coreConnection: java.sql.Connection) :
 
     lateinit var produtos: Array<String>
 
-
-    /*fun startConn() {
-        val policy: StrictMode.ThreadPolicy = Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-        try {
-            Class.forName(Classes)
-            connection = DriverManager.getConnection(url, username, password)
-            Log.d("Debug: ", "Connected")
-        } catch (e: ClassNotFoundException) {
-            e.printStackTrace()
-            Log.d("Debug: ", "Class fail")
-        } catch (e: SQLException) {
-            e.printStackTrace()
-            Log.d("Debug" , "Connected no")
-        }
-    }*/
-
     override fun close() {
         coreConnection.close()
     }
@@ -60,19 +43,6 @@ class Connection(private val coreConnection: java.sql.Connection) :
         return coreConnection.createStatement()
     }
 
-    /*fun queryToServer(){
-        var c = connectMSSQL();
-        var con = c.startConn()
-        var query = "INSERT INTO TableName(ColumnName) VALUES ('+text+') ";
-        stmt = con.createStatement()
-        var set: ResultSet = stmt.execute(query)
-
-        while (set.next()){
-            produtos.setText(set.getString(2))
-        }
-        con.close()
-
-    }*/
 }
 
 
@@ -173,6 +143,33 @@ fun queryMotivoExt(context: Context) {
 
         resultSet1.close()
         st1.close()
+    }
+}
+
+fun queryProdEstoqueExt(context: Context?) {
+    var dbIntrn: SQLiteHelper = SQLiteHelper(context)
+    connect().use {
+        var st1 = it?.createStatement()!!
+        var resultSet1 = st1.executeQuery(
+            """
+            SELECT *
+              FROM ProdutoEstoque
+             ORDER BY idProdutoEstoque
+            """.trimIndent()
+        )
+        dbIntrn.externalExecSQL("DELETE FROM ProdutoEstoque")
+        while (resultSet1.next()){
+            var query = "INSERT INTO ProdutoEstoque (idProdutoEstoque, codProduto, descProduto, tipoProduto, unidMedida, rastro)" +
+                    " VALUES (${resultSet1.getInt("idProdutoEstoque")}, '${resultSet1.getString("codProduto")}', ${resultSet1.getString("descProduto")}, ${resultSet1.getInt("tipoProduto")}, '${resultSet1.getInt("unidMedida")}'), '${resultSet1.getString("rastro")}')"
+            dbIntrn.externalExecSQL(query)
+            Log.d("SQL Insert", "${resultSet1.getString("descProduto")} inserido com sucesso")
+        }
+
+        resultSet1.close()
+        st1.close()
+
+        //return arrayOf(arrayProdutoIdExt, arrayProdutoDescExt,arrayProdutoQeExt, arrayProdutoValExt, arrayProdutoTipoExt)
+
     }
 }
 
@@ -294,10 +291,64 @@ fun queryExternalServerAP(context: Context) {
     }
 }
 
+fun queryExternalServerReqs(context: Context) {
+    var dbIntrn: SQLiteHelper = SQLiteHelper(context)
+
+    var result = dbIntrn.getReq()
+    var localResult = result
 
 
+    connect().use {
+
+        var st1 = it?.createStatement()!!
+        if (localResult != null && localResult.getCount() > 0) {
+            localResult.moveToFirst()
+            do {
+
+                var id = localResult?.getInt(0)
+
+                var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
+                var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
+                var produtoDesc = produto!!.getString(1)
+                var motivoDesc = motivo!!.getString(1)
+                Log.d("ProdDesc", "$produtoDesc")
+                try {
+
+                    var insert = (
+                            """
+                            INSERT INTO ApontPerda 
+                            (qtdPerda, unidPerda, dataHoraPerda, username, produto, motivo)
+                            VALUES
+                            (${localResult.getFloat(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', '${localResult.getString(4)}',
+                             '${produtoDesc}', '${motivoDesc}');
+                            """.trimIndent())
+                    Log.d("Debugggggg", insert)
+
+                    var comm = st1.connection.prepareStatement(insert)
+                    comm.executeUpdate()
 
 
+                    //comm.connection.commit()
+                } catch (e: ClassNotFoundException){
+                    Log.e("Error SQL CNFE", e.toString())
+                }
+                catch (se: SQLException){
+                    Log.e("Error SQLE", se.toString())
+                }
+                dbIntrn.insertDone("ApontPerda", id)
+
+                //result.moveToNext()
+            }while (localResult.moveToNext())
+
+
+        } else {
+            Log.d("Debug", "Erro ;-;")
+
+        }
+        st1.close()
+        connect()?.close()
+    }
+}
 
 
 

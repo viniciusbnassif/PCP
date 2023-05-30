@@ -24,6 +24,9 @@ class SQLiteHelper(context: Context?):
 
         private const val DATABASE_VERSION = 4
         private const val DATABASE_NAME = "pcp.db"
+
+
+        
         private const val TBL_USUARIO = "Usuario"
         private const val ID_USUARIO = "idUsuario"
         private const val USERNAME = "username"
@@ -75,6 +78,30 @@ class SQLiteHelper(context: Context?):
         private const val ID_SYNC = "idSync"
         private const val DATA_SYNC = "dataHoraSync"
         private const val STATUS_SYNC = "statusSync"
+
+        /*========================================================================*/
+
+        private const val TBL_PROD_EST = "ProdutoEstoque"
+        private const val ID_PROD_EST = "idProduto"
+        private const val COD_PROD_EST = "codProduto"
+        private const val DESC_PROD_EST = "descProduto"
+        private const val TIPO_PROD_EST = "tipoProduto"
+        private const val UNID_PROD_EST = "unidMedida"
+        private const val RASTRO_PROD_EST = "rastro"
+
+        /*========================================================================*/
+
+        private const val TBL_REQUISICAO = "Requisicao"
+        private const val ID_REQUISICAO = "idRequisicao"
+        private const val QTD_REQ = "qtdRequisicao"
+        private const val QTD_ATEND = "qtdAtendida"
+        private const val QTD_CONF = "qtdConfirmacao"
+        private const val USER_REQ = "userRequisicao"
+        private const val USER_ATEND = "userAtendimento"
+        private const val USER_CONF = "userConfirmacao"
+        private const val DATA_REQ = "dataHoraRequisicao"
+        private const val DATA_ATEND = "dataHoraAtendimento"
+        private const val DATA_CONF = "dataHoraConfirmacao"
 
         /*========================================================================*/
 
@@ -141,6 +168,31 @@ class SQLiteHelper(context: Context?):
                         STATUS_SYNC +" INTEGER" +
                         ");")
 
+        val createDBPE = (
+                "CREATE TABLE "+ TBL_PROD_EST +" (" +
+                        ID_PROD_EST +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                        COD_PROD_EST +" VARCHAR(15) NOT NULL, " +
+                        DESC_PROD_EST + " VARCHAR(64) NOT NULL, " +
+                        TIPO_PROD_EST +" INTEGER NOT NULL, " +
+                        UNID_PROD_EST +" INTEGER NOT NULL, " +
+                        RASTRO_PROD_EST +" VARCHAR(1) NOT NULL, " +
+                        ";" )
+
+        val createDBREQS = (
+                "CREATE TABLE "+ TBL_REQUISICAO +" (" +
+                        ID_REQUISICAO +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                        COD_PROD_EST +" VARCHAR(15) NOT NULL, " +
+                        QTD_REQ +" FLOAT NOT NULL, " +
+                        QTD_ATEND + " FLOAT, " +
+                        QTD_CONF +" FLOAT, " +
+                        USER_REQ +" VARCHAR(64) NOT NULL, " +
+                        USER_ATEND +" VARCHAR(64), " +
+                        USER_CONF +" VARCHAR(64), " +
+                        DATA_REQ +" VARCHAR(13) NOT NULL, " +
+                        DATA_ATEND +" VARCHAR(13), " +
+                        DATA_CONF +" VARCHAR(13), " +
+                        "FOREIGN KEY("+ COD_PROD_EST +") REFERENCES "+ TBL_PROD_EST+" ("+ COD_PROD_EST +")," +
+                        ");" )
     }
 
 
@@ -311,6 +363,25 @@ class SQLiteHelper(context: Context?):
         val result = db.rawQuery(selectQuery, null)
         return result
     }
+
+    fun getReq(): Cursor? {
+        val selectQuery =
+            "SELECT $ID_REQUISICAO, " +
+                    "$COD_PROD_EST, " +
+                    "$QTD_REQ, " +
+                    "$QTD_ATEND, " +
+                    "$QTD_CONF, " +
+                    "$USER_REQ, " +
+                    "$USER_ATEND, " +
+                    "$USER_CONF, " +
+                    "$DATA_REQ, " +
+                    "$DATA_ATEND " +
+                    "$DATA_CONF " +
+                    "FROM $TBL_REQUISICAO;"
+        val result = db.rawQuery(selectQuery, null)
+        return result
+    }
+
     fun insertDone(table: String, id: Int?) {
         var query: String
         var idName: String

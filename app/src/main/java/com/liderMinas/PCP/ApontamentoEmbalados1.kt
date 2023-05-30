@@ -22,6 +22,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.Sync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import java.lang.Integer.parseInt
@@ -456,7 +460,7 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
 
 
-        fun finalizar(command: Int){
+        suspend fun finalizar(command: Int){
             var sync = Sync()
             var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
 
@@ -517,8 +521,10 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                             "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text}', '${username}', 0);"
                 db.externalExecSQL(finalQuery)
                 Toast.makeText(this, "Apontamento salvo", Toast.LENGTH_LONG).show()
-                sync.sync(1, this)
-
+                var ctxt = this
+                withContext(Dispatchers.IO) {
+                    sync.sync(1, ctxt)
+                }
                 if (command == 2){
                     finish()
                 } else if (command == 1){
@@ -563,20 +569,24 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
         val buttonResetar: MaterialButton = findViewById(R.id.fab1)
         buttonResetar.setOnClickListener {
-            finalizar(1)
+            MainScope().launch { finalizar(1) }
 
         }
 
         val buttonFinalizar: MaterialButton = findViewById(R.id.fab2)
         buttonFinalizar.setOnClickListener {
-            finalizar(2)
+            MainScope().launch { finalizar(2) }
         }
 
-        connectionView()
+        MainScope().launch{
+            connectionView()
+        }
     }
 
-    fun connectionView(){
-        var result = Sync().testConnection()
+    suspend fun connectionView(){
+        var result = withContext(Dispatchers.IO) {
+            return@withContext Sync().testConnection()
+        }
 
         if (result == "Falha" ) {
             val snackbar = Snackbar.make(findViewById(R.id.CL),
