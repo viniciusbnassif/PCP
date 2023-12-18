@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.api.Context
 import com.liderMinas.PCP.SQLiteHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import okhttp3.OkHttpClient
@@ -23,8 +27,14 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var ctxt = this
+        GlobalScope.launch {
 
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+                ProcessLifecycleOwner.get().lifecycle.addObserver(ctxt)
+                if (Looper.myLooper() == null) {
+                    Looper.prepare()
+                }
+        }
 
     }
 
@@ -91,6 +101,7 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
                 if (cod == 0 || cod == 1) {
                     queryExternalServerAE(ctxt)
                     queryExternalServerAP(ctxt)
+                    queryExternalServerReqs(ctxt)
                     if (cod == 1) {
                         message = "Sucesso" //Sincronizado com sucesso
                         return@withContext message
@@ -99,6 +110,8 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
                 if (cod == 0) {
                     queryProdutoExt(ctxt)
                     queryMotivoExt(ctxt)
+                    queryProdEstoqueExt(ctxt)
+
 
                     message = "Sucesso" //Sincronizado com sucesso
                     return@withContext message

@@ -1,3 +1,5 @@
+
+
 package com.liderMinas.PCP
 
 import android.content.res.Configuration
@@ -17,7 +19,7 @@ class MainNav : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_nav)
 
-        if (Build.VERSION.SDK_INT >= 21) {
+        /*if (Build.VERSION.SDK_INT >= 21) {
             //getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
             var view = getWindow().getDecorView();
@@ -31,7 +33,7 @@ class MainNav : AppCompatActivity() {
                 }
             }
 
-        }
+        }*/
 
 
 
@@ -40,7 +42,7 @@ class MainNav : AppCompatActivity() {
 
         val MainMenu=MainMenu(username)
         val Estatistica=Estatistica()
-        val Requisicao=Requisicao()
+        val Requisicao=Requisicao(username, this)
 
 
         setCurrentFragment(MainMenu)

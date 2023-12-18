@@ -93,6 +93,7 @@ class SQLiteHelper(context: Context?):
 
         private const val TBL_REQUISICAO = "Requisicao"
         private const val ID_REQUISICAO = "idRequisicao"
+        private const val COD_PROD_REQ = "codProduto"
         private const val QTD_REQ = "qtdRequisicao"
         private const val QTD_ATEND = "qtdAtendida"
         private const val QTD_CONF = "qtdConfirmacao"
@@ -173,15 +174,15 @@ class SQLiteHelper(context: Context?):
                         ID_PROD_EST +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                         COD_PROD_EST +" VARCHAR(15) NOT NULL, " +
                         DESC_PROD_EST + " VARCHAR(64) NOT NULL, " +
-                        TIPO_PROD_EST +" INTEGER NOT NULL, " +
-                        UNID_PROD_EST +" INTEGER NOT NULL, " +
-                        RASTRO_PROD_EST +" VARCHAR(1) NOT NULL, " +
-                        ";" )
+                        TIPO_PROD_EST +" VARCHAR(2) NOT NULL, " +
+                        UNID_PROD_EST +" VARCHAR(2) NOT NULL, " +
+                        RASTRO_PROD_EST +" VARCHAR(1) NOT NULL " +
+                        ");" )
 
         val createDBREQS = (
                 "CREATE TABLE "+ TBL_REQUISICAO +" (" +
                         ID_REQUISICAO +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                        COD_PROD_EST +" VARCHAR(15) NOT NULL, " +
+                        COD_PROD_REQ +" VARCHAR(15) NOT NULL, " +
                         QTD_REQ +" FLOAT NOT NULL, " +
                         QTD_ATEND + " FLOAT, " +
                         QTD_CONF +" FLOAT, " +
@@ -191,7 +192,7 @@ class SQLiteHelper(context: Context?):
                         DATA_REQ +" VARCHAR(13) NOT NULL, " +
                         DATA_ATEND +" VARCHAR(13), " +
                         DATA_CONF +" VARCHAR(13), " +
-                        "FOREIGN KEY("+ COD_PROD_EST +") REFERENCES "+ TBL_PROD_EST+" ("+ COD_PROD_EST +")," +
+                        "FOREIGN KEY("+ COD_PROD_EST +") REFERENCES "+ TBL_PROD_EST+" ("+ COD_PROD_EST +")" +
                         ");" )
     }
 
@@ -204,10 +205,20 @@ class SQLiteHelper(context: Context?):
         db?.execSQL(createDBAE)
         db?.execSQL(createDBAP)
         db?.execSQL(createDBSYNC)
+        db?.execSQL(createDBPE)
+        db?.execSQL(createDBREQS)
         //db?.execSQL("INSERT INTO Usuario (username, password) VALUES ('kane','123'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
+        db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao," +
+                " userRequisicao, userAtendimento, userConfirmacao, dataHoraRequisicao, dataHoraAtendimento, dataHoraConfirmacao) " +
+                "VALUES ('00000151',1.5, 1.4, 1.3, 'vinicius.nassif', 'guilherme.augusto', 'vinicius.nassif', '2023121022:10', '2023121022:15', '2023121022:19');")
+
+
     }
+
+
+
 
     fun externalExecSQL(query: String){
         val db = this.writableDatabase
@@ -327,6 +338,7 @@ class SQLiteHelper(context: Context?):
 
     }
 
+
     fun getAE(): Cursor? {
         val selectQuery =
             "SELECT $ID_AE, " +
@@ -382,6 +394,8 @@ class SQLiteHelper(context: Context?):
         return result
     }
 
+
+
     fun insertDone(table: String, id: Int?) {
         var query: String
         var idName: String
@@ -408,6 +422,134 @@ class SQLiteHelper(context: Context?):
             null /* HAVING CLAUSE, null if no HAVING clause */,
             null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
         )
+    }
+
+    fun getProdutosEstoque(): Cursor {
+        return db.query(
+            TBL_PROD_EST,
+            arrayOf("$ID_PROD_EST AS ${BaseColumns._ID}",
+                DESC_PROD_EST,
+                /*QE_PROD,
+                VALID_PROD,
+                TIPOV_PROD*/
+            ),
+            null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+            null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+            null /* GROUP BY clause, null if no GROUP BY clause */,
+            null /* HAVING CLAUSE, null if no HAVING clause */,
+            null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+        )
+    }
+    fun arrayIdReqs(): ArrayList<Int>? {
+        var cursor = db.query(
+            TBL_REQUISICAO,
+            arrayOf(
+                "$ID_REQUISICAO AS ${BaseColumns._ID}",
+            ),
+            null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+            null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+            null /* GROUP BY clause, null if no GROUP BY clause */,
+            null /* HAVING CLAUSE, null if no HAVING clause */,
+            ID_REQUISICAO //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+        )
+        if (cursor == null || !cursor.moveToFirst()) {
+            return null
+        }
+        var cursorArray = ArrayList<Int>()
+        cursor.moveToFirst()
+        cursorArray.add(cursor.getInt(0))
+        while (cursor.moveToNext()) {
+            cursorArray.add(
+                cursor.getInt(0)
+            )
+        }
+        return cursorArray
+    }
+
+    fun countReqs(username: String): Int {
+        var result = db.query(
+            TBL_REQUISICAO,
+            arrayOf("$ID_REQUISICAO AS ${BaseColumns._ID}"
+            ),
+            null ,//"$LIDO = 'N' AND $USERNAME = '$username'" /* WHERE clause less the WHERE keyword, null = no WHERE clause */
+            null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+            null /* GROUP BY clause, null if no GROUP BY clause */,
+            null /* HAVING CLAUSE, null if no HAVING clause */,
+            null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+        )
+        if (result != null && result.getCount() > 0) {
+            return result.count
+        }else{
+            return 0
+        }
+
+    }
+    fun getInternalRequisicao(): Cursor? {
+        var cursor = db.query(
+            TBL_REQUISICAO,
+            arrayOf(
+                "$ID_REQUISICAO AS ${BaseColumns._ID}",
+                COD_PROD_REQ,
+                QTD_REQ,
+                QTD_ATEND,
+                QTD_CONF,
+                USER_REQ,
+                USER_ATEND,
+                USER_CONF,
+                DATA_REQ,
+                DATA_ATEND,
+                DATA_CONF
+            ),
+            null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+            null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+            null /* GROUP BY clause, null if no GROUP BY clause */,
+            null /* HAVING CLAUSE, null if no HAVING clause */,
+            null//ID_REQUISICAO + " DESC" //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+        )
+        if (cursor == null || !cursor.moveToFirst()) {
+            return null
+        }
+        return cursor
+    }
+
+    fun getCodRealProd(id: Int?): Cursor? {
+        var cursor = db.query(
+            TBL_PROD_EST,
+            arrayOf("$ID_PRODUTO AS ${BaseColumns._ID}",
+                COD_PROD_EST,
+            ),
+            "idProduto = $id" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+            null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+            null /* GROUP BY clause, null if no GROUP BY clause */,
+            null /* HAVING CLAUSE, null if no HAVING clause */,
+            null /* ORDER BY clause products will be shown alphabetically a->z*/
+        )
+
+        if (cursor == null || !cursor.moveToFirst()) {
+            return null
+        }
+        return cursor
+
+    }
+    fun getDescProdutosEst(idPrd: Int): Cursor? {
+        var cursor = db.query(
+            TBL_PROD_EST,
+            arrayOf("$ID_PROD_EST AS ${BaseColumns._ID}",
+                DESC_PROD_EST,
+                COD_PROD_EST
+            ),
+            "idProduto = $idPrd" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+            null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+            null /* GROUP BY clause, null if no GROUP BY clause */,
+            null /* HAVING CLAUSE, null if no HAVING clause */,
+            null /* ORDER BY clause products will be shown alphabetically a->z*/
+        )
+
+        if (cursor == null || !cursor.moveToFirst()) {
+            return null
+        }
+        return cursor
+
     }
 }
 

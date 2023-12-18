@@ -1,5 +1,6 @@
 package com.liderMinas.PCP
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,15 +9,28 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.content.Context
+
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
+import com.liderMinas.PCP.database.Sync
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.lang.Float.parseFloat
+import java.lang.Integer.parseInt
 import java.util.ArrayList
+import java.util.Date
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,7 +39,10 @@ import java.util.ArrayList
  * Use the [Requisicao.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Requisicao : Fragment() {
+class Requisicao(username: String, context: Context) : Fragment() {
+    var username = username
+    val contextNav = context
+    var db = SQLiteHelper(contextNav)
     // TODO: Rename and change types of parameters
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -79,11 +96,8 @@ class Requisicao : Fragment() {
                         }
                     }
 
-
-
-
                         var idintern: Int
-                        var cursorProduto = db.getProdutos()
+                        var cursorProduto = db.getProdutosEstoque()
                         var cursorArray = ArrayList<Any>()
                         while (cursorProduto!!.moveToNext()) {
                             cursorArray.add(cursorProduto!!.getString(1))
@@ -107,11 +121,41 @@ class Requisicao : Fragment() {
 
                                 }
                             }
+                    var dateFormatter = SimpleDateFormat()
+                    var dty = ""
+
+                    var dateFormatter0 = SimpleDateFormat()
+                    var time = ""
+
+                    //var time0 = findViewById<TextView>(R.id.editTextHora)
+                    //var dty0 = findViewById<TextView>(R.id.editTextData)
+
+                    var dateFormatterProtheus = SimpleDateFormat()
+                    var dtyProtheus = ""
 
 
+                    fun date(): String {
+
+                        dateFormatter = SimpleDateFormat("dd/MM/yyyy") //formatar data no formato padrão
+                        dty = dateFormatter.format(Date())
+
+                        dateFormatter0 = SimpleDateFormat("kk:mm") //formatar tempo no formato 24h (kk)
+                        time = dateFormatter0.format(Date())
+
+                        //time0.setText(time)
+                        //dty0.setText(dty)
+
+
+                        dateFormatterProtheus =
+                            SimpleDateFormat("yyyyMMdd") //formatar data no formato padrão
+                        dtyProtheus = dateFormatterProtheus.format(Date())
+                        var dtytime0 = "$dtyProtheus" + "$time"
+
+                        return dtytime0
+                    }
 
                     if (ctxt != null) {
-                        getActivity()?.let { it1 ->
+                        activity?.let { it1 ->
                             MaterialAlertDialogBuilder(it1)
                                 .setView(customAlertDialogView)
                                 .setTitle("Criando requisição")
@@ -119,39 +163,91 @@ class Requisicao : Fragment() {
                                     dialog.dismiss()
                                 }
                                 .setPositiveButton("Salvar") { dialog, which ->
-                                    //TODO
+                                    //if (qtd.text.toString() != "0") {
+                                        var cod = db.getCodRealProd(parseInt(produtoID.text.toString()))
+                                        var codF = cod!!.getString(1)
+                                        var query = "INSERT INTO Requisicao (codProduto, qtdRequisicao, userRequisicao," +
+                                                        "dataHoraRequisicao) " +
+                                            "VALUES ('${codF}', ${parseFloat(qtd.text.toString())}, '$username', '${date()}')"
+                                        db.externalExecSQL(query)
+                                        //enviarReqParaServer(produtoID, qtd)
+
+
+                                    //}
                                 }
                                 .show()
                         }
                     }
-                    /*if (ctxt != null) {
-                        val builder: AlertDialog.Builder? =
-                            getActivity()
-                                ?.let { it1 -> AlertDialog.Builder(it1) }
-                        if (builder != null) {
-                            builder.setTitle("Name")
-                        }
 
-                        // set the custom layout
-                        val customLayout: View =
-                            layoutInflater.inflate(R.layout.alertdialog_requisicao_step1, null)
-                        //builder.setView(customLayout)
-
-                        // add a button
-                        if (builder != null) {
-                            builder.setPositiveButton("OK") { dialog, which ->
-                                // send data from the AlertDialog to the Activity
-                                /*val editText = customLayout.findViewById<EditText>(android.R.id.editText)
-                                                sendDialogDataToActivity(editText.text.toString())*/
-                            }
-                        }
-                        // create and show the alert dialog
-                        builder?.create()?.show()
-
-                    }*/
 
                 }
+                var recycleView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerViewRequisicao)
 
+                var aviso = findViewById<TextView>(R.id.aviso)
+
+
+                var swipe = findViewById<SwipeRefreshLayout>(R.id.swipe)
+                swipe.setColorSchemeResources(
+                    R.color.colorPrimary,
+                    R.color.colorPrimaryVariant,
+                    R.color.colorSecondary)
+
+                swipe.setOnRefreshListener {
+                    update()
+                    updateBadge()
+                    /*recycleView.adapter = null
+                    recycleView.layoutManager = null*/
+                    CoroutineScope(Dispatchers.Unconfined).launch {
+
+                        try {
+                            ctxt?.let { Sync().sync(2, it) }
+
+                        } catch (e: Exception){}
+                        val cursorUpdate = SQLiteHelper(ctxt).getInternalRequisicao()
+
+                        MainScope().launch{
+                            /*MainScope().run {
+
+
+                                startActivity(getIntent())
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+                                finish()*/
+
+                            recycleView.adapter = RecyclerAdapter(cursorUpdate, contextNav)
+                            recycleView.adapter?.notifyDataSetChanged()
+                            recycleView.layoutManager = LinearLayoutManager(ctxt)
+                            swipe.isRefreshing = false
+
+
+                            if (cursorUpdate == null || cursorUpdate.count == 0){
+                                aviso.setVisibility(View.VISIBLE)
+                            }
+                            else{
+                                aviso.setVisibility(View.GONE)
+                            }
+                        }
+                    }
+                }
+
+
+
+
+        }
+    fun updateBadge(){ //Esse metodo atualiza o contador na barra de navegação
+
+        var cursor = username?.let { db.countReqs(it) } //Conta quantas notificações não lidas existem para o usuario atual
+        if (cursor != null) { //Por segurança, se o resultado for nulo (muito dificil) ele não fará nada.
+            val activity: FragmentActivity? = activity
+            if (activity != null && activity is MainNav) {
+                val myactivity: MainNav = activity as MainNav
+                //myactivity.getCount(cursor)
+            }
+        }
+    }
+
+    fun update(){
+        super.onDestroy()
+        super.onCreate(Bundle())
     }
 
 

@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.util.Log
+import androidx.core.database.getFloatOrNull
+import androidx.core.database.getStringOrNull
 import com.liderMinas.PCP.SQLiteHelper
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
@@ -154,15 +156,15 @@ fun queryProdEstoqueExt(context: Context?) {
             """
             SELECT *
               FROM ProdutoEstoque
-             ORDER BY idProdutoEstoque
+             ORDER BY idProduto
             """.trimIndent()
         )
         dbIntrn.externalExecSQL("DELETE FROM ProdutoEstoque")
         while (resultSet1.next()){
-            var query = "INSERT INTO ProdutoEstoque (idProdutoEstoque, codProduto, descProduto, tipoProduto, unidMedida, rastro)" +
-                    " VALUES (${resultSet1.getInt("idProdutoEstoque")}, '${resultSet1.getString("codProduto")}', ${resultSet1.getString("descProduto")}, ${resultSet1.getInt("tipoProduto")}, '${resultSet1.getInt("unidMedida")}'), '${resultSet1.getString("rastro")}')"
+            var query = "INSERT INTO ProdutoEstoque (idProduto, codProduto, descProduto, tipoProduto, unidMedida, rastro)" +
+                    " VALUES (${resultSet1.getInt("idProduto")}, '${resultSet1.getString("codProduto")}', '${resultSet1.getString("descProduto")}', '${resultSet1.getString("tipoProduto")}', '${resultSet1.getString("unidMedida")}', '${resultSet1.getString("rastro")}')"
             dbIntrn.externalExecSQL(query)
-            Log.d("SQL Insert", "${resultSet1.getString("descProduto")} inserido com sucesso")
+            Log.d("SQL Insert PE", "${resultSet1.getString("descProduto")} inserido com sucesso")
         }
 
         resultSet1.close()
@@ -316,13 +318,16 @@ fun queryExternalServerReqs(context: Context) {
 
                     var insert = (
                             """
-                            INSERT INTO ApontPerda 
-                            (qtdPerda, unidPerda, dataHoraPerda, username, produto, motivo)
+                            INSERT INTO Requisicao
+                            (idRequisicao, codProduto, qtdRequisicao, qtdAtendida, qtdRecebida, userRequisicao, 
+                            userAtendimento, userRecebimento, dataHoraRequisicao, dataHoraAtendimento)
                             VALUES
-                            (${localResult.getFloat(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', '${localResult.getString(4)}',
-                             '${produtoDesc}', '${motivoDesc}');
+                            ($id, ${localResult.getString(1)}, '${localResult.getFloat(2)}', 
+                            '${localResult.getFloatOrNull(3)}', '${localResult.getFloatOrNull(4)}', '${localResult.getString(5)}',
+                            '${localResult.getStringOrNull(6)}', '${localResult.getStringOrNull(7)}', '${localResult.getString(8)}',
+                            '${localResult.getStringOrNull(9)}');
                             """.trimIndent())
-                    Log.d("Debugggggg", insert)
+                    Log.d("Insert Requisicao", insert)
 
                     var comm = st1.connection.prepareStatement(insert)
                     comm.executeUpdate()
@@ -349,6 +354,73 @@ fun queryExternalServerReqs(context: Context) {
         connect()?.close()
     }
 }
+
+fun getRequisicao(context: Context?) {
+
+    val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+    StrictMode.setThreadPolicy(policy)
+
+    var count = 0
+
+    val tbl = "Requisicao"
+    val id = "idRequisicao"
+    val cod = "codProduto"
+    val qtdR = "qtdRequisicao"
+    val qtdA = "qtdAtendida"
+    val qtdC = "qtdConfirmacao"
+    val userR = "userRequisicao"
+    val userA = "userAtendimento"
+    val userC = "userConfirmacao"
+    val dataR = "dataHoraRequisicao"
+    val dataA = "dataHoraAtendimento"
+    val dataC = "dataHoraConfirmacao"
+    //val lido = "lido"
+
+    val dbIntrn: SQLiteHelper = SQLiteHelper(context)
+    connect().use {
+        val st1 = it?.createStatement()!!
+        val resultSet1 = st1.executeQuery(
+            """
+            SELECT *
+              FROM $tbl
+             ORDER BY $id
+            """.trimIndent()
+        )
+
+        var array = dbIntrn.arrayIdReqs()
+        //dbIntrn.externalExecSQL("DELETE FROM $tbl")
+        while (resultSet1.next()){
+
+            if (array != null) {
+                if (!array.contains(resultSet1.getInt("$id"))){
+                    var query = "INSERT INTO $tbl ($id, $cod, $qtdR, $qtdA, $qtdC, $userR, $userA, $userC, $dataR, $dataA, $dataC) " +
+                            "VALUES (${resultSet1.getInt("$id")}, '${resultSet1.getString("$cod")}', '${resultSet1.getString("$qtdR")}'," +
+                            "'${resultSet1.getString("$qtdA")}','${resultSet1.getString("$qtdC")}','${resultSet1.getString("$userR")}'," +
+                            "'${resultSet1.getString("$userA")}','${resultSet1.getString("$userC")}','${resultSet1.getString("$dataR")}',"
+                            "'${resultSet1.getString("$dataA")}','${resultSet1.getString("$dataC")}') "
+                    dbIntrn.externalExecSQL(query)
+                    Log.d("SQL Insert Requisicao", "${resultSet1.getString("$cod")} inserido com sucesso (${resultSet1.getInt("$id")})")
+
+                }
+            } else {
+                var query = "INSERT INTO $tbl ($id, $cod, $qtdR, $qtdA, $qtdC, $userR, $userA, $userC, $dataR, $dataA, $dataC) " +
+                        "VALUES (${resultSet1.getInt("$id")}, '${resultSet1.getString("$cod")}', '${resultSet1.getString("$qtdR")}'," +
+                        "'${resultSet1.getString("$qtdA")}','${resultSet1.getString("$qtdC")}','${resultSet1.getString("$userR")}'," +
+                        "'${resultSet1.getString("$userA")}','${resultSet1.getString("$userC")}','${resultSet1.getString("$dataR")}',"
+                "'${resultSet1.getString("$dataA")}','${resultSet1.getString("$dataC")}') "
+                dbIntrn.externalExecSQL(query)
+                Log.d("SQL Insert Requisicao", "${resultSet1.getString("$cod")} inserido com sucesso (${resultSet1.getInt("$id")})")
+            }
+        }
+        //dbIntrn.close()
+
+        resultSet1.close()
+        st1.close()
+
+    }
+    connect()?.close()
+}
+
 
 
 

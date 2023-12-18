@@ -3,33 +3,24 @@
 package com.liderMinas.PCP
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Integer.parseInt
 
 
 class MainMenu(var username: String) : Fragment() {
@@ -137,12 +128,23 @@ class MainMenu(var username: String) : Fragment() {
                 }
             }
         }
+        var intent: Intent
+
+        var sairBtn = findViewById<Button>(R.id.sair)
+        sairBtn.setOnClickListener {
+            MainScope().launch {
+                intent = Intent(ctxt, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+        }
 
         //val username = username
         var saudacao = "Bem-vindo, ${username}"
         findViewById<TextView>(R.id.saudacao).apply { text = saudacao }
 
-        var intent: Intent
+
 
 
 
