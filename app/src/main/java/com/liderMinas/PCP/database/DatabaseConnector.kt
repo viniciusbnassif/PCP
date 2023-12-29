@@ -2,6 +2,7 @@ package com.liderMinas.PCP.database
 
 
 import android.content.Context
+import android.database.Cursor
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.util.Log
@@ -83,7 +84,7 @@ fun main(args: Array<String>) {
     //queryProdutoExt()
 }
 
-fun queryProdutoExt(context: Context?) {
+fun downloadProdutoExt(context: Context?) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
     connect().use {
         var st1 = it?.createStatement()!!
@@ -106,18 +107,18 @@ fun queryProdutoExt(context: Context?) {
         while (resultSet1.next()){
             var query = "INSERT INTO Produto (idProduto, descProduto, qeProduto, validProduto, tipoVProduto) VALUES (${resultSet1.getInt("idProduto")}, '${resultSet1.getString("descProduto")}', ${resultSet1.getInt("qeProduto")}, ${resultSet1.getInt("validProduto")}, '${resultSet1.getString("tipoVProduto")}')"
             dbIntrn.externalExecSQL(query)
-            Log.d("SQL Insert", "${resultSet1.getString("descProduto")} inserido com sucesso")
+            Log.d("SQL Download Produto Ext", "${resultSet1.getString("descProduto")} inserido com sucesso")
         }
-
-        resultSet1.close()
+        dbIntrn.close()
         st1.close()
+        connect()?.close()
 
         //return arrayOf(arrayProdutoIdExt, arrayProdutoDescExt,arrayProdutoQeExt, arrayProdutoValExt, arrayProdutoTipoExt)
 
     }
 }
 
-fun queryMotivoExt(context: Context) {
+fun downloadMotivoExt(context: Context) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
      //variavel dbIntrn recebe classe do Banco de dados localizado no dispositivo (Database.kt)
     connect().use {//Conexão ao banco de dados externo.
@@ -142,13 +143,13 @@ fun queryMotivoExt(context: Context) {
             var query = "INSERT INTO Motivo (idMotivo, descMotivo) VALUES (${resultSet1.getInt("idMotivo")}, '${resultSet1.getString("descMotivo")}');"
             dbIntrn.externalExecSQL(query)
         }
-
-        resultSet1.close()
+        dbIntrn.close()
         st1.close()
+        connect()?.close()
     }
 }
 
-fun queryProdEstoqueExt(context: Context?) {
+fun downloadProdEstoqueExt(context: Context?) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
     connect().use {
         var st1 = it?.createStatement()!!
@@ -164,18 +165,19 @@ fun queryProdEstoqueExt(context: Context?) {
             var query = "INSERT INTO ProdutoEstoque (idProduto, codProduto, descProduto, tipoProduto, unidMedida, rastro)" +
                     " VALUES (${resultSet1.getInt("idProduto")}, '${resultSet1.getString("codProduto")}', '${resultSet1.getString("descProduto")}', '${resultSet1.getString("tipoProduto")}', '${resultSet1.getString("unidMedida")}', '${resultSet1.getString("rastro")}')"
             dbIntrn.externalExecSQL(query)
-            Log.d("SQL Insert PE", "${resultSet1.getString("descProduto")} inserido com sucesso")
+            Log.d("SQL Download Prod Estoque", "${resultSet1.getString("descProduto")} inserido com sucesso")
         }
 
-        resultSet1.close()
+        dbIntrn.close()
         st1.close()
+        connect()?.close()
 
         //return arrayOf(arrayProdutoIdExt, arrayProdutoDescExt,arrayProdutoQeExt, arrayProdutoValExt, arrayProdutoTipoExt)
 
     }
 }
 
-fun queryExternalServerAE(context: Context) {
+fun uploadAE(context: Context) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
 
     var result = dbIntrn.getAE()
@@ -229,12 +231,13 @@ fun queryExternalServerAE(context: Context) {
         if (localResult != null) {
             localResult.close()
         }
+        dbIntrn.close()
         st1.close()
         connect()?.close()
         }
 }
 
-fun queryExternalServerAP(context: Context) {
+fun uploadAP(context: Context) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
 
     var result = dbIntrn.getAP()
@@ -285,15 +288,16 @@ fun queryExternalServerAP(context: Context) {
 
 
         } else {
-            Log.d("Debug", "Erro ;-;")
+            Log.d("uploadAP", "Erro")
 
         }
+        dbIntrn.close()
         st1.close()
         connect()?.close()
     }
 }
 
-fun queryExternalServerReqs(context: Context) {
+fun uploadRequisicoes(context: Context) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
 
     var result = dbIntrn.getReq()
@@ -309,25 +313,42 @@ fun queryExternalServerReqs(context: Context) {
 
                 var id = localResult?.getInt(0)
 
-                var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
-                var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
-                var produtoDesc = produto!!.getString(1)
-                var motivoDesc = motivo!!.getString(1)
-                Log.d("ProdDesc", "$produtoDesc")
+                //var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
+                //var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
+                //var produtoDesc = produto!!.getString(1)
+                //var motivoDesc = motivo!!.getString(1)
+                Log.d("upload Req", "$id")
                 try {
+
+
+                    lateinit var userAtend: String
+
+                    fun contentOrNull(any: Any?): Any? {
+                        if (any == null){
+                            return null
+                        } else /*if (any == String && any != null)*/{
+                            var anyS = "'" + "$any" + "'"
+                            Log.d("UpReq AnyS test", anyS)
+                            return anyS
+                        }
+                    }
 
                     var insert = (
                             """
                             INSERT INTO Requisicao
-                            (idRequisicao, codProduto, qtdRequisicao, qtdAtendida, qtdRecebida, userRequisicao, 
-                            userAtendimento, userRecebimento, dataHoraRequisicao, dataHoraAtendimento)
+                            (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao, userRequisicao, 
+                            userAtendimento, userConfirmacao, dataHoraRequisicao, dataHoraAtendimento)
                             VALUES
-                            ($id, ${localResult.getString(1)}, '${localResult.getFloat(2)}', 
-                            '${localResult.getFloatOrNull(3)}', '${localResult.getFloatOrNull(4)}', '${localResult.getString(5)}',
-                            '${localResult.getStringOrNull(6)}', '${localResult.getStringOrNull(7)}', '${localResult.getString(8)}',
-                            '${localResult.getStringOrNull(9)}');
+                            ('${localResult.getString(1)}', ${localResult.getFloat(2)}, 
+                            ${localResult.getFloatOrNull(3)},
+                            ${localResult.getFloatOrNull(4)},
+                            '${localResult.getString(5)}',
+                            ${contentOrNull(localResult.getStringOrNull(6))},
+                            ${contentOrNull(localResult.getStringOrNull(7))},
+                            ${contentOrNull(localResult.getStringOrNull(8))},
+                            ${contentOrNull(localResult.getStringOrNull(9))});
                             """.trimIndent())
-                    Log.d("Insert Requisicao", insert)
+                    Log.d("Upload Requisicao", insert)
 
                     var comm = st1.connection.prepareStatement(insert)
                     comm.executeUpdate()
@@ -340,22 +361,23 @@ fun queryExternalServerReqs(context: Context) {
                 catch (se: SQLException){
                     Log.e("Error SQLE", se.toString())
                 }
-                dbIntrn.insertDone("ApontPerda", id)
+                //dbIntrn.insertDone("ApontPerda", id)
 
                 //result.moveToNext()
             }while (localResult.moveToNext())
 
 
         } else {
-            Log.d("Debug", "Erro ;-;")
+            Log.d("uploadRequisicoes", "Erro")
 
         }
+        dbIntrn.close()
         st1.close()
         connect()?.close()
     }
 }
 
-fun getRequisicao(context: Context?) {
+fun downloadRequisicoes(context: Context?) {
 
     val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
     StrictMode.setThreadPolicy(policy)
@@ -388,37 +410,85 @@ fun getRequisicao(context: Context?) {
         )
 
         var array = dbIntrn.arrayIdReqs()
-        //dbIntrn.externalExecSQL("DELETE FROM $tbl")
+        dbIntrn.externalExecSQL("DELETE FROM $tbl")
         while (resultSet1.next()){
+            fun contentOrNullStr(any: Any): Any? {
+                if (any == null){
+                    Log.d("DwReq AnyS test", "null")
+                    return null
+                } else {
+                    var anyS = "'${any.toString()}'"
+                    Log.d("DwReq AnyS test", anyS)
+                    return anyS
+                }
+            }
+            fun contentOrNullFloat(any: Any): Any? {
+                if (any == null){
+                    Log.d("DwReq AnyF test", "null")
+                    return null
+                } else /*if (any == String && any != null)*/{
+                    var anyS = any
+                    Log.d("DwReq AnyF test", "$anyS")
+                    return anyS
+                }
+            }
 
+            var userAType: String? = null
+            fun checkNullorString (origin: String): Any? {
+                if (resultSet1.getObject(origin) == null) {
+                    userAType = null
+                    return userAType
+                } else {
+                    userAType = resultSet1.getString(origin)
+                    return userAType
+                }
+            }
+            fun checkNullorFloat (origin: String): Any? {
+                if (resultSet1.getObject(origin) == null) {
+                    return null
+                } else {
+                    return resultSet1.getString(origin)
+                }
+            }
             if (array != null) {
+
+
                 if (!array.contains(resultSet1.getInt("$id"))){
                     var query = "INSERT INTO $tbl ($id, $cod, $qtdR, $qtdA, $qtdC, $userR, $userA, $userC, $dataR, $dataA, $dataC) " +
-                            "VALUES (${resultSet1.getInt("$id")}, '${resultSet1.getString("$cod")}', '${resultSet1.getString("$qtdR")}'," +
-                            "'${resultSet1.getString("$qtdA")}','${resultSet1.getString("$qtdC")}','${resultSet1.getString("$userR")}'," +
-                            "'${resultSet1.getString("$userA")}','${resultSet1.getString("$userC")}','${resultSet1.getString("$dataR")}',"
-                            "'${resultSet1.getString("$dataA")}','${resultSet1.getString("$dataC")}') "
+                            "VALUES ('${resultSet1.getString(id)}', '${resultSet1.getString(cod)}', ${resultSet1.getFloat(qtdR)}," +
+                            "${contentOrNullFloat(resultSet1.getFloat(qtdA))}, " +
+                            "${contentOrNullFloat(resultSet1.getFloat(qtdC))}," +
+                            "${checkNullorString(userR)?.let { it1 -> contentOrNullStr(it1) }}," +
+                            "${checkNullorString(userA)?.let { it1 -> contentOrNullStr(it1) }}," +
+                            "${checkNullorString(userC)?.let { it1 -> contentOrNullStr(it1) }}, " +
+                            "${checkNullorString(dataR)?.let { it1 -> contentOrNullStr(it1) }}," +
+                            "${checkNullorString(dataA)?.let { it1 -> contentOrNullStr(it1) }}," +
+                            "${checkNullorString(dataC)?.let { it1 -> contentOrNullStr(it1) }}) "
                     dbIntrn.externalExecSQL(query)
-                    Log.d("SQL Insert Requisicao", "${resultSet1.getString("$cod")} inserido com sucesso (${resultSet1.getInt("$id")})")
+                    Log.d("SQL Download Requisicao", "${resultSet1.getString("$cod")} inserido com sucesso (${resultSet1.getInt("$id")})")
 
                 }
             } else {
                 var query = "INSERT INTO $tbl ($id, $cod, $qtdR, $qtdA, $qtdC, $userR, $userA, $userC, $dataR, $dataA, $dataC) " +
-                        "VALUES (${resultSet1.getInt("$id")}, '${resultSet1.getString("$cod")}', '${resultSet1.getString("$qtdR")}'," +
-                        "'${resultSet1.getString("$qtdA")}','${resultSet1.getString("$qtdC")}','${resultSet1.getString("$userR")}'," +
-                        "'${resultSet1.getString("$userA")}','${resultSet1.getString("$userC")}','${resultSet1.getString("$dataR")}',"
-                "'${resultSet1.getString("$dataA")}','${resultSet1.getString("$dataC")}') "
+                        "VALUES (${resultSet1.getInt("$id")}, '${resultSet1.getString("$cod")}', " +
+                        "${contentOrNullFloat(resultSet1.getFloat("$qtdR"))}," +
+                        "${contentOrNullFloat(resultSet1.getFloat("$qtdA"))}," +
+                        "${contentOrNullFloat(resultSet1.getFloat("$qtdC"))}," +
+                        "${checkNullorString(userR)?.let { it1 -> contentOrNullStr(it1) }}," +
+                        "${checkNullorString(userA)?.let { it1 -> contentOrNullStr(it1) }}," +
+                        "${checkNullorString(userC)?.let { it1 -> contentOrNullStr(it1) }}, " +
+                        "${checkNullorString(dataR)?.let { it1 -> contentOrNullStr(it1) }}," +
+                        "${checkNullorString(dataA)?.let { it1 -> contentOrNullStr(it1) }}," +
+                        "${checkNullorString(dataC)?.let { it1 -> contentOrNullStr(it1) }}) "
                 dbIntrn.externalExecSQL(query)
                 Log.d("SQL Insert Requisicao", "${resultSet1.getString("$cod")} inserido com sucesso (${resultSet1.getInt("$id")})")
             }
         }
-        //dbIntrn.close()
-
-        resultSet1.close()
+        dbIntrn.close()
         st1.close()
-
+        connect()?.close()
     }
-    connect()?.close()
+
 }
 
 

@@ -11,9 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.content.Context
 
-import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -62,6 +60,8 @@ class Requisicao(username: String, context: Context) : Fragment() {
 
                     var soma = customAlertDialogView.findViewById<MaterialButton>(R.id.soma1)
                     var subt = customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)
+
+
 
                     soma.setOnClickListener {
                         var empty : Boolean
@@ -228,6 +228,14 @@ class Requisicao(username: String, context: Context) : Fragment() {
                         }
                     }
                 }
+        fun forceUpdate(){
+            val cursorUpdate = SQLiteHelper(ctxt).getInternalRequisicao()
+            recycleView.adapter = RecyclerAdapter(cursorUpdate, contextNav)
+            recycleView.adapter?.notifyDataSetChanged()
+            recycleView.layoutManager = LinearLayoutManager(ctxt)
+            swipe.isRefreshing = false
+        }
+        forceUpdate()
 
 
 

@@ -3,7 +3,6 @@ package com.liderMinas.PCP
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -15,7 +14,6 @@ import android.util.Log
 import android.view.View.*
 import kotlinx.coroutines.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
@@ -30,12 +28,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         var progress = findViewById<LinearProgressIndicator>(R.id.progressToolbar)
         var ctxt = this
-
-
 
 
         setContentView(R.layout.activity_main)
@@ -44,19 +38,15 @@ class MainActivity : AppCompatActivity() {
 
         var sync = Sync()
 
-
         val user = findViewById<EditText>(R.id.editTextUsername)
         val userView = findViewById<TextInputLayout>(R.id.viewUser)
 
         val pw = findViewById<EditText>(R.id.editTextPassword)
         val pwView = findViewById<TextInputLayout>(R.id.viewPassword)
 
-
-
+        val username = user.text.toString()
 
         fun syncIsDone(){
-            val username = user.text.toString()
-
             var mainMenu = Intent(this, MainNav::class.java).apply {
                 putExtra(AlarmClock.EXTRA_MESSAGE, username)
             }
@@ -75,8 +65,6 @@ class MainActivity : AppCompatActivity() {
         //val pw = String
 
         var elementsOnLogin = findViewById<ConstraintLayout>(R.id.elementsOnLogin)
-
-
 
 
 
@@ -113,21 +101,36 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        suspend fun runSync(): String {
+
+        suspend fun runSync(): String? {
             //CoroutineScope(CoroutineName("SyncMainActivity")).async(Dispatchers.Unconfined) {
-            return withContext(Dispatchers.IO) {
-                var rtn: String
+            var message = withContext(Dispatchers.IO) {
                 try {
                     if (Looper.myLooper() == null) {
                         Looper.prepare()
                     }
-                    rtn = sync.sync(0, ctxt).toString()
-                    return@withContext rtn
+
+                    var ret = sync.sync(0, ctxt)!!
+
+                    return@withContext ret
                 } catch (e: Exception) {
-                    Log.d("SyncMainActivity (Thread)", e.toString())
+                    Log.d("SyncMainActivity (Thread)", "$e")
                 }
+                /*MainScope().launch {
+                    if (message == "Sucesso"){
+                        var mainMenu = Intent(this, MainNav::class.java).apply {
+                            putExtra(AlarmClock.EXTRA_MESSAGE, username)
+                        }
+                        startActivity(mainMenu)
+
+                        finish()
+                    } else {
+                        showProgress("false")
+                    }
+                }*/
                 //syncIsDone()
             } as String
+            return message
         }
 
         suspend fun authUser(ctxt: android.content.Context) {

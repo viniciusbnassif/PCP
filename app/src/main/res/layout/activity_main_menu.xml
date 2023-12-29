@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="top"
-        android:background="@color/colorPrimary"
+        android:background="@color/material_dynamic_primary30"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,8 +20,7 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIconTint="@color/white"
         app:title="Menu principal"
-        app:titleTextColor="@color/white">
-    </com.google.android.material.appbar.MaterialToolbar>
+        app:titleTextColor="@color/white"></com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/CL"
@@ -37,7 +36,7 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/material_dynamic_primary30"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -49,7 +48,7 @@
                 android:layout_marginStart="16dp"
                 android:text="Bem-vindo"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

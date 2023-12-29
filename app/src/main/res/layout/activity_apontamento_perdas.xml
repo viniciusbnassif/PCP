@@ -10,100 +10,100 @@
     android:windowSoftInputMode="adjustResize|adjustPan"
     tools:context=".ApontamentoPerdas">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="top"
-            android:background="@color/colorPrimary"
-            app:backgroundTint="@color/colorPrimary"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="top"
+        android:background="@color/material_dynamic_primary30"
+        app:backgroundTint="@color/material_dynamic_primary30"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIconTint="@color/white"
+        app:titleTextColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIconTint="@color/white"
-            app:titleTextColor="@color/white">
+            app:layout_constraintEnd_toStartOf="@+id/fab1"
+            app:layout_constraintStart_toEndOf="@+id/spaceBottom">
 
-            <LinearLayout
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:elevation="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/fab1"
-                app:layout_constraintStart_toEndOf="@+id/spaceBottom">
+                android:layout_height="wrap_content">
 
-
-                <com.google.android.material.button.MaterialButtonToggleGroup
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/stats1"
+                    style="@style/buttonNeutral"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:contentDescription="neutral"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:shadowDy="15"
+                    android:text="1"
+                    app:iconPadding="2dp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/stats1"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:contentDescription="neutral"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:shadowDy="15"
-                        android:text="1"
-                        app:iconPadding="2dp" />
+                <Button
+                    android:id="@+id/stats2"
+                    style="@style/buttonNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:contentDescription="neutral"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:text="2"
+                    app:iconPadding="2dp" />
 
-                    <Button
-                        android:id="@+id/stats2"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:contentDescription="neutral"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="2"
-                        app:iconPadding="2dp" />
+                <Button
+                    android:id="@+id/stats3"
+                    style="@style/buttonNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="neutral"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:text="3"
+                    app:iconPadding="2dp" />
 
-                    <Button
-                        android:id="@+id/stats3"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="neutral"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="3"
-                        app:iconPadding="2dp" />
+                <Button
+                    android:id="@+id/stats4"
+                    style="@style/buttonNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="neutral"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:text="4"
+                    app:iconPadding="2dp" />
 
-                    <Button
-                        android:id="@+id/stats4"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="neutral"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="4"
-                        app:iconPadding="2dp" />
+                <Button
+                    android:id="@+id/stats5"
+                    style="@style/buttonNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="neutral"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:text="5"
+                    app:iconPadding="2dp" />
 
-                    <Button
-                        android:id="@+id/stats5"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="neutral"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="5"
-                        app:iconPadding="2dp" />
-
-                    <Button
-                        android:id="@+id/stats6"
-                        style="@style/buttonNeutral"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="neutral"
-                        android:defaultFocusHighlightEnabled="false"
-                        android:text="6"
-                        app:iconPadding="2dp" />
-                </com.google.android.material.button.MaterialButtonToggleGroup>
+                <Button
+                    android:id="@+id/stats6"
+                    style="@style/buttonNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="neutral"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:text="6"
+                    app:iconPadding="2dp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
-            </LinearLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -1117,7 +1117,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:keepScreenOn="true"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/material_dynamic_primary30"
             app:hideOnScroll="true"
             app:navigationIconTint="#FFFFFF"
             app:titleTextColor="@color/white">

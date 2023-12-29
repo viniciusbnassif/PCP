@@ -26,9 +26,9 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                app:navigationIconTint="@color/white"
+                android:background="@color/material_dynamic_primary30"
                 app:layout_scrollFlags="scroll|enterAlways"
+                app:navigationIconTint="@color/white"
                 app:title="Requisição"
                 app:titleTextColor="@color/white" />
 
@@ -47,19 +47,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollIndicators="right"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:scrollbars="horizontal|vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/material_dynamic_primary40">
 
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewRequisicao"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/item_requisicao"></androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewRequisicao"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_requisicao"></androidx.recyclerview.widget.RecyclerView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

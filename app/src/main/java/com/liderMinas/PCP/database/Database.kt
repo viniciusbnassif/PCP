@@ -186,7 +186,7 @@ class SQLiteHelper(context: Context?):
                         QTD_REQ +" FLOAT NOT NULL, " +
                         QTD_ATEND + " FLOAT, " +
                         QTD_CONF +" FLOAT, " +
-                        USER_REQ +" VARCHAR(64) NOT NULL, " +
+                        USER_REQ +" VARCHAR(64), " +
                         USER_ATEND +" VARCHAR(64), " +
                         USER_CONF +" VARCHAR(64), " +
                         DATA_REQ +" VARCHAR(13) NOT NULL, " +

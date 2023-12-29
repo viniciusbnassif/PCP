@@ -6,7 +6,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Looper
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +18,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
-import com.liderMinas.PCP.database.Sync
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.liderMinas.PCP.database.Sync
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 
 
 class MainMenu(var username: String) : Fragment() {
@@ -37,7 +41,7 @@ class MainMenu(var username: String) : Fragment() {
             // hide the navigation bar.
             systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         }*/
-        var ctxt = getActivity()?.getApplicationContext()
+        var ctxt = activity?.applicationContext
 
 
         /*val toolbar = findViewById<Toolbar>(R.id.appBar)
@@ -103,19 +107,18 @@ class MainMenu(var username: String) : Fragment() {
         //var sync = parseInt("")
 
 
+        suspend fun doSync() {
 
-        var syncBtn = findViewById<MaterialButton>(R.id.syncBtn)
-        syncBtn.setOnClickListener {
-            MainScope().launch {
-                var sync = ctxt?.let { it1 ->
-                    withContext(Dispatchers.IO) {
-                        return@withContext Sync().sync(
-                            0,
-                            it1
-                        )
-                    }
-                }
-                if (sync == "Sucesso") {
+            //var data = String
+
+            // <- extension on current scope
+            Log.d("context inside method from button sync", "${ctxt.toString()}")
+            var data = Sync().sync(0, activity?.applicationContext!!)
+
+
+
+            //val result = data.await()
+            if (data == "Sucesso") {
 
                     Snackbar.make(
                         cl,
@@ -123,10 +126,63 @@ class MainMenu(var username: String) : Fragment() {
                         Snackbar.LENGTH_INDEFINITE
                     ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
                         .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
-                } else if (sync == "Falha") {
-                    MainScope().launch { connectionView() }
-                }
+
+            } else if (data == "Falha") {
+                withContext(Dispatchers.Main) { connectionView() }
+            } else {
+                /* TO DO */
             }
+
+
+        }
+        //var intent: Intent
+
+
+
+            var syncBtn = findViewById<MaterialButton>(R.id.syncBtn)
+        syncBtn.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch { doSync()}
+
+
+            /*val data = Sync().syncNoSuspension(0,ctxt!!)
+
+
+                if (data == "Sucesso") {
+                    //MainScope().launch {
+                        Snackbar.make(
+                            cl,
+                            "Sincronizado com sucesso!",
+                            Snackbar.LENGTH_INDEFINITE
+                        ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
+                            .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+                    //}
+                } else if (data == "Falha") {
+                    MainScope().launch { connectionView() }
+                } else {
+                    /* TO DO */
+                }*/
+
+
+            /*var sync =
+                coroutineScope().async(Dispatchers.IO){
+                    var sync = Sync().sync(
+                        0,
+                        ctxt
+                    )
+                }
+
+            if (sync == "Sucesso") {
+
+                Snackbar.make(
+                    cl,
+                    "Sincronizado com sucesso!",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
+                    .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+            } else if (sync == "Falha") {
+                MainScope().launch { connectionView() }
+            }
+            */
         }
         var intent: Intent
 

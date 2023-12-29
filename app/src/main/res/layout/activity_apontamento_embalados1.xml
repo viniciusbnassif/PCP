@@ -506,7 +506,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:keepScreenOn="true"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/material_dynamic_primary30"
             app:hideOnScroll="true"
             app:navigationIconTint="#FFFFFF"
             app:titleTextColor="@color/white">

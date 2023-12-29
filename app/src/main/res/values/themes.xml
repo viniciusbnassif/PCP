@@ -1,47 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.PCP" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorPrimary">@color/material_dynamic_primary30</item>
+        <item name="colorPrimaryVariant">@color/material_dynamic_primary40</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/material_dynamic_primary70</item>
+        <item name="colorSecondaryVariant">@color/material_dynamic_primary50</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorOnPrimaryContainer">@color/colorPrimary</item>
+        <item name="colorOnPrimaryContainer">@color/material_dynamic_primary30</item>
         <item name="colorPrimaryContainer">@color/color_0</item>
-        <item name="colorSecondaryContainer">@color/colorPrimary</item>
+        <item name="colorSecondaryContainer">@color/material_dynamic_primary30</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
-        <!-- Status bar color. -->
-        <!--item name="android:statusBarColor">@color/blue_0</item-->
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="navigationIconTint">@color/spacegray</item>
-        <!--item name="android:windowLightStatusBar">true</item-->
-        <!-- Customize your theme here. -->
+        <item name="android:shadowColor">@color/material_dynamic_primary70</item>
+        <item name="colorContainer">@color/material_dynamic_primary70</item>
+        <item name="android:textColorHighlight">@color/color_100</item>
     </style>
 
     <style name="Theme.PCP.DarkTheme" parent="Theme.Material3.Dark.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorPrimary">@color/material_dynamic_primary30</item>
+        <item name="colorPrimaryVariant">@color/material_dynamic_primary40</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/material_dynamic_primary70</item>
+        <item name="colorSecondaryVariant">@color/material_dynamic_primary50</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorOnPrimaryContainer">@color/colorPrimary</item>
+        <item name="colorOnPrimaryContainer">@color/material_dynamic_primary30</item>
         <item name="colorPrimaryContainer">@color/color_0</item>
-        <item name="colorSecondaryContainer">@color/colorPrimary</item>
+        <item name="colorSecondaryContainer">@color/material_dynamic_primary30</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
-        <!-- Status bar color. -->
-        <!--item name="android:statusBarColor">@color/blue_0</item-->
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="navigationIconTint">@color/spacegray</item>
-        <!--item name="android:windowLightStatusBar">true</item-->
-        <!-- Customize your theme here. -->
+        <item name="android:shadowColor">@color/material_dynamic_primary70</item>
+        <item name="colorContainer">@color/material_dynamic_primary70</item>
+        <item name="android:textColorHighlight">@color/color_100</item>
     </style>
 
 </resources>
