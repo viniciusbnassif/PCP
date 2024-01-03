@@ -5,19 +5,20 @@
 
 
         <item name="colorPrimary">@color/material_dynamic_primary40</item>
-        <item name="colorPrimaryVariant">@color/material_dynamic_primary30</item>
+        <item name="colorPrimaryVariant">@color/material_dynamic_primary80</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/material_dynamic_primary70</item>
         <item name="colorSecondaryVariant">@color/material_dynamic_primary50</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorOnPrimaryContainer">@color/material_dynamic_primary80</item>
+        <item name="colorOnPrimaryContainer">@color/material_dynamic_primary99</item>
         <item name="colorPrimaryContainer">@color/material_dynamic_primary50</item>
         <item name="colorSecondaryContainer">@color/colorPrimary</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
         <item name="android:shadowColor">@color/material_dynamic_primary80</item>
         <item name="colorContainer">@color/material_dynamic_primary70</item>
         <item name="android:textColorHighlight">@color/color_100</item>
+
 
 
         <!-- Status bar color. -->

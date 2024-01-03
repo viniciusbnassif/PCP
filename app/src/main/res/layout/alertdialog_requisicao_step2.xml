@@ -8,7 +8,7 @@
 
     <!--Titulo deve ser algo como: "Quanto material será enviado:"-->
 
-    <com.google.android.material.divider.MaterialDivider
+    <!--com.google.android.material.divider.MaterialDivider
         android:id="@+id/div"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +17,19 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/textProdutoName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" /-->
+
+    <TextView
+        android:id="@+id/nomePasso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="Etapa"
+        app:layout_constraintBottom_toTopOf="@id/textProdutoName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,13 +40,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="false"
+        app:layout_constraintTop_toBottomOf="@id/nomePasso"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/div">
+        app:layout_constraintStart_toStartOf="parent">
+        <!--app:layout_constraintTop_toBottomOf="@id/nomePasso"-->
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextProdutoName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text=""
             android:hint="hint" />
     </com.google.android.material.textfield.TextInputLayout>
 

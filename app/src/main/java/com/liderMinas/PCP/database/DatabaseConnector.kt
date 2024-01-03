@@ -361,7 +361,7 @@ fun uploadRequisicoes(context: Context) {
                 catch (se: SQLException){
                     Log.e("Error SQLE", se.toString())
                 }
-                //dbIntrn.insertDone("ApontPerda", id)
+                dbIntrn.insertDone("Requisicao", id)
 
                 //result.moveToNext()
             }while (localResult.moveToNext())

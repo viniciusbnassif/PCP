@@ -167,8 +167,8 @@ class Requisicao(username: String, context: Context) : Fragment() {
                                         var cod = db.getCodRealProd(parseInt(produtoID.text.toString()))
                                         var codF = cod!!.getString(1)
                                         var query = "INSERT INTO Requisicao (codProduto, qtdRequisicao, userRequisicao," +
-                                                        "dataHoraRequisicao) " +
-                                            "VALUES ('${codF}', ${parseFloat(qtd.text.toString())}, '$username', '${date()}')"
+                                                        "dataHoraRequisicao, statusSync)" +
+                                            "VALUES ('${codF}', ${parseFloat(qtd.text.toString())}, '$username', '${date()}', 0)"
                                         db.externalExecSQL(query)
                                         //enviarReqParaServer(produtoID, qtd)
 
@@ -192,6 +192,32 @@ class Requisicao(username: String, context: Context) : Fragment() {
                     R.color.colorPrimaryVariant,
                     R.color.colorSecondary)
 
+                //fun backToTop() {swipe.setScrollY(0)}
+                var buttonToTop = findViewById<MaterialButton>(R.id.backToTop)
+                buttonToTop.setOnClickListener {
+                    val cursorUpdate = SQLiteHelper(ctxt).getInternalRequisicao()
+
+                    MainScope().launch {
+                        /*MainScope().run {
+
+
+                            startActivity(getIntent())
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+                            finish()*/
+
+                        recycleView.adapter = RecyclerAdapter(cursorUpdate, contextNav)
+                        recycleView.adapter?.notifyDataSetChanged()
+                        recycleView.layoutManager = LinearLayoutManager(ctxt)
+                        swipe.isRefreshing = false
+
+
+                        if (cursorUpdate == null || cursorUpdate.count == 0) {
+                            aviso.setVisibility(View.VISIBLE)
+                        } else {
+                            aviso.setVisibility(View.GONE)
+                        }
+                    }
+                }
                 swipe.setOnRefreshListener {
                     update()
                     updateBadge()

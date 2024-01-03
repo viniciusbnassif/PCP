@@ -21,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.Sync
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -51,6 +53,15 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
             systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         }*/
 
+        val exceptionHandler = CoroutineExceptionHandler{_ , throwable->
+            throwable.printStackTrace()
+        }
+
+//when you make request:
+
+        CoroutineScope(Dispatchers.IO + exceptionHandler ).launch {
+
+        }
 
         var bottomAppBar = findViewById<BottomAppBar>(R.id.apontEmbaladosBottomBar)
         KeyboardVisibilityEvent.setEventListener(this, object : KeyboardVisibilityEventListener {
@@ -475,12 +486,13 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 && (qtdAvulsa.length() != 0)
                 && (username != null)
             ) {
-
-                if (cxAvulsa.text == ""){
-                    cxAvulsa.text = "0"
-                }
-                if (qtdAvulsa.text == ""){
-                    qtdAvulsa.text = "0"
+                MainScope().launch {
+                    if (cxAvulsa.text == "") {
+                        cxAvulsa.text = "0"
+                    }
+                    if (qtdAvulsa.text == "") {
+                        qtdAvulsa.text = "0"
+                    }
                 }
 
                 //var tipoID = findViewById<TextView>(R.id.tipoTransporteID)
@@ -519,9 +531,11 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                             }," +
                             "'${findViewById<TextView>(R.id.tipoVProdutoSaver).text}', '${username}', 0);"
                 db.externalExecSQL(finalQuery)
-                Toast.makeText(this, "Apontamento salvo", Toast.LENGTH_LONG).show()
                 var ctxt = this
-                withContext(Dispatchers.IO) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(ctxt, "Apontamento salvo", Toast.LENGTH_LONG).show()
+                }
+                CoroutineScope(Dispatchers.IO).launch {
                     sync.sync(1, ctxt)
                 }
                 if (command == 2){
@@ -568,49 +582,59 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
         val buttonResetar: MaterialButton = findViewById(R.id.fab1)
         buttonResetar.setOnClickListener {
-            MainScope().launch { finalizar(1) }
+            CoroutineScope(Dispatchers.Main).launch { finalizar(1) }
 
         }
 
         val buttonFinalizar: MaterialButton = findViewById(R.id.fab2)
         buttonFinalizar.setOnClickListener {
-            MainScope().launch { finalizar(2) }
+            CoroutineScope(Dispatchers.Main).launch { finalizar(2) }
         }
 
-        MainScope().launch{
+        CoroutineScope(Dispatchers.Main).launch{
             connectionView()
         }
     }
 
     suspend fun connectionView(){
-        var result = withContext(Dispatchers.IO) {
-            return@withContext Sync().testConnection()
-        }
+        CoroutineScope(Dispatchers.IO).launch {
+            var result = Sync().testConnection()
 
-        if (result == "Falha" ) {
-            val snackbar = Snackbar.make(findViewById(R.id.CL),
-                "Não foi possível estabelecer uma conexão com o servidor",
-                Snackbar.LENGTH_INDEFINITE
-            ).setBackgroundTint(Color.parseColor("#741919"))
-                .setTextColor(Color.WHITE)
-                .setActionTextColor(Color.WHITE)
-                .setAction("OK"){}.show()
-        } else if (result == "Sem Conexão") {
-            Snackbar.make(findViewById(R.id.CL),
-                "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
-                Snackbar.LENGTH_INDEFINITE
-            ).setBackgroundTint(Color.parseColor("#E3B30C"))
-                .setTextColor(Color.WHITE)
-                .setActionTextColor(Color.WHITE)
-                .setAction("OK"){}.show()
-        }else {
-            Snackbar.make(findViewById(R.id.CL),
-                "Sincronizado com sucesso!",
-                Snackbar.LENGTH_LONG
-            ).setBackgroundTint(Color.parseColor("#197419"))
-                .setTextColor(Color.WHITE)
-                .setActionTextColor(Color.WHITE)
-                .setAction("OK"){}.show()
+
+            if (result == "Falha") {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val snackbar = Snackbar.make(
+                        findViewById(R.id.CL),
+                        "Não foi possível estabelecer uma conexão com o servidor",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setBackgroundTint(Color.parseColor("#741919"))
+                        .setTextColor(Color.WHITE)
+                        .setActionTextColor(Color.WHITE)
+                        .setAction("OK") {}.show()
+                }
+            } else if (result == "Sem Conexão") {
+                CoroutineScope(Dispatchers.Main).launch {
+                    Snackbar.make(
+                        findViewById(R.id.CL),
+                        "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setBackgroundTint(Color.parseColor("#E3B30C"))
+                        .setTextColor(Color.WHITE)
+                        .setActionTextColor(Color.WHITE)
+                        .setAction("OK") {}.show()
+                }
+            } else {
+                CoroutineScope(Dispatchers.Main).launch {
+                    Snackbar.make(
+                        findViewById(R.id.CL),
+                        "Sincronizado com sucesso!",
+                        Snackbar.LENGTH_LONG
+                    ).setBackgroundTint(Color.parseColor("#197419"))
+                        .setTextColor(Color.WHITE)
+                        .setActionTextColor(Color.WHITE)
+                        .setAction("OK") {}.show()
+                }
+            }
         }
     }
 
@@ -703,7 +727,9 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                     spinnerID.text = _id.toInt().toString()
                     id = _id.toInt()
                     overrideDataBlock(id) //inicia metodo passando o id do item selecionado
-                    setTotal()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        setTotal()
+                    }
                 }
 
             }

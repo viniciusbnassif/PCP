@@ -69,12 +69,14 @@ class MainMenu(var username: String) : Fragment() {
                 ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE)
                     .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
             } else if (result == "Sem Conexão") {
-                Snackbar.make(
-                    cl,
-                    "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
-                    Snackbar.LENGTH_INDEFINITE
-                ).setBackgroundTint(Color.parseColor("#E3B30C")).setTextColor(Color.WHITE)
-                    .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+                CoroutineScope(Dispatchers.Main).launch {
+                    Snackbar.make(
+                        cl,
+                        "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setBackgroundTint(Color.parseColor("#E3B30C")).setTextColor(Color.WHITE)
+                        .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+                }
             }/* else {
                 Snackbar.make(cl,
                     "Sincronizado com sucesso!",
