@@ -40,7 +40,9 @@
             android:id="@+id/spinnerPrd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="none"/>
+            android:inputType="none"
+            android:textColor="@color/textColorPrimary"
+            app:simpleItemSelectedRippleColor="@color/textColorPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -2,9 +2,11 @@
 
 package com.liderMinas.PCP
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.provider.AlarmClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -35,15 +37,11 @@ class MainNav : AppCompatActivity() {
 
         }*/
 
-
-
         username = intent.getStringExtra(EXTRA_MESSAGE)!!
-
 
         val MainMenu=MainMenu(username)
         val Estatistica=Estatistica()
         val Requisicao=Requisicao(username, this)
-
 
         setCurrentFragment(MainMenu)
 
@@ -58,8 +56,19 @@ class MainNav : AppCompatActivity() {
         }
 
 
+
         //updateBadge(this, username)
     }
+    fun restartFragment() {
+        var mainMenu = Intent(this, MainNav::class.java).apply {
+            putExtra(AlarmClock.EXTRA_MESSAGE, username)
+        }
+        startActivity(mainMenu)
+        finish()
+    }
+
+
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -70,6 +79,7 @@ class MainNav : AppCompatActivity() {
         super.onPause()
         SQLiteHelper(this).close()
     }
+
 
 
 
@@ -97,4 +107,6 @@ class MainNav : AppCompatActivity() {
             commit()
         }
     public val mainNavContext = this
+
 }
+

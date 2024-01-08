@@ -4,6 +4,7 @@ import android.database.Cursor
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.os.Looper
 import android.provider.AlarmClock
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.button.MaterialButton
@@ -34,7 +38,7 @@ import java.time.LocalDate
 import java.util.*
 
 
-class ApontamentoEmbalados1 : AppCompatActivity() {
+class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
     lateinit var db: SQLiteHelper
     var cursor: Cursor? = null
     var id: Int = 0
@@ -598,11 +602,25 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
 
     suspend fun connectionView(){
         CoroutineScope(Dispatchers.IO).launch {
-            var result = Sync().testConnection()
+
+            if (Looper.myLooper() == null) {
+                Looper.prepare()
+            }
+
+            var result = CoroutineScope((Dispatchers.IO)).run {
+                try {
+                    var result = Sync().testConnection()
+                } catch (ex: Exception) {
+                    Log.d("Exeption", ex.toString())
+                }
+            }
 
 
             if (result == "Falha") {
                 CoroutineScope(Dispatchers.Main).launch {
+                    if (Looper.myLooper() == null) {
+                        Looper.prepare()
+                    }
                     val snackbar = Snackbar.make(
                         findViewById(R.id.CL),
                         "Não foi possível estabelecer uma conexão com o servidor",
@@ -614,6 +632,9 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 }
             } else if (result == "Sem Conexão") {
                 CoroutineScope(Dispatchers.Main).launch {
+                    if (Looper.myLooper() == null) {
+                        Looper.prepare()
+                    }
                     Snackbar.make(
                         findViewById(R.id.CL),
                         "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
@@ -625,6 +646,9 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
                 }
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
+                    if (Looper.myLooper() == null) {
+                        Looper.prepare()
+                    }
                     Snackbar.make(
                         findViewById(R.id.CL),
                         "Sincronizado com sucesso!",
@@ -829,6 +853,11 @@ class ApontamentoEmbalados1 : AppCompatActivity() {
         Animatoo.animateSlideRight(this)
         return true
     }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        TODO("Not yet implemented")
+    }
+
 }
 
 

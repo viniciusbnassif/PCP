@@ -10,8 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -102,15 +104,13 @@ class Requisicao(username: String, context: Context) : Fragment() {
                         while (cursorProduto!!.moveToNext()) {
                             cursorArray.add(cursorProduto!!.getString(1))
                         }
-                        var simpleCursorAdapter =
-                            ctxt?.let { it1 ->
-                                ArrayAdapter<Any>(
-                                    it1,
+                        var simpleCursorAdapter = ArrayAdapter<Any>(contextNav,
                                     android.R.layout.simple_dropdown_item_1line,
                                     cursorArray
                                 )
-                            }
+
                         spinner.setAdapter(simpleCursorAdapter) //spinner recebe os dados para exibição
+
 
                         //ao selecionar um item
                         spinner.onItemClickListener =

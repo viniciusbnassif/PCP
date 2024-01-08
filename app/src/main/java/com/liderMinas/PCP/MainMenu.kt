@@ -2,11 +2,12 @@
 
 package com.liderMinas.PCP
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Looper
+import android.provider.AlarmClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,22 +18,26 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import com.liderMinas.PCP.database.Sync
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.coroutineContext
 
 
 class MainMenu(var username: String) : Fragment() {
     @SuppressLint("ResourceAsColor", "MissingInflatedId")
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
     = inflater.inflate(R.layout.activity_main_menu, container, false).apply {
+
 
         /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
@@ -107,12 +112,32 @@ class MainMenu(var username: String) : Fragment() {
 
 
         //var sync = parseInt("")
+        var customAlertDialogView : View = layoutInflater.inflate(R.layout.alertdialog_sync_running, null)
+        var materialAlertSync =
+            MaterialAlertDialogBuilder(context)
+                .setView(customAlertDialogView)
+                .setTitle("Sincronizando")
+                .setCancelable(false)
+
+        /*fun whileSync(sync: Boolean){
+            val dialog = materialAlertSync
+            if (sync) {
+                dialog.show()
+            } else {
+                dialog.show()?.dismiss()
+                //dialog?.show()?.dismiss()
+            }
+
+
+        }*/
+
+        var syncBtn = findViewById<MaterialButton>(R.id.syncBtn)
 
 
         suspend fun doSync() {
-
+            syncBtn.isEnabled = false
+            var show = materialAlertSync.show()
             //var data = String
-
             // <- extension on current scope
             Log.d("context inside method from button sync", "${ctxt.toString()}")
             var data = Sync().sync(0, activity?.applicationContext!!)
@@ -121,70 +146,43 @@ class MainMenu(var username: String) : Fragment() {
 
             //val result = data.await()
             if (data == "Sucesso") {
+                show.cancel()
+                //whileSync(false)
+                /*Snackbar.make(
+                    cl,
+                    "Sincronizado com sucesso!",
+                    Snackbar.LENGTH_SHORT
+                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
+                    .setActionTextColor(Color.WHITE).setAction("OK") {}.show()*/
+                MaterialAlertDialogBuilder(context)
+                    .setTitle("Sincronizando")
+                    .setMessage("Sincronizado com sucesso")
+                    .setCancelable(false)
+                    //.setNeutralButton("Fechar") { dialog, _ -> (requireActivity() as MainNav).restartFragment(R.id.menu) }.show()
+                    .setNeutralButton("Fechar") { dialog, _ -> (requireActivity() as MainNav).restartFragment() }.show()
 
-                    Snackbar.make(
-                        cl,
-                        "Sincronizado com sucesso!",
-                        Snackbar.LENGTH_INDEFINITE
-                    ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
-                        .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
+
+
 
             } else if (data == "Falha") {
+                show.cancel()
                 withContext(Dispatchers.Main) { connectionView() }
             } else {
+                show.cancel()
                 /* TO DO */
             }
 
+        }
+        fun restartNav(){
 
         }
-        //var intent: Intent
 
-
-
-            var syncBtn = findViewById<MaterialButton>(R.id.syncBtn)
         syncBtn.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch { doSync()}
-
-
-            /*val data = Sync().syncNoSuspension(0,ctxt!!)
-
-
-                if (data == "Sucesso") {
-                    //MainScope().launch {
-                        Snackbar.make(
-                            cl,
-                            "Sincronizado com sucesso!",
-                            Snackbar.LENGTH_INDEFINITE
-                        ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
-                            .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
-                    //}
-                } else if (data == "Falha") {
-                    MainScope().launch { connectionView() }
-                } else {
-                    /* TO DO */
-                }*/
-
-
-            /*var sync =
-                coroutineScope().async(Dispatchers.IO){
-                    var sync = Sync().sync(
-                        0,
-                        ctxt
-                    )
-                }
-
-            if (sync == "Sucesso") {
-
-                Snackbar.make(
-                    cl,
-                    "Sincronizado com sucesso!",
-                    Snackbar.LENGTH_INDEFINITE
-                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE)
-                    .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
-            } else if (sync == "Falha") {
-                MainScope().launch { connectionView() }
+            CoroutineScope(Dispatchers.Main).launch {
+                //whileSync(true)
+                doSync()
             }
-            */
+
         }
         var intent: Intent
 
