@@ -212,9 +212,11 @@ class SQLiteHelper(context: Context?):
         //db?.execSQL("INSERT INTO Usuario (username, password) VALUES ('kane','123'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
-        db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao," +
+        /*db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao," +
                 " userRequisicao, userAtendimento, userConfirmacao, dataHoraRequisicao, dataHoraAtendimento, dataHoraConfirmacao, statusSync) " +
                 "VALUES ('101113',1.5, 1.4, 1.3, 'vinicius.nassif', 'guilherme.augusto', 'vinicius.nassif', '2023121022:10', '2023121022:15', '2023121022:19', 0);")
+                */
+
 
 
     }
@@ -508,11 +510,11 @@ class SQLiteHelper(context: Context?):
                 DATA_CONF,
                 STATUS_SYNC
             ),
-            null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+            USER_CONF + " IS NULL" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
             null /* arguments to replace ? place holder in the WHERE clause, null if none */,
             null /* GROUP BY clause, null if no GROUP BY clause */,
             null /* HAVING CLAUSE, null if no HAVING clause */,
-            null//ID_REQUISICAO + " DESC" //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
+            ID_REQUISICAO + " DESC"//ID_REQUISICAO + " DESC" //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
         )
         if (cursor == null || !cursor.moveToFirst()) {
             return null

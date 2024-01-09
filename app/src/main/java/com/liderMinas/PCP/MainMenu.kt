@@ -108,7 +108,7 @@ class MainMenu(var username: String) : Fragment() {
             }*/
         }
 
-         MainScope().launch{connectionView()}
+         //MainScope().launch{connectionView()}
 
 
         //var sync = parseInt("")
@@ -166,8 +166,22 @@ class MainMenu(var username: String) : Fragment() {
 
             } else if (data == "Falha") {
                 show.cancel()
-                withContext(Dispatchers.Main) { connectionView() }
+                MaterialAlertDialogBuilder(context)
+                    .setTitle("Falha")
+                    .setMessage("Ocorreu um erro ao sincronizar. Verifique o estado da conexão e tente novamente.")
+                    .setCancelable(false)
+                    //.setNeutralButton("Fechar") { dialog, _ -> (requireActivity() as MainNav).restartFragment(R.id.menu) }.show()
+                    .setNeutralButton("Fechar") { dialog, _ -> (requireActivity() as MainNav).restartFragment() }.show()
+
+                //withContext(Dispatchers.Main) { connectionView() }
             } else {
+                MaterialAlertDialogBuilder(context)
+                    .setTitle("Falha")
+                    .setMessage("Ocorreu um erro ao sincronizar. Verifique o estado da conexão e tente novamente.")
+                    .setCancelable(false)
+                    //.setNeutralButton("Fechar") { dialog, _ -> (requireActivity() as MainNav).restartFragment(R.id.menu) }.show()
+                    .setNeutralButton("Fechar") { dialog, _ -> (requireActivity() as MainNav).restartFragment() }.show()
+
                 show.cancel()
                 /* TO DO */
             }

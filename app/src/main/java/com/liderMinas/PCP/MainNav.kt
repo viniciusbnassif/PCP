@@ -67,6 +67,14 @@ class MainNav : AppCompatActivity() {
         finish()
     }
 
+    fun restartFragmentReq() {
+        var mainMenu = Intent(this, MainNav::class.java).apply {
+            putExtra(AlarmClock.EXTRA_MESSAGE, username)
+        }
+        startActivity(mainMenu)
+        finish()
+    }
+
 
 
 

@@ -62,7 +62,7 @@ class Requisicao(username: String, context: Context) : Fragment() {
 
                     var soma = customAlertDialogView.findViewById<MaterialButton>(R.id.soma1)
                     var subt = customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)
-
+                    var buttonToTop = findViewById<MaterialButton>(R.id.backToTop)
 
 
                     soma.setOnClickListener {
@@ -170,8 +170,9 @@ class Requisicao(username: String, context: Context) : Fragment() {
                                                         "dataHoraRequisicao, statusSync)" +
                                             "VALUES ('${codF}', ${parseFloat(qtd.text.toString())}, '$username', '${date()}', 0)"
                                         db.externalExecSQL(query)
+                                        //(requireActivity() as com.liderMinas.PCP.MainNav).restartFragmentReq()
                                         //enviarReqParaServer(produtoID, qtd)
-
+                                    buttonToTop.performClick()
 
                                     //}
                                 }
@@ -191,7 +192,6 @@ class Requisicao(username: String, context: Context) : Fragment() {
                     R.color.colorPrimary,
                     R.color.colorPrimaryVariant,
                     R.color.colorSecondary)
-
                 //fun backToTop() {swipe.setScrollY(0)}
                 var buttonToTop = findViewById<MaterialButton>(R.id.backToTop)
                 buttonToTop.setOnClickListener {
@@ -218,6 +218,7 @@ class Requisicao(username: String, context: Context) : Fragment() {
                         }
                     }
                 }
+                buttonToTop.performClick()
                 swipe.setOnRefreshListener {
                     update()
                     updateBadge()
@@ -254,14 +255,14 @@ class Requisicao(username: String, context: Context) : Fragment() {
                         }
                     }
                 }
-        fun forceUpdate(){
-            val cursorUpdate = SQLiteHelper(ctxt).getInternalRequisicao()
-            recycleView.adapter = RecyclerAdapter(cursorUpdate, contextNav)
-            recycleView.adapter?.notifyDataSetChanged()
-            recycleView.layoutManager = LinearLayoutManager(ctxt)
-            swipe.isRefreshing = false
-        }
-        forceUpdate()
+                fun forceUpdate(){
+                    val cursorUpdate = SQLiteHelper(ctxt).getInternalRequisicao()
+                    recycleView.adapter = RecyclerAdapter(cursorUpdate, contextNav)
+                    recycleView.adapter?.notifyDataSetChanged()
+                    recycleView.layoutManager = LinearLayoutManager(ctxt)
+                    swipe.isRefreshing = false
+                }
+                forceUpdate()
 
 
 

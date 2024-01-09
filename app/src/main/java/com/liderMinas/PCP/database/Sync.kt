@@ -106,11 +106,12 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
                         }
                     }
                     if (cod == 0) {
+                        //downloadRequisicoes(ctxt)
+
                         downloadProdutoExt(ctxt)
                         downloadMotivoExt(ctxt)
                         downloadProdEstoqueExt(ctxt)
                         downloadRequisicoes(ctxt)
-
 
                         message = "Sucesso" //Sincronizado com sucesso
                         return@withContext message

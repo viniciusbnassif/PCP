@@ -337,7 +337,7 @@ fun uploadRequisicoes(context: Context) {
                             """
                             INSERT INTO Requisicao
                             (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao, userRequisicao, 
-                            userAtendimento, userConfirmacao, dataHoraRequisicao, dataHoraAtendimento)
+                            userAtendimento, userConfirmacao, dataHoraRequisicao, dataHoraAtendimento, dataHoraConfirmacao)
                             VALUES
                             ('${localResult.getString(1)}', ${localResult.getFloat(2)}, 
                             ${localResult.getFloatOrNull(3)},
@@ -346,9 +346,17 @@ fun uploadRequisicoes(context: Context) {
                             ${contentOrNull(localResult.getStringOrNull(6))},
                             ${contentOrNull(localResult.getStringOrNull(7))},
                             ${contentOrNull(localResult.getStringOrNull(8))},
-                            ${contentOrNull(localResult.getStringOrNull(9))});
+                            ${contentOrNull(localResult.getStringOrNull(9))},
+                            ${contentOrNull(localResult.getStringOrNull(10))});
                             """.trimIndent())
                     Log.d("Upload Requisicao", insert)
+
+                    var query = """
+                        UPDATE FROM Requisicao 
+                        SET statusSync = 1
+                        WHERE idRequisicao = ${localResult.getInt(0)}
+                    """.trimIndent()
+                    dbIntrn.externalExecSQL(query)
 
                     var comm = st1.connection.prepareStatement(insert)
                     comm.executeUpdate()
@@ -377,12 +385,35 @@ fun uploadRequisicoes(context: Context) {
     }
 }
 
+fun contentOrNullStr(any: Any): Any? {
+    if (any == null) {
+        Log.d("DwReq AnyS test", "null")
+        return null
+    } else {
+        var anyS = "'${any.toString()}'"
+        Log.d("DwReq AnyS test", anyS)
+        return anyS
+    }
+}
+fun contentOrNullFloat(any: Float?): Any? {
+    if (any == null) {
+        Log.d("DwReq AnyF test", "null")
+        return null
+    } else if (any?.toDouble() != 0.0) {
+        var anyS = any
+        Log.d("DwReq AnyF test", "$anyS")
+        return anyS
+    } else {
+        return null
+    }
+}
+
+var userAType: String? = null
+
 fun downloadRequisicoes(context: Context?) {
 
-    val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-    StrictMode.setThreadPolicy(policy)
-
-    var count = 0
+    /*val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+    StrictMode.setThreadPolicy(policy)*/
 
     val tbl = "Requisicao"
     val id = "idRequisicao"
@@ -398,43 +429,21 @@ fun downloadRequisicoes(context: Context?) {
     val dataC = "dataHoraConfirmacao"
     //val lido = "lido"
 
-    val dbIntrn: SQLiteHelper = SQLiteHelper(context)
+    var dbIntrn: SQLiteHelper = SQLiteHelper(context)
     connect().use {
-        val st1 = it?.createStatement()!!
-        val resultSet1 = st1.executeQuery(
+        var st1 = it?.createStatement()!!
+        var resultSet1 = st1.executeQuery(
             """
             SELECT *
-              FROM $tbl
-             ORDER BY $id
+              FROM Requisicao
+             ORDER BY idRequisicao
             """.trimIndent()
         )
-
-        var array = dbIntrn.arrayIdReqs()
-        dbIntrn.externalExecSQL("DELETE FROM $tbl")
+        dbIntrn.externalExecSQL("DELETE FROM Requisicao")
+        Log.d("Table $tbl", "Table $tbl deleted")
         while (resultSet1.next()){
-            fun contentOrNullStr(any: Any): Any? {
-                if (any == null){
-                    Log.d("DwReq AnyS test", "null")
-                    return null
-                } else {
-                    var anyS = "'${any.toString()}'"
-                    Log.d("DwReq AnyS test", anyS)
-                    return anyS
-                }
-            }
-            fun contentOrNullFloat(any: Any): Any? {
-                if (any == null){
-                    Log.d("DwReq AnyF test", "null")
-                    return null
-                } else /*if (any == String && any != null)*/{
-                    var anyS = any
-                    Log.d("DwReq AnyF test", "$anyS")
-                    return anyS
-                }
-            }
 
-            var userAType: String? = null
-            fun checkNullorString (origin: String): Any? {
+            fun checkNullorString(origin: String?): Any? {
                 if (resultSet1.getObject(origin) == null) {
                     userAType = null
                     return userAType
@@ -443,34 +452,10 @@ fun downloadRequisicoes(context: Context?) {
                     return userAType
                 }
             }
-            fun checkNullorFloat (origin: String): Any? {
-                if (resultSet1.getObject(origin) == null) {
-                    return null
-                } else {
-                    return resultSet1.getString(origin)
-                }
-            }
-            if (array != null) {
-
-
-                if (!array.contains(resultSet1.getInt("$id"))){
-                    var query = "INSERT INTO $tbl ($id, $cod, $qtdR, $qtdA, $qtdC, $userR, $userA, $userC, $dataR, $dataA, $dataC) " +
-                            "VALUES ('${resultSet1.getString(id)}', '${resultSet1.getString(cod)}', ${resultSet1.getFloat(qtdR)}," +
-                            "${contentOrNullFloat(resultSet1.getFloat(qtdA))}, " +
-                            "${contentOrNullFloat(resultSet1.getFloat(qtdC))}," +
-                            "${checkNullorString(userR)?.let { it1 -> contentOrNullStr(it1) }}," +
-                            "${checkNullorString(userA)?.let { it1 -> contentOrNullStr(it1) }}," +
-                            "${checkNullorString(userC)?.let { it1 -> contentOrNullStr(it1) }}, " +
-                            "${checkNullorString(dataR)?.let { it1 -> contentOrNullStr(it1) }}," +
-                            "${checkNullorString(dataA)?.let { it1 -> contentOrNullStr(it1) }}," +
-                            "${checkNullorString(dataC)?.let { it1 -> contentOrNullStr(it1) }}) "
-                    dbIntrn.externalExecSQL(query)
-                    Log.d("SQL Download Requisicao", "${resultSet1.getString("$cod")} inserido com sucesso (${resultSet1.getInt("$id")})")
-
-                }
-            } else {
-                var query = "INSERT INTO $tbl ($id, $cod, $qtdR, $qtdA, $qtdC, $userR, $userA, $userC, $dataR, $dataA, $dataC) " +
-                        "VALUES (${resultSet1.getInt("$id")}, '${resultSet1.getString("$cod")}', " +
+            var query =
+                "INSERT INTO $tbl ($id, $cod, $qtdR, $qtdA, $qtdC, $userR, $userA, $userC, $dataR, $dataA, $dataC) " +
+                        "VALUES (${resultSet1.getInt("$id")}, " +
+                        "'${resultSet1.getString("$cod")}', " +
                         "${contentOrNullFloat(resultSet1.getFloat("$qtdR"))}," +
                         "${contentOrNullFloat(resultSet1.getFloat("$qtdA"))}," +
                         "${contentOrNullFloat(resultSet1.getFloat("$qtdC"))}," +
@@ -480,13 +465,19 @@ fun downloadRequisicoes(context: Context?) {
                         "${checkNullorString(dataR)?.let { it1 -> contentOrNullStr(it1) }}," +
                         "${checkNullorString(dataA)?.let { it1 -> contentOrNullStr(it1) }}," +
                         "${checkNullorString(dataC)?.let { it1 -> contentOrNullStr(it1) }}) "
-                dbIntrn.externalExecSQL(query)
-                Log.d("SQL Insert Requisicao", "${resultSet1.getString("$cod")} inserido com sucesso (${resultSet1.getInt("$id")})")
-            }
+            dbIntrn.externalExecSQL(query)
+            Log.d(
+                "SQL Download Requisicao",
+                "${resultSet1.getString("$cod")} inserido com sucesso (${
+                    resultSet1.getInt("$id")
+                })"
+            )
         }
+
         dbIntrn.close()
         st1.close()
         connect()?.close()
+
     }
 
 }

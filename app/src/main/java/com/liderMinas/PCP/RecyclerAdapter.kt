@@ -5,10 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-import android.graphics.Color
 import android.graphics.Color.WHITE
 import android.graphics.Color.parseColor
+import android.icu.text.SimpleDateFormat
 import android.opengl.Visibility
+import android.provider.CalendarContract.Colors
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,10 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.compose.material3.AlertDialog
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.core.content.ContextCompat
 import androidx.core.database.getFloatOrNull
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getStringOrNull
@@ -25,9 +30,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.NonDisposableHandle.parent
 import java.lang.Float.parseFloat
+import java.util.Date
 
 //import com.google.android.material.internal.ContextUtils.getActivity
 //import com.kingdom.controledeestoque.database.getNotificacao
@@ -112,14 +119,38 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
             //holder.userAtend.text = "Respondido por: ${userAtend?.toString() ?: ""}"//if (userAtend) {userAtend.toString()} else {""}
             holder.dty.text = dateFormatted
 
+            var dateFormatter = SimpleDateFormat()
 
-            /*if (lido == "N") {
-                holder.read.visibility = View.VISIBLE
-                holder.card.setCardBackgroundColor(parseColor("#E1F3FF"))
-            } else {
-                holder.read.visibility = View.INVISIBLE
-                holder.card.setCardBackgroundColor(WHITE)
-            }*/
+
+            var dateFormatter0 = SimpleDateFormat()
+            var time = ""
+
+            //var time0 = findViewById<TextView>(R.id.editTextHora)
+            //var dty0 = findViewById<TextView>(R.id.editTextData)
+
+            var dateFormatterProtheus = SimpleDateFormat()
+            var dtyProtheus = ""
+
+
+            fun date(): String {
+
+                dateFormatter = SimpleDateFormat("dd/MM/yyyy") //formatar data no formato padrão
+                dty = dateFormatter.format(Date())
+
+                dateFormatter0 = SimpleDateFormat("kk:mm") //formatar tempo no formato 24h (kk)
+                time = dateFormatter0.format(Date())
+
+                //time0.setText(time)
+                //dty0.setText(dty)
+
+
+                dateFormatterProtheus =
+                    SimpleDateFormat("yyyyMMdd") //formatar data no formato padrão
+                dtyProtheus = dateFormatterProtheus.format(Date())
+                var dtytime0 = "$dtyProtheus" + "$time"
+
+                return dtytime0
+            }
 
 
             holder.card.setOnClickListener {
@@ -134,9 +165,6 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                     .setView(R.layout.alertdialog_requisicao_step2)
                     //.setMessage(msg)
                     //.setMessage("Digite a quantidade recebida e clique em Salvar")
-                    .setPositiveButton("Salvar") { dialog, which ->
-                        dialog.dismiss()
-                    }
                     .show()
 
                 var prodName =
@@ -147,6 +175,7 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                     ?.setHint("Produto")
                 dialogBuilder.findViewById<TextInputEditText>(R.id.editTextProdutoName)?.isEnabled =
                     false
+                dialogBuilder.findViewById<MaterialButton>(R.id.fechar)?.setOnClickListener { dialogBuilder.dismiss() }
 
                 Log.d("holder.qtdAtend.hint","${holder.qtdAtend.hint}")
 
@@ -154,7 +183,7 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                 qtd?.setText("${holder.qtdAtend.hint}")
 
                 var txt = "null"
-                    if (qtd?.text == null || holder.qtdAtend.hint == "null" || holder.qtdAtend.hint == null) {
+                    if ((qtdAtend == null) || qtdAtend == 0.0f /*|| holder.qtdAtend.hint == "null" || holder.qtdAtend.hint == null*/) {
                         var soma1 =
                             dialogBuilder.findViewById<MaterialButton>(R.id.soma1)?.setOnClickListener {
                                 var qtdS = parseFloat(qtd?.text.toString())
@@ -172,23 +201,47 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                         dialogBuilder.findViewById<MaterialButton>(R.id.subt1)?.visibility = GONE
                         dialogBuilder.findViewById<MaterialButton>(R.id.soma1)?.visibility = GONE
                         dialogBuilder.findViewById<TextInputEditText>(R.id.qtd)?.visibility = GONE
+                        dialogBuilder.findViewById<TextInputLayout>(R.id.qtdView)?.visibility = GONE
+                        dialogBuilder.findViewById<MaterialButton>(R.id.salvar)?.visibility = GONE
                     } else {
                         var soma1 =
                             dialogBuilder.findViewById<MaterialButton>(R.id.soma1)?.setOnClickListener {
-                                var qtdS = parseFloat(qtd.text.toString())
+                                var qtdS = parseFloat(qtd?.text.toString())
                                 qtdS += 1
-                                qtd.setText("$qtdS")
+                                qtd?.setText("$qtdS")
                             }
                         var subt1 =
                             dialogBuilder.findViewById<MaterialButton>(R.id.subt1)?.setOnClickListener {
-                                var qtdS = parseFloat(qtd.text.toString())
+                                var qtdS = parseFloat(qtd?.text.toString())
                                 qtdS -= 1
-                                qtd.setText("$qtdS")
+                                qtd?.setText("$qtdS")
                             }
                         dialogBuilder.findViewById<TextView>(R.id.nomePasso)?.setText("Digite a quantidade recebida e clique em Salvar")
                         dialogBuilder.findViewById<MaterialButton>(R.id.subt1)?.visibility = VISIBLE
                         dialogBuilder.findViewById<MaterialButton>(R.id.soma1)?.visibility = VISIBLE
                         dialogBuilder.findViewById<TextInputEditText>(R.id.qtd)?.visibility = VISIBLE
+                        dialogBuilder.findViewById<TextInputEditText>(R.id.qtd)?.setText("0.0")
+                        dialogBuilder.findViewById<MaterialButton>(R.id.salvar)?.setOnClickListener {
+                            var query = """
+                                UPDATE Requisicao
+                                SET qtdConfirmacao = ${parseFloat(qtd?.text.toString())}, userConfirmacao = '${userReq.toString()}', dataHoraConfirmacao = '${date()}', statusSync = 0;
+                                WHERE idRequisicao = ${holder.id.text};
+                            """.trimIndent()
+                            db.externalExecSQL(query)
+                            dialogBuilder.dismiss()
+                            holder.card.setOnClickListener {
+                                MaterialAlertDialogBuilder(ctxt)
+                                    .setTitle("Finalizado")
+                                    .setMessage("Essa transferência foi finalizada. Não há mais nada a fazer por aqui.")
+                                    .setPositiveButton("Fechar") { dialog, which ->
+                                        dialog.dismiss()
+                                    }
+                                    .show()
+                            }
+                            holder.title.setText("Finalizado")
+                            holder.card.setCardBackgroundColor(ContextCompat.getColor(ctxt, R.color.suErrorRed))
+                        }
+
                     }
 
             }
