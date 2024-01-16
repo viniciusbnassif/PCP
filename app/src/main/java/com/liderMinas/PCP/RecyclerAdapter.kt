@@ -224,8 +224,8 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                         dialogBuilder.findViewById<MaterialButton>(R.id.salvar)?.setOnClickListener {
                             var query = """
                                 UPDATE Requisicao
-                                SET qtdConfirmacao = ${parseFloat(qtd?.text.toString())}, userConfirmacao = '${userReq.toString()}', dataHoraConfirmacao = '${date()}', statusSync = 0;
-                                WHERE idRequisicao = ${holder.id.text};
+                                SET qtdConfirmacao = ${parseFloat(qtd?.text.toString())}, userConfirmacao = '${userReq.toString()}', dataHoraConfirmacao = '${date()}', statusSync = 2
+                                WHERE idRequisicao = ${holder.id.text} AND qtdRequisicao = ${qtdReq.toString()} AND userRequisicao = '${userReq.toString()}';
                             """.trimIndent()
                             db.externalExecSQL(query)
                             dialogBuilder.dismiss()

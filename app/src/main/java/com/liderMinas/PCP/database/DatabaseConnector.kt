@@ -301,8 +301,9 @@ fun uploadRequisicoes(context: Context) {
     var dbIntrn: SQLiteHelper = SQLiteHelper(context)
 
     var result = dbIntrn.getReq()
+    var resultUpd = dbIntrn.getUpdReq()
     var localResult = result
-
+    var localResultUpd = resultUpd
 
     connect().use {
 
@@ -352,7 +353,7 @@ fun uploadRequisicoes(context: Context) {
                     Log.d("Upload Requisicao", insert)
 
                     var query = """
-                        UPDATE FROM Requisicao 
+                        UPDATE Requisicao 
                         SET statusSync = 1
                         WHERE idRequisicao = ${localResult.getInt(0)}
                     """.trimIndent()
@@ -384,6 +385,100 @@ fun uploadRequisicoes(context: Context) {
         connect()?.close()
     }
 }
+
+fun uploadUpdRequisicoes(context: Context) {
+    var dbIntrn: SQLiteHelper = SQLiteHelper(context)
+
+    var result = dbIntrn.getReq()
+    var resultUpd = dbIntrn.getUpdReq()
+    var localResult = result
+    var localResultUpd = resultUpd
+
+    connect().use {
+
+        var st1 = it?.createStatement()!!
+        if (localResultUpd != null && localResultUpd.getCount() > 0) {
+            localResultUpd.moveToFirst()
+            do {
+
+                var id = localResultUpd?.getInt(0)
+
+                //var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
+                //var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
+                //var produtoDesc = produto!!.getString(1)
+                //var motivoDesc = motivo!!.getString(1)
+                Log.d("upload ReqUpd", "$id")
+                try {
+
+
+                    lateinit var userAtend: String
+
+                    fun contentOrNull(any: Any?): Any? {
+                        if (any == null){
+                            return null
+                        } else /*if (any == String && any != null)*/{
+                            var anyS = "'" + "$any" + "'"
+                            Log.d("UpReq AnyS test", anyS)
+                            return anyS
+                        }
+                    }
+
+                    var insert = (
+                            """
+                            UPDATE Requisicao 
+                            SET codProduto = '${localResultUpd.getString(1)}', 
+                            qtdRequisicao = ${localResultUpd.getFloat(2)},
+                            qtdAtendida = ${localResultUpd.getFloatOrNull(3)}, 
+                            qtdConfirmacao = ${localResultUpd.getFloatOrNull(4)}, 
+                            userRequisicao = '${localResultUpd.getString(5)}', 
+                            userAtendimento = ${contentOrNull(localResultUpd.getStringOrNull(6))}, 
+                            userConfirmacao = ${contentOrNull(localResultUpd.getStringOrNull(7))}, 
+                            dataHoraRequisicao = ${contentOrNull(localResultUpd.getStringOrNull(8))}, 
+                            dataHoraAtendimento = ${contentOrNull(localResultUpd.getStringOrNull(9))}, 
+                            dataHoraConfirmacao = ${contentOrNull(localResultUpd.getStringOrNull(10))}
+                            WHERE codProduto = '${localResultUpd.getString(1)}' AND  
+                            qtdRequisicao = ${localResultUpd.getFloat(2)} AND 
+                            userRequisicao = '${localResultUpd.getString(5)}' AND
+                            dataHoraRequisicao = ${contentOrNull(localResultUpd.getStringOrNull(8))};
+                            
+                            """.trimIndent())
+                    Log.d("Upload RequisicaoUpd", insert)
+
+                    var query = """
+                        UPDATE Requisicao 
+                        SET statusSync = 1
+                        WHERE idRequisicao = ${localResultUpd.getInt(0)}
+                    """.trimIndent()
+                    dbIntrn.externalExecSQL(query)
+
+                    var comm = st1.connection.prepareStatement(insert)
+                    comm.executeUpdate()
+
+
+                    //comm.connection.commit()
+                } catch (e: ClassNotFoundException){
+                    Log.e("Error SQL CNFE", e.toString())
+                }
+                catch (se: SQLException){
+                    Log.e("Error SQLE", se.toString())
+                }
+                dbIntrn.insertDone("Requisicao", id)
+
+                //result.moveToNext()
+            }while (localResultUpd.moveToNext())
+
+
+        } else {
+            Log.d("uploadRequisicoes Upd ", "Erro")
+
+        }
+        dbIntrn.close()
+        st1.close()
+        connect()?.close()
+    }
+}
+
+
 
 fun contentOrNullStr(any: Any): Any? {
     if (any == null) {

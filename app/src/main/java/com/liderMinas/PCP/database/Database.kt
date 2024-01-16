@@ -398,6 +398,24 @@ class SQLiteHelper(context: Context?):
         val result = db.rawQuery(selectQuery, null)
         return result
     }
+    fun getUpdReq(): Cursor? {
+        val selectQuery =
+            "SELECT $ID_REQUISICAO, " +
+                    "$COD_PROD_EST, " +
+                    "$QTD_REQ, " +
+                    "$QTD_ATEND, " +
+                    "$QTD_CONF, " +
+                    "$USER_REQ, " +
+                    "$USER_ATEND, " +
+                    "$USER_CONF, " +
+                    "$DATA_REQ, " +
+                    "$DATA_ATEND, " +
+                    "$DATA_CONF, " +
+                    "$STATUS_SYNC " +
+                    "FROM $TBL_REQUISICAO WHERE $STATUS_SYNC = 2;"
+        val result = db.rawQuery(selectQuery, null)
+        return result
+    }
 
 
 

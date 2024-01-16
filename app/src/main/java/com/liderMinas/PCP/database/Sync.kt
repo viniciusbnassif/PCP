@@ -100,6 +100,7 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
                         uploadAE(ctxt)
                         uploadAP(ctxt)
                         uploadRequisicoes(ctxt)
+                        uploadUpdRequisicoes(ctxt)
                         if (cod == 1) {
                             message = "Sucesso" //Sincronizado com sucesso
                             return@withContext message

@@ -8,9 +8,4 @@
         android:title="Versão"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/closeApp"
-        android:icon="@drawable/baseline_cancel_24"
-        android:title="Fechar"
-        app:showAsAction="always" />
 </menu>

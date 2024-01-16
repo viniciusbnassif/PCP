@@ -3,16 +3,20 @@ package com.liderMinas.PCP
 
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.AlarmClock
 import android.provider.Settings
-import android.view.*
-import android.widget.*
 import android.util.Log
-import android.view.View.*
-import kotlinx.coroutines.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -20,8 +24,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.liderMinas.PCP.database.Sync
 import com.liderMinas.PCP.database.confirmUnPw
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Integer.parseInt
-import java.util.*
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +112,7 @@ class MainActivity : AppCompatActivity() {
 
         suspend fun runSync(): String? {
             //CoroutineScope(CoroutineName("SyncMainActivity")).async(Dispatchers.Unconfined) {
-            var message = withContext(Dispatchers.IO) {
+             var message = withContext(Dispatchers.IO) {
                 try {
                     if (Looper.myLooper() == null) {
                         Looper.prepare()
@@ -115,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                     return@withContext ret
                 } catch (e: Exception) {
                     Log.d("SyncMainActivity (Thread)", "$e")
+                    return@withContext "Falha"
                 }
                 /*MainScope().launch {
                     if (message == "Sucesso"){
@@ -285,13 +294,11 @@ class MainActivity : AppCompatActivity() {
 
         R.id.versionView -> {
             // User chose the "Settings" item, show the app settings UI...
-
-
-            true
-        }
-
-        R.id.closeApp -> {
-            finish()
+            val versionCode = BuildConfig.VERSION_CODE
+            val versionName = BuildConfig.VERSION_NAME
+            var toast = Toast.makeText(this, "Welcome to Android Teachers..!!",
+                Toast.LENGTH_LONG)
+            toast.show()
             true
         }
 
