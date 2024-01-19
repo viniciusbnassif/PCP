@@ -770,7 +770,7 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
                 viewTotal.text = total.toString()
             }
             else if (tipoID == "1"){
-                spinner = 54
+                spinner = 48
                 var total = (parseInt(qeProduto.text.toString()) * spinner * parseInt(pilha.text.toString())) + parseInt(valueQtAvulsa.toString()) + ((parseInt(valueCxAvulsa.toString()) * parseInt(qeProduto.text.toString())))
                 Log.d("Debug campo total", "$total")
                 viewTotal.text = total.toString()
