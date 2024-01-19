@@ -20,6 +20,8 @@
         <item name="android:textColorHighlight">@color/color_100</item>
 
 
+
+
         <!-- Status bar color. -->
         <!--item name="android:statusBarColor">@color/blue_0</item-->
         <item name="navigationIconTint">@color/spacegray</item>

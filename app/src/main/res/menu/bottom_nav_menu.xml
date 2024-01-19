@@ -4,16 +4,16 @@
     <item
         android:id="@+id/menu"
         android:icon="@drawable/baseline_menu_24"
-        android:iconTint="@color/colorPrimary"
+        android:iconTint="@color/appBarColor"
         android:title="Menu" />
     <item
         android:id="@+id/relatorioNav"
         android:icon="@drawable/ic_baseline_checklist_24"
-        android:iconTint="@color/colorPrimary"
+        android:iconTint="@color/appBarColor"
         android:title="Relatório" />
     <item
         android:id="@+id/requisicaoNav"
         android:icon="@drawable/outline_move_up_24"
-        android:iconTint="@color/colorPrimary"
+        android:iconTint="@color/appBarColor"
         android:title="Requisições" />
 </menu>

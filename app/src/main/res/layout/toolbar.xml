@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:titleTextColor="@color/white"
-    android:background="@color/colorPrimary"
+    android:background="@color/appBarColor"
     android:outlineAmbientShadowColor="@color/colorPrimaryVariant"
     app:layout_scrollFlags="scroll|enterAlways"
     android:elevation="8dp">
