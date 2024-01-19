@@ -207,7 +207,7 @@ fun uploadAE(context: Context) {
                          '${produtoDesc}', ${localResult.getInt(10)}, ${localResult.getInt(11)}, '${localResult.getString(12)}', 
                          '${localResult.getString(13)}');
                         """.trimIndent())
-                    Log.d("Debugggggg", insert)
+                    Log.d("uploadAE", insert)
 
                     var comm = st1.connection.prepareStatement(insert)
                     comm.executeUpdate()
@@ -268,7 +268,7 @@ fun uploadAP(context: Context) {
                             (${localResult.getFloat(1)}, '${localResult.getString(2)}', '${localResult.getString(3)}', '${localResult.getString(4)}',
                              '${produtoDesc}', '${motivoDesc}');
                             """.trimIndent())
-                    Log.d("Debugggggg", insert)
+                    Log.d("uploadAP", insert)
 
                     var comm = st1.connection.prepareStatement(insert)
                     comm.executeUpdate()

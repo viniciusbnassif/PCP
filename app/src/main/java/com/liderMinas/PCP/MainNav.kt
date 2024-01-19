@@ -39,6 +39,9 @@ class MainNav : AppCompatActivity() {
 
         username = intent.getStringExtra(EXTRA_MESSAGE)!!
 
+
+
+        /*
         val MainMenu=MainMenu(username)
         val Estatistica=Estatistica()
         val Requisicao=Requisicao(username, this)
@@ -53,6 +56,42 @@ class MainNav : AppCompatActivity() {
                 R.id.requisicaoNav->setCurrentFragment(Requisicao)
             }
             true
+        }
+
+         */
+
+        if (username == "vinicius.nassif" || username == "guilherme.augusto"){
+            val MainMenu=MainMenu(username)
+            val Estatistica=Estatistica()
+            val Requisicao=Requisicao(username, this)
+
+            setCurrentFragment(MainMenu)
+
+            var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+            bottomNavigationView.setOnNavigationItemSelectedListener {
+                when(it.itemId){
+                    R.id.menu->setCurrentFragment(MainMenu)
+                    R.id.relatorioNav->setCurrentFragment(Estatistica)
+                    R.id.requisicaoNav->setCurrentFragment(Requisicao)
+                }
+                true
+            }
+        } else {
+            val MainMenu=MainMenu(username)
+            val Estatistica=Estatistica()
+            //val Requisicao=Requisicao(username, this)
+
+            setCurrentFragment(MainMenu)
+
+            var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+            bottomNavigationView.setOnNavigationItemSelectedListener {
+                when(it.itemId){
+                    R.id.menu->setCurrentFragment(MainMenu)
+                    R.id.relatorioNav->setCurrentFragment(Estatistica)
+                    R.id.requisicaoNav->setCurrentFragment(MainMenu)
+                }
+                true
+            }
         }
 
 

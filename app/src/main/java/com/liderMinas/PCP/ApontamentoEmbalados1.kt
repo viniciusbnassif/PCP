@@ -24,6 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textview.MaterialTextView
 import com.liderMinas.PCP.database.Sync
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +34,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
+import java.lang.Float
 import java.lang.Integer.parseInt
 import java.time.LocalDate
 import java.util.*
@@ -89,12 +91,56 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
         val qtdAvulsa = findViewById<TextView>(R.id.qtdAvulsas)
         val viewTotal = findViewById<TextView>(R.id.total)
         val btnPilha = findViewById<MaterialButton>(R.id.tButtonPilha)
+        val porPilha = findViewById<EditText>(R.id.numeroPorPilha)
         val btnPallet = findViewById<MaterialButton>(R.id.tButtonPallet)
+
+        var customAlertDialogView : View = layoutInflater.inflate(R.layout.alertdialog_pilhas, null)
+
+        var qtd = customAlertDialogView.findViewById<TextInputEditText>(R.id.qtd)
+
+        //var soma = customAlertDialogView.findViewById<MaterialButton>(R.id.soma1)
+        //var subt = customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)
+
+        var soma =
+            customAlertDialogView.findViewById<MaterialButton>(R.id.soma1)?.setOnClickListener {
+                var qtdS = parseInt(qtd?.text.toString())
+                qtdS += 1
+                qtd?.setText("$qtdS")
+            }
+        var subt =
+            customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)?.setOnClickListener {
+                var qtdS = parseInt(qtd?.text.toString())
+                qtdS -= 1
+                qtd?.setText("$qtdS")
+            }
+
+        fun qtdPilha(qtd: String) {
+
+            btnPilha.text = "Pilha (${qtd})"
+            Log.d("qtd",qtd)
+            var subs = btnPilha.length() - 1
+            //btnPilha.text.substring(7, subs)
+            Log.d("qtd substring", btnPilha.text.substring(7, subs))
+            //porPilha.setText(qtd)
+            setTotal()
+        }
+
+        var dialog = MaterialAlertDialogBuilder(this)
+            .setView(customAlertDialogView)
+            .setTitle("Configurando pilhas...")
+            .setMessage("Digite quantas embalagens cabem em cada pilha")
+            .setNegativeButton("Cancelar") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("Salvar") { dialog, which ->
+                qtdPilha(qtd.text.toString())
+                dialog.dismiss()
+            }.create()
 
         btnPilha.addOnCheckedChangeListener { button, isChecked ->
             if (isChecked == true){
                 tipoTransporte = "pilha"
-                setTotal()
+                dialog.show()
             } else if(btnPallet.isChecked == false) {
                 tipoTransporte = ""
                 viewTotal.setText("")
@@ -440,6 +486,7 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
             }else if (result >= 1){
                 result = 0
                 pilha.text = Editable.Factory.getInstance().newEditable(result.toString())
+                setTotal()
             }
             true
         }
@@ -671,6 +718,10 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
         val qtdAvulsa = findViewById<TextView>(R.id.qtdAvulsas)
         var viewTotal = findViewById<TextView>(R.id.total)
 
+        var customAlertDialogView : View = layoutInflater.inflate(R.layout.alertdialog_pilhas, null)
+        val porPilha = findViewById<TextView>(R.id.numeroPorPilha)
+        var qtd = customAlertDialogView.findViewById<TextInputEditText>(R.id.qtd)
+
         var valueCxAvulsa = "0"
         var valueQtAvulsa = "0"
 
@@ -708,7 +759,12 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
 
         if ((qeProduto.length() > 0) && ((tipoID == "0") or (tipoID == "1"))){
             if (tipoID == "0") {
-                spinner = 10
+                if (btnPilha.length()>5) {
+                    var subs = btnPilha.length() - 1
+                    spinner = parseInt(btnPilha.text.substring(7, subs))
+                } else {
+                    spinner = 0
+                }
                 var total = (parseInt(qeProduto.text.toString()) * spinner * parseInt(pilha.text.toString())) + parseInt(valueQtAvulsa.toString()) + (parseInt(valueCxAvulsa.toString()) * parseInt(qeProduto.text.toString()))
                 Log.d("Debug campo total", "$total")
                 viewTotal.text = total.toString()

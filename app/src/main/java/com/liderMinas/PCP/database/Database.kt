@@ -209,7 +209,7 @@ class SQLiteHelper(context: Context?):
         db?.execSQL(createDBSYNC)
         db?.execSQL(createDBPE)
         db?.execSQL(createDBREQS)
-        //db?.execSQL("INSERT INTO Usuario (username, password) VALUES ('kane','123'), ('gilberto','12345', 'Gilberto Gonçalves'), ('zack', 'zsjl', 'Zachary Snyder');")
+        //db?.execSQL("INSERT INTO Usuario (username, password) VALUES ('kane','123'), ('gilberto','12345'), ('zack', 'zsjl');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
         /*db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao," +
