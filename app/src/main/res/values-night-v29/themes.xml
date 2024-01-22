@@ -1,23 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.PCP" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="Theme.PCP" parent="Theme.Material3.Light.NoActionBar">
 
 
-        <item name="colorPrimary">@color/material_dynamic_primary40</item>
-        <item name="colorPrimaryVariant">@color/material_dynamic_primary80</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/material_dynamic_primary70</item>
-        <item name="colorSecondaryVariant">@color/material_dynamic_primary50</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorOnPrimaryContainer">@color/material_dynamic_primary99</item>
-        <item name="colorPrimaryContainer">@color/material_dynamic_primary50</item>
-        <item name="colorSecondaryContainer">@color/colorPrimary</item>
+        <item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainer</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
-        <item name="android:shadowColor">@color/material_dynamic_primary80</item>
-        <item name="colorContainer">@color/material_dynamic_primary70</item>
+        <item name="android:shadowColor">@color/colorSecondary</item>
+        <item name="colorContainer">@color/colorSecondary</item>
         <item name="android:textColorHighlight">@color/color_100</item>
+
 
 
 
@@ -27,10 +28,10 @@
         <!-- Transparent system bars for edge-to-edge. -->
 
         <!--item name="android:navigationBarColor">@android:color/white</item-->
-        <item name="android:navigationBarColor">@color/material_dynamic_primary30</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">@color/material_dynamic_primary30</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
 
     </style>
 
