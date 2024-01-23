@@ -14,9 +14,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import com.amulyakhare.textdrawable.TextDrawable
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -28,6 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
+
 
 
 class MainMenu(var username: String) : Fragment() {
@@ -63,6 +67,15 @@ class MainMenu(var username: String) : Fragment() {
 
         var coordinator = findViewById<ConstraintLayout>(R.id.parent)
         var cl = findViewById<ConstraintLayout>(R.id.CL)
+
+
+        var appBar = findViewById<MaterialToolbar>(R.id.appBar)
+        val drawable = TextDrawable.builder()
+            .buildRect("A", Color.RED)
+
+        val image = findViewById<MaterialButton>(R.id.button).setIcon(drawable)
+
+        //image.setImageDrawable(drawable)
 
         suspend fun connectionView(){
             var result = Sync().testConnection()
