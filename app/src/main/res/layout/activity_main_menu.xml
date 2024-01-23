@@ -14,45 +14,16 @@
         android:layout_gravity="top"
         android:background="@color/appBarColor"
         app:backgroundTint="@color/appBarColor"
-        app:title="Menu principal"
-        app:titleTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_scrollFlags="scroll|enterAlways">
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:menu="@menu/main_menu"
+        app:navigationIconTint="@color/white"
+        app:title="Menu principal"
+        app:titleTextColor="@color/white">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="8dp">
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="36dip"
-                android:layout_height="36dip"
-                android:backgroundTint="@color/white"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:minWidth="20dip"
-                android:minHeight="20dip"
-                android:text="VV"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:cornerRadius="20dip" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:gravity="center_vertical"
-                android:text="Menu principal"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
-        </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -8,11 +8,16 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.AlarmClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class MainNav : AppCompatActivity() {
@@ -98,6 +103,13 @@ class MainNav : AppCompatActivity() {
 
         //updateBadge(this, username)
     }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    fun btmSheet() {
+        val modalBottomSheet = ModalBottomSheet()
+        modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
+    }
+
     fun restartFragment() {
         var mainMenu = Intent(this, MainNav::class.java).apply {
             putExtra(AlarmClock.EXTRA_MESSAGE, username)
@@ -155,5 +167,18 @@ class MainNav : AppCompatActivity() {
         }
     public val mainNavContext = this
 
+}
+
+class ModalBottomSheet : BottomSheetDialogFragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.alertdialog_requisicao_step1, container, false)
+
+    companion object {
+        const val TAG = "ModalBottomSheet"
+    }
 }
 

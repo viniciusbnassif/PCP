@@ -11,6 +11,7 @@ import android.provider.AlarmClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -18,7 +19,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import com.amulyakhare.textdrawable.TextDrawable
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -31,6 +31,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
+//import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
+import android.widget.Toast
 
 
 
@@ -41,6 +44,8 @@ class MainMenu(var username: String) : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
     = inflater.inflate(R.layout.activity_main_menu, container, false).apply {
+
+
 
 
         /*window.decorView.apply {
@@ -69,11 +74,6 @@ class MainMenu(var username: String) : Fragment() {
         var cl = findViewById<ConstraintLayout>(R.id.CL)
 
 
-        var appBar = findViewById<MaterialToolbar>(R.id.appBar)
-        val drawable = TextDrawable.builder()
-            .buildRect("A", Color.RED)
-
-        val image = findViewById<MaterialButton>(R.id.button).setIcon(drawable)
 
         //image.setImageDrawable(drawable)
 
@@ -249,6 +249,8 @@ class MainMenu(var username: String) : Fragment() {
                     putExtra(EXTRA_MESSAGE, username)}
             startActivity(intent)
         }
+
+
     }
 
     //var btnSync = findViewById<MaterialButton>(R.id.syncBtn)
@@ -300,6 +302,25 @@ class MainMenu(var username: String) : Fragment() {
         onBackPressed()
         return true
     }*/
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.accountView -> {
+                Toast.makeText(activity?.applicationContext, "click on setting", Toast.LENGTH_LONG).show()
+                true
+            }
+            /*R.id.action_share ->{
+                Toast.makeText(applicationContext, "click on share", Toast.LENGTH_LONG).show()
+                return true
+            }
+            R.id.action_exit ->{
+                Toast.makeText(applicationContext, "click on exit", Toast.LENGTH_LONG).show()
+                return true
+            }*/
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }
 
 /*class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :
