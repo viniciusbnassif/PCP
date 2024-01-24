@@ -3,41 +3,38 @@
 package com.liderMinas.PCP
 
 
+//import android.support.v7.app.AppCompatActivity
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build.VERSION
 import android.os.Bundle
-import android.provider.AlarmClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
+import com.rajat.pdfviewer.PdfViewerActivity
+import com.rajat.pdfviewer.util.saveTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
-//import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class MainMenu(var username: String) : Fragment() {
@@ -350,13 +347,23 @@ class ModalBottomSheet(username: String) : BottomSheetDialogFragment() {
         var sair = findViewById<MaterialButton>(R.id.btnSair)
         var versao = findViewById<MaterialButton>(R.id.versionView)
         userview.text = user
-        /*guia.setOnClickListener{
+        guia.setOnClickListener{
+            //val contentUri = FileProvider.getUriForFile(context, "com.liderMinas.PCP", getResources().openRawResource(R.drawable.guia);)
 
-        }*/
+            PdfViewerActivity.launchPdfFromPath(
+                context = ctxt,
+                path = "R.drawable.guia",
+                pdfTitle = "Title",
+                saveTo = saveTo.ASK_EVERYTIME,
+                fromAssets = true
+            )
+
+        }
         sair.setOnClickListener {
             var intent = Intent(ctxt, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
+            activity?.finish()
         }
         versao.text = "Versão do PCP: ${BuildConfig.VERSION_NAME}"
 
