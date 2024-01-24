@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PCP" parent="Theme.Material3.Light">
+    <style name="Theme.PCP" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">#004C69</item>
         <item name="colorPrimaryDark">#3700B3</item>
         <item name="colorAccent">#4081ff</item>
