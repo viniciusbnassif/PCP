@@ -52,7 +52,7 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
                 val clientHTTP = OkHttpClient()
                 val address = InetSocketAddress(host, port);
                 val clientSocket = Socket()
-                clientSocket.connect(address, 10000)
+                clientSocket.connect(address, 5000)
                 //clientSocket.soTimeout = 5000
 
                 // do something with the successfully opened socket

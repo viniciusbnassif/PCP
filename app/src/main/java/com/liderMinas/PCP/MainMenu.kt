@@ -6,12 +6,14 @@ package com.liderMinas.PCP
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build.VERSION
 import android.os.Bundle
 import android.provider.AlarmClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -34,7 +36,8 @@ import kotlin.coroutines.coroutineContext
 //import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.Toast
-
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class MainMenu(var username: String) : Fragment() {
@@ -45,8 +48,9 @@ class MainMenu(var username: String) : Fragment() {
                               savedInstanceState: Bundle?): View?
     = inflater.inflate(R.layout.activity_main_menu, container, false).apply {
 
-
-
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.appBar)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        setHasOptionsMenu(true);
 
         /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
@@ -219,7 +223,6 @@ class MainMenu(var username: String) : Fragment() {
                 intent = Intent(ctxt, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-
             }
         }
 
@@ -303,11 +306,21 @@ class MainMenu(var username: String) : Fragment() {
         return true
     }*/
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.main_menu, menu)
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.accountView -> {
-                Toast.makeText(activity?.applicationContext, "click on setting", Toast.LENGTH_LONG).show()
-                true
+                //Toast.makeText(activity?.applicationContext, "click on setting", Toast.LENGTH_LONG).show()
+                //MainNav().btmSheet()
+                val modalBottomSheet = ModalBottomSheet(username)
+                modalBottomSheet.show(childFragmentManager, ModalBottomSheet.TAG)
+
+                false
+
+
             }
             /*R.id.action_share ->{
                 Toast.makeText(applicationContext, "click on share", Toast.LENGTH_LONG).show()
@@ -321,6 +334,38 @@ class MainMenu(var username: String) : Fragment() {
         }
     }
 
+}
+class ModalBottomSheet(username: String) : BottomSheetDialogFragment() {
+    var user = username
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View?
+            = inflater.inflate(R.layout.bottom_sheet, container, false).apply {
+
+
+        var ctxt = activity?.applicationContext
+
+        var userview = findViewById<TextView>(R.id.textView)
+        var guia = findViewById<MaterialButton>(R.id.btnGuia)
+        var sair = findViewById<MaterialButton>(R.id.btnSair)
+        var versao = findViewById<MaterialButton>(R.id.versionView)
+        userview.text = user
+        /*guia.setOnClickListener{
+
+        }*/
+        sair.setOnClickListener {
+            var intent = Intent(ctxt, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+        versao.text = "Versão do PCP: ${BuildConfig.VERSION_NAME}"
+
+    }
+
+
+    companion object {
+        const val TAG = "ModalBottomSheet"
+    }
 }
 
 /*class FloatingActionButtonBehavior(context: Context?, attrs: AttributeSet?) :

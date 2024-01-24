@@ -11,6 +11,7 @@ import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -22,25 +23,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MainNav : AppCompatActivity() {
     lateinit var username : String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_nav)
-
-        /*if (Build.VERSION.SDK_INT >= 21) {
-            //getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimary));
-
-            var view = getWindow().getDecorView();
-            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    getWindow().setNavigationBarColor(ContextCompat.getColor(this, com.google.android.material.R.color.material_dynamic_neutral_variant10));
-                }
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    getWindow().setNavigationBarColor(ContextCompat.getColor(this, com.google.android.material.R.color.material_dynamic_neutral_variant90));
-                    view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
-                }
-            }
-
-        }*/
 
         username = intent.getStringExtra(EXTRA_MESSAGE)!!
 
@@ -105,10 +92,10 @@ class MainNav : AppCompatActivity() {
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
-    fun btmSheet() {
-        val modalBottomSheet = ModalBottomSheet()
-        modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
-    }
+    /*fun btmSheet() {
+        bottomSheetFragment = BottomSheetFragment()
+        bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
+    }*/
 
     fun restartFragment() {
         var mainMenu = Intent(this, MainNav::class.java).apply {
@@ -169,16 +156,4 @@ class MainNav : AppCompatActivity() {
 
 }
 
-class ModalBottomSheet : BottomSheetDialogFragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.alertdialog_requisicao_step1, container, false)
-
-    companion object {
-        const val TAG = "ModalBottomSheet"
-    }
-}
 

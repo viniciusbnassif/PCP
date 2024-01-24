@@ -7,9 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="color_0">#FFE1F3FF</color>
     <color name="color_100">#FFB2DFF0</color>
-    <color name="colorSecondary">#FF68CAED</color>
-    <color name="colorPrimaryVariant">#FF167DA1</color>
-    <color name="colorPrimary">#FF0F556E</color>
+    <color name="colorSecondary">@color/material_dynamic_secondary40</color>
+    <color name="colorPrimaryVariant">@color/material_dynamic_primary50</color>
+    <color name="colorPrimary">@color/material_dynamic_primary40</color>
+    <color name="colorPrimaryContainer">@color/material_dynamic_primary90</color>
+    <color name="colorOnPrimaryContainer">@color/material_dynamic_primary30</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="spacegray">#44444444</color>
