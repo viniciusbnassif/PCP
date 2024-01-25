@@ -18,6 +18,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
@@ -152,7 +153,7 @@ class MainActivity : AppCompatActivity() {
             val pwView = findViewById<TextInputLayout>(R.id.viewPassword)
 
             var query: String
-            val button: Button = findViewById(R.id.loginscreen_login)
+            val button = findViewById<MaterialButton>(R.id.loginscreen_login)
 
             var db = SQLiteHelper(this)
 

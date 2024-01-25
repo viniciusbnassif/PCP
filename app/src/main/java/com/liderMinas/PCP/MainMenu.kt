@@ -50,29 +50,8 @@ class MainMenu(var username: String) : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
         setHasOptionsMenu(true)
 
-        /*window.decorView.apply {
-            // Hide both the navigation bar and the status bar.
-            // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-            // a general rule, you should design your app to hide the status bar whenever you
-            // hide the navigation bar.
-            systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }*/
         var ctxt = activity?.applicationContext
 
-
-        /*val toolbar = findViewById<Toolbar>(R.id.appBar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            // show back button on toolbar
-            // on back button press, it will navigate to parent activity
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowCustomEnabled(false)
-
-        }
-        getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.ic_baseline_logout_24)*/
-
-
-        var coordinator = findViewById<ConstraintLayout>(R.id.parent)
         var cl = findViewById<ConstraintLayout>(R.id.CL)
 
 
@@ -167,16 +146,12 @@ class MainMenu(var username: String) : Fragment() {
             }
 
         }
-        fun restartNav(){
-
-        }
 
         syncBtn.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 //whileSync(true)
                 doSync()
             }
-
         }
         var intent: Intent
 
@@ -201,8 +176,6 @@ class MainMenu(var username: String) : Fragment() {
             startActivity(intent)
         }
 
-
-
         val buttonAP: Button = findViewById(R.id.apPerdas)
         buttonAP.setOnClickListener {
             intent = Intent(ctxt, ApontamentoPerdas::class.java)
@@ -210,8 +183,6 @@ class MainMenu(var username: String) : Fragment() {
                     putExtra(EXTRA_MESSAGE, username)}
             startActivity(intent)
         }
-
-
     }
 
 
