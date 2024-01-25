@@ -99,7 +99,7 @@ class MainNav : AppCompatActivity() {
 
     fun restartFragment() {
         var mainMenu = Intent(this, MainNav::class.java).apply {
-            putExtra(AlarmClock.EXTRA_MESSAGE, username)
+            putExtra(EXTRA_MESSAGE, username)
         }
         startActivity(mainMenu)
         finish()
@@ -107,7 +107,7 @@ class MainNav : AppCompatActivity() {
 
     fun restartFragmentReq() {
         var mainMenu = Intent(this, MainNav::class.java).apply {
-            putExtra(AlarmClock.EXTRA_MESSAGE, username)
+            putExtra(EXTRA_MESSAGE, username)
         }
         startActivity(mainMenu)
         finish()
@@ -152,7 +152,7 @@ class MainNav : AppCompatActivity() {
             replace(R.id.nav_host_fragment_activity_main_nav,fragment)
             commit()
         }
-    public val mainNavContext = this
+    val mainNavContext = this
 
 }
 

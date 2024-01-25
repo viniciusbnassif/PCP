@@ -22,8 +22,8 @@ import java.sql.Connection
 
 //import com.liderMinas.PCP.database
 
-class Connection(private val coreConnection: java.sql.Connection) :
-    java.sql.Connection by coreConnection, Closeable {
+class Connection(private val coreConnection: Connection) :
+    Connection by coreConnection, Closeable {
 
     var ip = "192.168.1.10:1433" //local server running MSSQL Server [Porta 1433]
     var dbExt = "APP_PCP"
@@ -49,7 +49,7 @@ class Connection(private val coreConnection: java.sql.Connection) :
 }
 
 
-fun connect(): java.sql.Connection? {
+fun connect(): Connection? {
     var ip = "192.168.1.10:1433" //local server running MSSQL Server [Porta 1433]
     var dbExt = "APP_PCP"
     var user = "APP_PCP"
@@ -69,11 +69,11 @@ fun connect(): java.sql.Connection? {
         return Connection(c)
         Log.d("Debug", "Connected")
     } catch (e: ClassNotFoundException){
-        e.printStackTrace();
+        e.printStackTrace()
         Log.d("Connection State:", "${e}, ERRO Class")
         return null
     }catch (e: SQLException) {
-        e.printStackTrace();
+        e.printStackTrace()
         Log.d("Connection State:", "${e}, ERRO SQL")
         return null
     }
@@ -187,7 +187,7 @@ fun uploadAE(context: Context) {
     connect().use {
 
         var st1 = it?.createStatement()!!
-        if (localResult != null && localResult.getCount() > 0) {
+        if (localResult != null && localResult.count > 0) {
             localResult.moveToFirst()
             do {
                 var id = localResult.getInt(0)
@@ -247,11 +247,11 @@ fun uploadAP(context: Context) {
     connect().use {
 
         var st1 = it?.createStatement()!!
-        if (localResult != null && localResult.getCount() > 0) {
+        if (localResult != null && localResult.count > 0) {
             localResult.moveToFirst()
             do {
 
-                var id = localResult?.getInt(0)
+                var id = localResult.getInt(0)
 
                 var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
                 var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
@@ -308,11 +308,11 @@ fun uploadRequisicoes(context: Context) {
     connect().use {
 
         var st1 = it?.createStatement()!!
-        if (localResult != null && localResult.getCount() > 0) {
+        if (localResult != null && localResult.count > 0) {
             localResult.moveToFirst()
             do {
 
-                var id = localResult?.getInt(0)
+                var id = localResult.getInt(0)
 
                 //var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
                 //var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
@@ -397,11 +397,11 @@ fun uploadUpdRequisicoes(context: Context) {
     connect().use {
 
         var st1 = it?.createStatement()!!
-        if (localResultUpd != null && localResultUpd.getCount() > 0) {
+        if (localResultUpd != null && localResultUpd.count > 0) {
             localResultUpd.moveToFirst()
             do {
 
-                var id = localResultUpd?.getInt(0)
+                var id = localResultUpd.getInt(0)
 
                 //var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
                 //var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
@@ -485,7 +485,7 @@ fun contentOrNullStr(any: Any): Any? {
         Log.d("DwReq AnyS test", "null")
         return null
     } else {
-        var anyS = "'${any.toString()}'"
+        var anyS = "'$any'"
         Log.d("DwReq AnyS test", anyS)
         return anyS
     }
@@ -494,7 +494,7 @@ fun contentOrNullFloat(any: Float?): Any? {
     if (any == null) {
         Log.d("DwReq AnyF test", "null")
         return null
-    } else if (any?.toDouble() != 0.0) {
+    } else if (any.toDouble() != 0.0) {
         var anyS = any
         Log.d("DwReq AnyF test", "$anyS")
         return anyS

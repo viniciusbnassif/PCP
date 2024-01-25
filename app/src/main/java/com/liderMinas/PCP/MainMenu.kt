@@ -6,6 +6,7 @@ package com.liderMinas.PCP
 //import android.support.v7.app.AppCompatActivity
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -24,13 +25,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.liderMinas.PCP.database.Sync
-import com.rajat.pdfviewer.PdfViewerActivity
-import com.rajat.pdfviewer.util.saveTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -47,7 +48,7 @@ class MainMenu(var username: String) : Fragment() {
 
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.appBar)
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
 
         /*window.decorView.apply {
             // Hide both the navigation bar and the status bar.
@@ -96,33 +97,8 @@ class MainMenu(var username: String) : Fragment() {
                     ).setBackgroundTint(Color.parseColor("#E3B30C")).setTextColor(Color.WHITE)
                         .setActionTextColor(Color.WHITE).setAction("OK") {}.show()
                 }
-            }/* else {
-                Snackbar.make(cl,
-                    "Sincronizado com sucesso!",
-                    Snackbar.LENGTH_INDEFINITE
-                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
-
-            }*/
-
-            /*if (result == "Falha" ) {
-                val snackbar = Snackbar.make(cl,
-                    "Não foi possível estabelecer uma conexão com o servidor",
-                    Snackbar.LENGTH_INDEFINITE
-                ).setBackgroundTint(Color.parseColor("#741919")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
-            } else if (result == "Sem Conexão") {
-                Snackbar.make(cl,
-                    "Não foi possível estabelecer uma conexão com o servidor (Endereço e porta indisponíveis para esta rede)",
-                    Snackbar.LENGTH_INDEFINITE
-                ).setBackgroundTint(Color.parseColor("#E3B30C")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
-            }else {
-                Snackbar.make(cl,
-                    "Sincronizado com sucesso!",
-                    Snackbar.LENGTH_LONG
-                ).setBackgroundTint(Color.parseColor("#197419")).setTextColor(Color.WHITE).setActionTextColor(Color.WHITE).setAction("OK"){}.show()
-            }*/
+            }
         }
-
-         //MainScope().launch{connectionView()}
 
 
         //var sync = parseInt("")
@@ -133,17 +109,7 @@ class MainMenu(var username: String) : Fragment() {
                 .setTitle("Sincronizando")
                 .setCancelable(false)
 
-        /*fun whileSync(sync: Boolean){
-            val dialog = materialAlertSync
-            if (sync) {
-                dialog.show()
-            } else {
-                dialog.show()?.dismiss()
-                //dialog?.show()?.dismiss()
-            }
 
-
-        }*/
 
         var syncBtn = findViewById<MaterialButton>(R.id.syncBtn)
 
@@ -227,11 +193,6 @@ class MainMenu(var username: String) : Fragment() {
         var saudacao = "Bem-vindo, ${username}"
         findViewById<TextView>(R.id.saudacao).apply { text = saudacao }
 
-
-
-
-
-
         val buttonAE: Button = findViewById(R.id.apEmbalados)
         buttonAE.setOnClickListener {
             intent = Intent(ctxt, ApontamentoEmbalados1::class.java)
@@ -253,55 +214,6 @@ class MainMenu(var username: String) : Fragment() {
 
     }
 
-    //var btnSync = findViewById<MaterialButton>(R.id.syncBtn)
-
-    /*@SuppressLint("ResourceAsColor")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-
-        R.id.syncBtn -> {
-            // User chose the "Settings" item, show the app settings UI...
-
-            //btnSync.setBackgroundColor(R.color.black)
-            sync.sync(0, this)
-            //btnSync.setBackgroundColor(R.color.blue_700)
-            true
-        }
-
-        else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-            super.onOptionsItemSelected(item)
-        }
-    }*/
-
-
-    /* When the activity is destroyed then close the cursor as it will not be used again */
-    /*override fun onBackPressed() {
-        MaterialAlertDialogBuilder(ctxt)
-            .setIcon(R.drawable.ic_baseline_logout_24_black)
-            .setTitle("Você escolheu sair...")
-            .setMessage("O aplicativo será encerrado e será necessário efetuar login novamente. \nDeseja sair mesmo assim?")
-            .setNeutralButton("Permanecer no menu") { dialog, which ->
-                dialog.dismiss()
-            }
-            .setNegativeButton("Fazer logout") { dialog, which ->
-                super.onBackPressed()
-                intent = Intent(ctxt, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-
-            .setPositiveButton("Fechar app") { dialog, which ->
-                finish()
-            }
-            .show()
-    }
-
-    /* When the activity is destroyed then close the cursor as it will not be used again */
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -310,8 +222,6 @@ class MainMenu(var username: String) : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.accountView -> {
-                //Toast.makeText(activity?.applicationContext, "click on setting", Toast.LENGTH_LONG).show()
-                //MainNav().btmSheet()
                 val modalBottomSheet = ModalBottomSheet(username)
                 modalBottomSheet.show(childFragmentManager, ModalBottomSheet.TAG)
 
@@ -348,16 +258,8 @@ class ModalBottomSheet(username: String) : BottomSheetDialogFragment() {
         var versao = findViewById<MaterialButton>(R.id.versionView)
         userview.text = user
         guia.setOnClickListener{
-            //val contentUri = FileProvider.getUriForFile(context, "com.liderMinas.PCP", getResources().openRawResource(R.drawable.guia);)
-
-            PdfViewerActivity.launchPdfFromPath(
-                context = ctxt,
-                path = "R.drawable.guia",
-                pdfTitle = "Title",
-                saveTo = saveTo.ASK_EVERYTIME,
-                fromAssets = true
-            )
-
+            var intent = Intent(ctxt, PdfActivity::class.java)
+            startActivity(intent)
         }
         sair.setOnClickListener {
             var intent = Intent(ctxt, MainActivity::class.java)
@@ -367,6 +269,11 @@ class ModalBottomSheet(username: String) : BottomSheetDialogFragment() {
         }
         versao.text = "Versão do PCP: ${BuildConfig.VERSION_NAME}"
 
+    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
+            behavior.setPeekHeight(resources.displayMetrics.heightPixels)
+        }
     }
 
 

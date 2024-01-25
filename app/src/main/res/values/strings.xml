@@ -7,19 +7,15 @@
     <string name="caixas_avulsas">Caixas Avulsas</string>
     <string name="quantidade_avulsas">Quantidade avulsas</string>
     <string name="perdas">Perdas</string>
-    <string name="finalizar">Finalizar</string>
     <string name="campo_obrigatorio">* Campo Obrigatório</string>
     <string name="total">Total</string>
     <string name="APerdas_error">Verifique a barra de status na parte superior da tela,         corrija os campos que estão incorretos e tente novamente.</string>
     <string name="APerdas_neutral">Não existem perdas preenchidas. Preencha pelo menos uma e tente novamente.</string>
-    <string name="connectionErroResult2">Servidor não encontrado nessa rede (Endereço e porta indisponíveis para esta rede)</string>
     <string name="connectionErroResult1">Não foi possível estabelecer uma conexão com o servidor</string>
     <string name="pallet">Palete</string>
     <string name="pilhas">Pilhas</string>
     <string name="selecioneADataDeVencimento">Selecione a data de vencimento</string>
-    <string name="sincComSucesso">Sincronizado com sucesso</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

@@ -6,15 +6,12 @@
     <string name="caixas_avulsas">Single Boxes</string>
     <string name="quantidade_avulsas">Single Items</string>
     <string name="perdas">Loses</string>
-    <string name="finalizar">Finish</string>
     <string name="campo_obrigatorio">* Can\'t be empty</string>
     <string name="total">Total</string>
     <string name="APerdas_error">Check the top bar, correct any fields that are incorrect, and try again.</string>
     <string name="APerdas_neutral">There aren\'t losses declared. Complete at least one before trying again.</string>
-    <string name="connectionErroResult2">Server not found on the actual network (URL and port not found)</string>
     <string name="connectionErroResult1">Unable to estabilish a conection to the server.</string>
     <string name="pallet">Pallet</string>
     <string name="pilhas">Pile/stack</string>
     <string name="selecioneADataDeVencimento">Valid Until</string>
-    <string name="sincComSucesso">Successfully synced</string>
 </resources>

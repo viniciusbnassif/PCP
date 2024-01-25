@@ -50,17 +50,13 @@ class ApontamentoPerdas : AppCompatActivity() {
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.liderMinas.PCP.R.layout.activity_apontamento_perdas)
+        setContentView(R.layout.activity_apontamento_perdas)
 
 
         var bottomAppBar = findViewById<BottomAppBar>(R.id.bottomAppBar)
         KeyboardVisibilityEvent.setEventListener(this, object : KeyboardVisibilityEventListener {
             override fun onVisibilityChanged(isOpen: Boolean) {
-                if (isOpen) {
-                    bottomAppBar.isVisible = false
-                } else {
-                    bottomAppBar.isVisible = true
-                }
+                bottomAppBar.isVisible = !isOpen
             }
         })
         /*window.decorView.apply {
@@ -123,7 +119,7 @@ class ApontamentoPerdas : AppCompatActivity() {
         db = SQLiteHelper(this)
 
         // calling the action bar
-        val toolbar = findViewById<BottomAppBar?>(com.liderMinas.PCP.R.id.bottomAppBar)
+        val toolbar = findViewById<BottomAppBar?>(R.id.bottomAppBar)
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             // show back button on toolbar
@@ -132,7 +128,7 @@ class ApontamentoPerdas : AppCompatActivity() {
             setDisplayShowCustomEnabled(true)
         }
 
-        intent = getIntent();
+        intent = intent
 
         var name = intent.getStringExtra("messageIntent")
 
@@ -342,8 +338,8 @@ class ApontamentoPerdas : AppCompatActivity() {
             var idintern: Int
             var cursorProduto = db.getProdutos()
             var cursorArray = ArrayList<Any>()
-            while (cursorProduto!!.moveToNext()) {
-                cursorArray.add(cursorProduto!!.getString(1))
+            while (cursorProduto.moveToNext()) {
+                cursorArray.add(cursorProduto.getString(1))
             }
             var simpleCursorAdapter =
                 ArrayAdapter<Any>(this, android.R.layout.simple_dropdown_item_1line, cursorArray)
@@ -370,8 +366,8 @@ class ApontamentoPerdas : AppCompatActivity() {
             var cursorPrd = db.getMotivo()
             var t = 1
             var cursorArray = ArrayList<Any>()
-            while (cursorPrd!!.moveToNext()) {
-                cursorArray.add(cursorPrd!!.getString(1))
+            while (cursorPrd.moveToNext()) {
+                cursorArray.add(cursorPrd.getString(1))
             }
             var simpleCursorAdapterPrd =
                 ArrayAdapter<Any>(this, android.R.layout.simple_dropdown_item_1line, cursorArray)
@@ -484,14 +480,14 @@ class ApontamentoPerdas : AppCompatActivity() {
                 motivo1.setAdapter(null)
                 setOrRefreshSpinnerPerdas(1)
                 qtdPerda1.apply { text = textNull }
-                var view = this.getCurrentFocus();
+                var view = this.currentFocus
                 val manager: InputMethodManager = getSystemService(
                     Context.INPUT_METHOD_SERVICE
                 ) as InputMethodManager
                 if (view != null) {
                     manager
                         .hideSoftInputFromWindow(
-                            view.getWindowToken(), 0
+                            view.windowToken, 0
                         )
                 }
                 motivoID1.text = ""
@@ -505,14 +501,14 @@ class ApontamentoPerdas : AppCompatActivity() {
                 motivo2.setAdapter(null)
                 setOrRefreshSpinnerPerdas(2)
                 qtdPerda2.apply { text = textNull }
-                var view = this.getCurrentFocus();
+                var view = this.currentFocus
                 val manager: InputMethodManager = getSystemService(
                     Context.INPUT_METHOD_SERVICE
                 ) as InputMethodManager
                 if (view != null) {
                     manager
                         .hideSoftInputFromWindow(
-                            view.getWindowToken(), 0
+                            view.windowToken, 0
                         )
                 }
                 motivoID2.text = ""
@@ -526,14 +522,14 @@ class ApontamentoPerdas : AppCompatActivity() {
                 motivo3.setAdapter(null)
                 setOrRefreshSpinnerPerdas(3)
                 qtdPerda3.apply { text = textNull }
-                var view = this.getCurrentFocus();
+                var view = this.currentFocus
                 val manager: InputMethodManager = getSystemService(
                     Context.INPUT_METHOD_SERVICE
                 ) as InputMethodManager
                 if (view != null) {
                     manager
                         .hideSoftInputFromWindow(
-                            view.getWindowToken(), 0
+                            view.windowToken, 0
                         )
                 }
                 motivoID3.text = ""
@@ -547,14 +543,14 @@ class ApontamentoPerdas : AppCompatActivity() {
                 motivo4.setAdapter(null)
                 setOrRefreshSpinnerPerdas(4)
                 qtdPerda4.apply { text = textNull }
-                var view = this.getCurrentFocus();
+                var view = this.currentFocus
                 val manager: InputMethodManager = getSystemService(
                     Context.INPUT_METHOD_SERVICE
                 ) as InputMethodManager
                 if (view != null) {
                     manager
                         .hideSoftInputFromWindow(
-                            view.getWindowToken(), 0
+                            view.windowToken, 0
                         )
                 }
                 motivoID4.text = ""
@@ -568,14 +564,14 @@ class ApontamentoPerdas : AppCompatActivity() {
                 motivo5.setAdapter(null)
                 setOrRefreshSpinnerPerdas(5)
                 qtdPerda5.apply { text = textNull }
-                var view = this.getCurrentFocus();
+                var view = this.currentFocus
                 val manager: InputMethodManager = getSystemService(
                     Context.INPUT_METHOD_SERVICE
                 ) as InputMethodManager
                 if (view != null) {
                     manager
                         .hideSoftInputFromWindow(
-                            view.getWindowToken(), 0
+                            view.windowToken, 0
                         )
                 }
                 motivoID5.text = ""
@@ -589,14 +585,14 @@ class ApontamentoPerdas : AppCompatActivity() {
                 motivo6.setAdapter(null)
                 setOrRefreshSpinnerPerdas(6)
                 qtdPerda6.apply { text = textNull }
-                var view = this.getCurrentFocus();
+                var view = this.currentFocus
                 val manager: InputMethodManager = getSystemService(
                     Context.INPUT_METHOD_SERVICE
                 ) as InputMethodManager
                 if (view != null) {
                     manager
                         .hideSoftInputFromWindow(
-                            view.getWindowToken(), 0
+                            view.windowToken, 0
                         )
                 }
                 motivoID6.text = ""
@@ -708,7 +704,7 @@ class ApontamentoPerdas : AppCompatActivity() {
 
 
             if (produtoID.length() == 0){
-                viewProduto.setError(getString(R.string.campo_obrigatorio))
+                viewProduto.error = getString(R.string.campo_obrigatorio)
                 viewProduto.requestFocus()
                 produtoSpinner.showDropDown()
                 return

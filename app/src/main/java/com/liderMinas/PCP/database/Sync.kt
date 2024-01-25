@@ -50,7 +50,7 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
                 clientSocket.soTimeout = 5000*/
 
                 val clientHTTP = OkHttpClient()
-                val address = InetSocketAddress(host, port);
+                val address = InetSocketAddress(host, port)
                 val clientSocket = Socket()
                 clientSocket.connect(address, 5000)
                 //clientSocket.soTimeout = 5000
@@ -59,19 +59,19 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
                 clientSocket.close()
             } catch (e: ConnectException) {
                 // host and port combination not valid
-                Log.d("Test Connection Error", "Ao tentar conectar o seguinte erro aconteceu: ${e.toString()} /n Possivelmente: host and port combination not valid")
+                Log.d("Test Connection Error", "Ao tentar conectar o seguinte erro aconteceu: $e /n Possivelmente: host and port combination not valid")
                 message = "Falha"
                 e.printStackTrace()
                 return@withContext message
             } catch (e: Exception) { //sem conexão
                 message = "Sem Conexão"
                 e.printStackTrace()
-                Log.d("Test Connection Error", "Ao tentar conectar o seguinte erro aconteceu: ${e.toString()}")
+                Log.d("Test Connection Error", "Ao tentar conectar o seguinte erro aconteceu: $e")
                 return@withContext message
             }
             message = "Sucesso"
             return@withContext message
-        }as? String?
+        }
     }
 
 
@@ -127,7 +127,7 @@ class Sync : AppCompatActivity(), LifecycleEventObserver {
 
         }
 
-        fun syncNoSuspension(cod: Int, ctxt: android.content.Context): String? {
+        fun syncNoSuspension(cod: Int, ctxt: android.content.Context): String {
 
 
             /*0 zero Sincroniza tudo

@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(R.layout.activity_main)
-        SQLiteHelper(this);
+        SQLiteHelper(this)
         var db = SQLiteHelper(this)
 
         var sync = Sync()
@@ -79,9 +79,9 @@ class MainActivity : AppCompatActivity() {
         fun showProgress(result: String) {
             var progress = findViewById<LinearProgressIndicator>(R.id.progressToolbar)
             if (result == "true") {
-                progress.setVisibility(VISIBLE)
+                progress.visibility = VISIBLE
             } else if (result == "false") {
-                progress.setVisibility(GONE)
+                progress.visibility = GONE
             }
         }
 
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        suspend fun runSync(): String? {
+        suspend fun runSync(): String {
             //CoroutineScope(CoroutineName("SyncMainActivity")).async(Dispatchers.Unconfined) {
              var message = withContext(Dispatchers.IO) {
                 try {
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }*/
                 //syncIsDone()
-            } as String
+            }
             return message
         }
 
@@ -204,8 +204,8 @@ class MainActivity : AppCompatActivity() {
 
                 } else if (validation == 401) {
 
-                    userView.setError(" ")
-                    pwView.setError("Nome de usuário ou senha incorretos")
+                    userView.error = " "
+                    pwView.error = "Nome de usuário ou senha incorretos"
                     pw.setText("")
                     Snackbar.make(
                         elementsOnLogin,

@@ -48,7 +48,7 @@ class Requisicao(username: String, context: Context) : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
             = inflater.inflate(R.layout.fragment_requisicao, container, false).apply {
-                var ctxt = getActivity()?.getApplicationContext()
+                var ctxt = activity?.applicationContext
                 var db = SQLiteHelper(ctxt)
 
                 var btnCrtReq = findViewById<ExtendedFloatingActionButton>(R.id.createReq)
@@ -68,12 +68,8 @@ class Requisicao(username: String, context: Context) : Fragment() {
                     soma.setOnClickListener {
                         var empty : Boolean
                         var qtdContent = qtd.text.toString()
-                        if (qtdContent == ""){
-                            empty = true
-                        } else {
-                            empty = false
-                        }
-                        var floatQtd = parseFloat(qtd.getText().toString())
+                        empty = qtdContent == ""
+                        var floatQtd = parseFloat(qtd.text.toString())
                         if (empty){
                             qtd.setText("0")
                         } else {
@@ -84,12 +80,8 @@ class Requisicao(username: String, context: Context) : Fragment() {
                     subt.setOnClickListener {
                         var empty : Boolean
                         var qtdContent = qtd.text.toString()
-                        if (qtdContent == "" || qtdContent =="0"){
-                            empty = true
-                        } else {
-                            empty = false
-                        }
-                        var floatQtd = parseFloat(qtd.getText().toString())
+                        empty = qtdContent == "" || qtdContent =="0"
+                        var floatQtd = parseFloat(qtd.text.toString())
                         if (empty){
                             qtd.setText("0")
                         } else {
@@ -101,8 +93,8 @@ class Requisicao(username: String, context: Context) : Fragment() {
                         var idintern: Int
                         var cursorProduto = db.getProdutosEstoque()
                         var cursorArray = ArrayList<Any>()
-                        while (cursorProduto!!.moveToNext()) {
-                            cursorArray.add(cursorProduto!!.getString(1))
+                        while (cursorProduto.moveToNext()) {
+                            cursorArray.add(cursorProduto.getString(1))
                         }
                         var simpleCursorAdapter = ArrayAdapter<Any>(contextNav,
                                     android.R.layout.simple_dropdown_item_1line,
@@ -117,7 +109,7 @@ class Requisicao(username: String, context: Context) : Fragment() {
 
                             AdapterView.OnItemClickListener { p0, view, position, _id ->
                                 if (view?.context != null) {
-                                    produtoID.setText(_id.toInt().toString())
+                                    produtoID.text = _id.toInt().toString()
 
                                 }
                             }
@@ -212,9 +204,9 @@ class Requisicao(username: String, context: Context) : Fragment() {
 
 
                         if (cursorUpdate == null || cursorUpdate.count == 0) {
-                            aviso.setVisibility(View.VISIBLE)
+                            aviso.visibility = View.VISIBLE
                         } else {
-                            aviso.setVisibility(View.GONE)
+                            aviso.visibility = View.GONE
                         }
                     }
                 }
@@ -247,10 +239,10 @@ class Requisicao(username: String, context: Context) : Fragment() {
 
 
                             if (cursorUpdate == null || cursorUpdate.count == 0){
-                                aviso.setVisibility(View.VISIBLE)
+                                aviso.visibility = View.VISIBLE
                             }
                             else{
-                                aviso.setVisibility(View.GONE)
+                                aviso.visibility = View.GONE
                             }
                         }
                     }
@@ -270,11 +262,12 @@ class Requisicao(username: String, context: Context) : Fragment() {
         }
     fun updateBadge(){ //Esse metodo atualiza o contador na barra de navegação
 
-        var cursor = username?.let { db.countReqs(it) } //Conta quantas notificações não lidas existem para o usuario atual
+        var cursor =
+            username.let { db.countReqs(it) } //Conta quantas notificações não lidas existem para o usuario atual
         if (cursor != null) { //Por segurança, se o resultado for nulo (muito dificil) ele não fará nada.
             val activity: FragmentActivity? = activity
             if (activity != null && activity is MainNav) {
-                val myactivity: MainNav = activity as MainNav
+                val myactivity: MainNav = activity
                 //myactivity.getCount(cursor)
             }
         }

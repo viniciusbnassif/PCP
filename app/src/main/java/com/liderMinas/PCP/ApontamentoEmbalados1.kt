@@ -72,11 +72,7 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
         var bottomAppBar = findViewById<BottomAppBar>(R.id.apontEmbaladosBottomBar)
         KeyboardVisibilityEvent.setEventListener(this, object : KeyboardVisibilityEventListener {
             override fun onVisibilityChanged(isOpen: Boolean) {
-                if (isOpen) {
-                    bottomAppBar.isVisible = false
-                } else {
-                    bottomAppBar.isVisible = true
-                }
+                bottomAppBar.isVisible = !isOpen
             }
         })
 
@@ -143,7 +139,7 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
                 dialog.show()
             } else if(btnPallet.isChecked == false) {
                 tipoTransporte = ""
-                viewTotal.setText("")
+                viewTotal.text = ""
             }
         }
 
@@ -154,7 +150,7 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
                 setTotal()
             } else if(btnPilha.isChecked == false) {
                 tipoTransporte = ""
-                viewTotal.setText("")
+                viewTotal.text = ""
             }
         }
 
@@ -266,8 +262,8 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
             dateFormatter0 = SimpleDateFormat("kk:mm") //formatar tempo no formato 24h (kk)
             time = dateFormatter0.format(Date())
 
-            time0.setText(time)
-            dty0.setText(dty)
+            time0.text = time
+            dty0.text = dty
 
 
             dateFormatterProtheus =
@@ -495,23 +491,23 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
             var spinnerPrd = findViewById<AutoCompleteTextView>(R.id.spinnerPrd)
 
 
-            cxAvulsa.setText("0")
-            qtdAvulsa.setText("0")
-            viewTotal.setText("")
+            cxAvulsa.text = "0"
+            qtdAvulsa.text = "0"
+            viewTotal.text = ""
 
             spinnerPrd.setText("")
             spinnerPrd.setAdapter(null)
 
             setOrRefreshSpinner()
 
-            spinnerID.setText("")
+            spinnerID.text = ""
             lote.setText("")
 
             btnPilha.isChecked = false
             btnPallet.isChecked = false
             pilha.setText("0")
             qeProduto.setText("")
-            time0.setText("")
+            time0.text = ""
 
             date()
 
@@ -565,17 +561,17 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
                 var finalQuery: String =
                     "INSERT INTO ApontEmbalado (qtdApontada, tipoUnitizador, dataHoraApontamento, lote, caixaAvulsa, unidadeAvulsa, validade, total, idProduto, qeProduto, validProduto, tipoVProduto, username, statusSync) " +
                             "VALUES ('${pilha.text}', '${tipoIDD}', '${dtytime0}', ${
-                                Integer.parseInt(
+                                parseInt(
                                     lote.text.toString()
                                 )
                             }, ${parseInt(cxAvulsa.text.toString())}, " +
                             "${parseInt(qtdAvulsa.text.toString())}, " +
                             "${validadeProtheus}, ${
-                                Integer.parseInt(
+                                parseInt(
                                     findViewById<TextView>(R.id.total).text.toString()
                                 )
-                            }, ${Integer.parseInt(spinnerID.text.toString())}," +
-                            " ${Integer.parseInt(qeProduto.text.toString())}, ${
+                            }, ${parseInt(spinnerID.text.toString())}," +
+                            " ${parseInt(qeProduto.text.toString())}, ${
                                 parseInt(
                                     findViewById<TextView>(R.id.validProdutoSaver).text.toString()
                                 )

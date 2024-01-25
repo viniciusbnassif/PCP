@@ -39,14 +39,12 @@ import java.util.Date
 //import com.google.android.material.internal.ContextUtils.getActivity
 //import com.kingdom.controledeestoque.database.getNotificacao
 
-public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     var cursor = cursorE
     var ctxt = context
     var db = SQLiteHelper(ctxt)
     @OptIn(InternalCoroutinesApi::class)
-
-
-    public class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val id = itemView.findViewById<TextView>(R.id.ID)
         val title = itemView.findViewById<TextView>(R.id.titleID)
         val qtdReq = itemView.findViewById<TextView>(R.id.qtdReq)
@@ -106,13 +104,13 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
             holder.qtdReq.text = "Qtd solicitada: ${qtdReq.toString()}"
             holder.qtdReq.hint = "${qtdReq.toString()}"
             if (qtdAtend !=null) {
-                holder.qtdAtend.text = "Qtd enviada: ${qtdAtend?.toString() ?: ""}"
+                holder.qtdAtend.text = "Qtd enviada: ${qtdAtend.toString() ?: ""}"
             } else {
                 holder.qtdAtend.text = "Qtd enviada: Aguardando resposta"
             }
             holder.userReq.text = "Solicitado por ${userReq.toString()}"
             if (userAtend !=null) {
-                holder.userAtend.text = "Respondido por: ${userAtend?.toString() ?: ""}"
+                holder.userAtend.text = "Respondido por: ${userAtend.toString() ?: ""}"
             } else {
                 holder.userAtend.text = "Respondido por: Aguardando resposta"
             }
@@ -171,8 +169,7 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                     dialogBuilder.findViewById<TextInputEditText>(R.id.editTextProdutoName)
                         ?.setText("${holder.title.text}")
                 Log.d("holder.title.text","${holder.title.text}")
-                dialogBuilder.findViewById<TextInputEditText>(R.id.editTextProdutoName)
-                    ?.setHint("Produto")
+                dialogBuilder.findViewById<TextInputEditText>(R.id.editTextProdutoName)?.hint = "Produto"
                 dialogBuilder.findViewById<TextInputEditText>(R.id.editTextProdutoName)?.isEnabled =
                     false
                 dialogBuilder.findViewById<MaterialButton>(R.id.fechar)?.setOnClickListener { dialogBuilder.dismiss() }
@@ -196,7 +193,7 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                                 qtdS -= 1
                                 qtd?.setText("$qtdS")
                             }
-                        dialogBuilder.findViewById<TextView>(R.id.nomePasso)?.setText("Aguarde pelo envio da resposta antes de continuar.")
+                        dialogBuilder.findViewById<TextView>(R.id.nomePasso)?.text = "Aguarde pelo envio da resposta antes de continuar."
                         //dialogBuilder.setMessage("Aguarde pelo envio da resposta antes de continuar.")
                         dialogBuilder.findViewById<MaterialButton>(R.id.subt1)?.visibility = GONE
                         dialogBuilder.findViewById<MaterialButton>(R.id.soma1)?.visibility = GONE
@@ -216,7 +213,7 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                                 qtdS -= 1
                                 qtd?.setText("$qtdS")
                             }
-                        dialogBuilder.findViewById<TextView>(R.id.nomePasso)?.setText("Digite a quantidade recebida e clique em Salvar")
+                        dialogBuilder.findViewById<TextView>(R.id.nomePasso)?.text = "Digite a quantidade recebida e clique em Salvar"
                         dialogBuilder.findViewById<MaterialButton>(R.id.subt1)?.visibility = VISIBLE
                         dialogBuilder.findViewById<MaterialButton>(R.id.soma1)?.visibility = VISIBLE
                         dialogBuilder.findViewById<TextInputEditText>(R.id.qtd)?.visibility = VISIBLE
@@ -238,7 +235,7 @@ public class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.A
                                     }
                                     .show()
                             }
-                            holder.title.setText("Finalizado")
+                            holder.title.text = "Finalizado"
                             holder.card.setCardBackgroundColor(ContextCompat.getColor(ctxt, R.color.suErrorRed))
                         }
 
