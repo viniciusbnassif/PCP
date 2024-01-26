@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.navigationrail.NavigationRailView
 
 
 class MainNav : AppCompatActivity() {
@@ -70,6 +71,25 @@ class MainNav : AppCompatActivity() {
         //updateBadge(this, username)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        var navRail = findViewById<NavigationRailView>(R.id.nav_viewRail)
+        var correction = findViewById<View>(R.id.viewCorrection)
+
+
+        super.onConfigurationChanged(newConfig)
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            navRail.visibility = View.VISIBLE
+            correction.visibility = View.VISIBLE
+            bottomNavigationView.visibility = View.GONE
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            navRail.visibility = View.GONE
+            correction.visibility = View.GONE
+            bottomNavigationView.visibility = View.VISIBLE
+        }
+    }
+
 
     fun restartFragment() {
         var mainMenu = Intent(this, MainNav::class.java).apply {
@@ -100,11 +120,26 @@ class MainNav : AppCompatActivity() {
         SQLiteHelper(this).close()
     }
 
-    private fun setCurrentFragment(fragment: Fragment)=
+    private fun setCurrentFragment(fragment: Fragment) {
+        var name = fragment.toString().substring(0, 5)
+        var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        var navRail = findViewById<NavigationRailView>(R.id.nav_viewRail)
+
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.nav_host_fragment_activity_main_nav,fragment)
+            replace(R.id.nav_host_fragment_activity_main_nav, fragment)
             commit()
         }
+        if (name == "MainM"){
+            bottomNavigationView.getMenu().findItem(R.id.menu).setChecked(true)
+            navRail.getMenu().findItem(R.id.menu).setChecked(true)
+        } else if (name == "Estat"){
+            bottomNavigationView.getMenu().findItem(R.id.relatorioNav).setChecked(true)
+            navRail.getMenu().findItem(R.id.relatorioNav).setChecked(true)
+        } else if (name == "Requi"){
+            bottomNavigationView.getMenu().findItem(R.id.requisicaoNav).setChecked(true)
+            navRail.getMenu().findItem(R.id.requisicaoNav).setChecked(true)
+        }
+    }
     val mainNavContext = this
 
 }
