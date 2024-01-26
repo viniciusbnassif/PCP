@@ -31,42 +31,30 @@ class MainNav : AppCompatActivity() {
 
 
 
+        val MainMenu=MainMenu(username)
+        val Estatistica=Estatistica()
+        val Requisicao=Requisicao(username, this)
 
-        if (username == "vinicius.nassif" || username == "guilherme.augusto"){
-            val MainMenu=MainMenu(username)
-            val Estatistica=Estatistica()
-            val Requisicao=Requisicao(username, this)
+        setCurrentFragment(MainMenu)
 
-            setCurrentFragment(MainMenu)
-
-            var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
-            bottomNavigationView.setOnNavigationItemSelectedListener {
-                when(it.itemId){
-                    R.id.menu->setCurrentFragment(MainMenu)
-                    R.id.relatorioNav->setCurrentFragment(Estatistica)
-                    R.id.requisicaoNav->setCurrentFragment(Requisicao)
-                }
-                true
+        var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.menu->setCurrentFragment(MainMenu)
+                R.id.relatorioNav->setCurrentFragment(Estatistica)
+                R.id.requisicaoNav->setCurrentFragment(Requisicao)
             }
-        } else {
-            val MainMenu=MainMenu(username)
-            val Estatistica=Estatistica()
-            //val Requisicao=Requisicao(username, this)
-
-            setCurrentFragment(MainMenu)
-
-            var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
-            bottomNavigationView.setOnNavigationItemSelectedListener {
-                when(it.itemId){
-                    R.id.menu->setCurrentFragment(MainMenu)
-                    R.id.relatorioNav->setCurrentFragment(Estatistica)
-                    R.id.requisicaoNav->setCurrentFragment(MainMenu)
-                }
-                true
-            }
+            true
         }
-
-
+        var navRail = findViewById<NavigationRailView>(R.id.nav_viewRail)
+        navRail.setOnItemSelectedListener{
+            when(it.itemId){
+                R.id.menu->setCurrentFragment(MainMenu)
+                R.id.relatorioNav->setCurrentFragment(Estatistica)
+                R.id.requisicaoNav->setCurrentFragment(Requisicao)
+            }
+            true
+        }
 
         //updateBadge(this, username)
     }
