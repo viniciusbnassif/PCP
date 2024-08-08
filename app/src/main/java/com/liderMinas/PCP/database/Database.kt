@@ -209,13 +209,16 @@ class SQLiteHelper(context: Context?):
         db?.execSQL(createDBSYNC)
         db?.execSQL(createDBPE)
         db?.execSQL(createDBREQS)
-        //db?.execSQL("INSERT INTO Usuario (username, password) VALUES ('kane','123'), ('gilberto','12345'), ('zack', 'zsjl');")
+        db?.execSQL("INSERT INTO Usuario (username, password) VALUES ('kane','123'), ('gilberto','12345'), ('zack', 'zsjl');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Selecione o item','', '', '');")
         //db?.execSQL("INSERT INTO produto (descProduto, qeProduto, validProduto, tipoVProduto) VALUES ('Pão 5 15 D','5', '15', 'D'), ('Pão 13 3 M','13', '3', 'M'), ('Pão 1 13 S', '1', '13', 'S');")
-        /*db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao," +
+        db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdAtendida, qtdConfirmacao," +
                 " userRequisicao, userAtendimento, userConfirmacao, dataHoraRequisicao, dataHoraAtendimento, dataHoraConfirmacao, statusSync) " +
                 "VALUES ('101113',1.5, 1.4, 1.3, 'vinicius.nassif', 'guilherme.augusto', 'vinicius.nassif', '2023121022:10', '2023121022:15', '2023121022:19', 0);")
-                */
+        db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdConfirmacao," +
+                " userRequisicao, userAtendimento, dataHoraRequisicao, dataHoraAtendimento, statusSync) " +
+                "VALUES ('101113',1.5, 1.4, 'kane', 'kane', '2023121022:10', '2023121022:15', 0);")
+
 
 
 

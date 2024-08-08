@@ -1,15 +1,9 @@
 package com.liderMinas.PCP
 
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
-import android.graphics.Color.WHITE
-import android.graphics.Color.parseColor
 import android.icu.text.SimpleDateFormat
-import android.opengl.Visibility
-import android.provider.CalendarContract.Colors
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,21 +12,15 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.compose.material3.AlertDialog
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.core.content.ContextCompat
 import androidx.core.database.getFloatOrNull
-import androidx.core.database.getIntOrNull
 import androidx.core.database.getStringOrNull
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.NonDisposableHandle.parent
 import java.lang.Float.parseFloat
 import java.util.Date
 
@@ -158,12 +146,15 @@ class RecyclerAdapter(cursorE: Cursor?, context: Context): RecyclerView.Adapter<
                 //holder.read.visibility = View.INVISIBLE
                 //holder.card.setCardBackgroundColor(WHITE)
 
-                var dialogBuilder = MaterialAlertDialogBuilder(ctxt)
+
+
+                var dialogBuilder = MaterialAlertDialogBuilder(ctxt,android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen)
                     .setTitle("Solicitação $id")
                     .setView(R.layout.alertdialog_requisicao_step2)
                     //.setMessage(msg)
                     //.setMessage("Digite a quantidade recebida e clique em Salvar")
                     .show()
+
 
                 var prodName =
                     dialogBuilder.findViewById<TextInputEditText>(R.id.editTextProdutoName)

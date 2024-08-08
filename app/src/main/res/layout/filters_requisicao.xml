@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/FavChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Favoritos"
+        app:checkedIcon="@drawable/baseline_star_24"
+        app:chipIcon="@drawable/baseline_star_outline_24"
+        app:chipIconTint="@color/colorOnPrimaryContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/archivedChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Arquivados"
+        app:checkedIcon="@drawable/baseline_archive_24"
+        app:chipIcon="@drawable/outline_archive_24"
+        app:chipIconTint="@color/colorOnPrimaryContainer"
+        app:layout_constraintStart_toEndOf="@+id/FavChip"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/clearChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Limpar"
+        app:checkedIcon="@drawable/baseline_clear_24"
+        app:chipIcon="@drawable/baseline_clear_24"
+        app:chipIconTint="@color/colorOnPrimaryContainer"
+        app:layout_constraintStart_toEndOf="@+id/archivedChip"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
