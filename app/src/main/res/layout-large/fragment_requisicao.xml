@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Requisicao">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Note: A RecyclerView can also be used -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/appBarColor"
+                    app:navigationIconTint="@color/white"
+                    app:title="Requisição"
+                    app:titleTextColor="@color/white" />
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/side_sheet"
+                style="@style/Widget.Material3.SideSheet"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="start"
+                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
+                app:layout_constraintStart_toEndOf="@+id/swipe"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+                <!--<include layout="@layout/side_sheet_layout" -->
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Side sheet content. -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/swipe"
+                app:layout_constraintEnd_toStartOf="@+id/side_sheet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+                <HorizontalScrollView
+                    android:id="@+id/filterList"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/archived"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Arquivadas"
+                            android:tooltipText="Arquivadas"
+                            app:icon="@drawable/outline_archive_24"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/unread"
+                            style="@style/Widget.Material3.Button.IconButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:tooltipText="Não lidos"
+                            app:icon="@drawable/outline_mark_email_unread_24"
+                            app:layout_constraintStart_toEndOf="@+id/archived" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/stared"
+                            style="@style/Widget.Material3.Button.IconButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:tooltipText="Favoritos"
+                            app:icon="@drawable/baseline_star_outline_24"
+                            app:layout_constraintStart_toEndOf="@+id/unread" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </HorizontalScrollView>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="0.5dp"
+                    android:layout_height="0dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintBottom_toBottomOf="@+id/filterList"
+                    app:layout_constraintEnd_toStartOf="@+id/clearFilter"
+                    app:layout_constraintTop_toTopOf="@+id/filterList" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clearFilter"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limpar filtros"
+                    android:tooltipText="Limpar filtros"
+                    app:icon="@drawable/outline_delete_24"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scrollIndicators="right"
+                android:scrollbars="horizontal|vertical"
+                android:visibility="visible"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintBottom_toBottomOf="@+id/constraint0"
+                app:layout_constraintEnd_toStartOf="@+id/side_sheet"
+                app:layout_constraintStart_toStartOf="@+id/constraint0"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/material_dynamic_primary40">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewRequisicao"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:listitem="@layout/item_requisicao"></androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_anchorGravity="bottom|right">
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/backToTop"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Voltar ao topo"
+                    app:icon="@drawable/baseline_keyboard_double_arrow_up_24"
+                    app:layout_constraintBottom_toTopOf="@+id/createReq"
+                    app:layout_constraintEnd_toEndOf="@+id/createReq" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/createReq"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Criar nova requisição"
+                    app:icon="@drawable/baseline_add_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+        <TextView
+            android:id="@+id/aviso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Não há dados a serem exibidos no momento."
+            android:textAlignment="center"
+            android:visibility="gone" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
