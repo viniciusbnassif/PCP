@@ -226,7 +226,7 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="2dp"
-                        android:text="Responder"
+                        android:text="Abrir"
                         app:icon="@drawable/baseline_reply_24"
                         app:iconPadding="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
