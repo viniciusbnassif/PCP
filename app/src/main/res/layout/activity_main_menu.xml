@@ -5,6 +5,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".MainMenu">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -21,7 +22,7 @@
         app:menu="@menu/main_menu"
         app:navigationIconTint="@color/white"
         app:title="Menu inicial"
-        app:titleTextColor="@color/white">
+        app:titleTextColor="@color/textColorTertiary">
 
 
     </com.google.android.material.appbar.MaterialToolbar>
@@ -68,43 +69,122 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <Button
-            android:id="@+id/apEmbalados"
-            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="108dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="32dp"
-            android:text="Apontar produtos embalados"
-            android:textSize="20sp"
-            app:icon="@drawable/baseline_app_registration_24"
-            app:iconGravity="textStart"
-            app:layout_constraintBottom_toTopOf="@+id/apPerdas"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
-
-        <Button
-            android:id="@+id/apPerdas"
-            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-            android:layout_width="0dp"
-            android:layout_height="108dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"
-            android:text="Apontar perdas de produtos"
-            android:textSize="20sp"
-            app:icon="@drawable/baseline_apps_outage_24"
-            app:iconGravity="textStart"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/apEmbalados" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/ApontamentosTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Apontamentos"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/apEmbalados"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/apEmbalados"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="108dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginEnd="8dp"
+                android:text="Produtos embalados"
+                android:textSize="20sp"
+
+                app:cornerRadius="20dp"
+                app:icon="@drawable/baseline_app_registration_24"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toBottomOf="@+id/apPerdas"
+                app:layout_constraintEnd_toStartOf="@+id/apPerdas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/apPerdas" />
+
+            <Button
+                android:id="@+id/apPerdas"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="108dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="64dp"
+                android:text="Perdas de produtos"
+                android:textSize="20sp"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/baseline_apps_outage_24"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toBottomOf="@id/apEmbalados"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/apEmbalados" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/apPerdas"
+                app:layout_constraintStart_toStartOf="@+id/apEmbalados"
+                app:layout_constraintTop_toBottomOf="@id/apPerdas" />
+
+            <TextView
+                android:id="@+id/outrosTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Outras atividades"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialDivider" />
+
+            <Button
+                android:id="@+id/relatorioBtn"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="108dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Relatórios de perdas"
+                android:textSize="20sp"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/ic_baseline_checklist_24"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toBottomOf="@+id/requisicaoBtn"
+                app:layout_constraintEnd_toStartOf="@+id/requisicaoBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/outrosTextView" />
+
+            <Button
+                android:id="@+id/requisicaoBtn"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="108dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="64dp"
+                android:text="Requisições"
+                android:textSize="20sp"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/outline_move_up_24"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toBottomOf="@id/relatorioBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/relatorioBtn"
+                app:layout_constraintTop_toBottomOf="@id/outrosTextView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
