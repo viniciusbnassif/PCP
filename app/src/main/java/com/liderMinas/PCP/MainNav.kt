@@ -31,16 +31,16 @@ class MainNav : AppCompatActivity() {
 
 
 
-        val MainMenu=MainMenu(username)
+        val MainMenu=MainMenu()
         val Estatistica=Estatistica()
         val Requisicao=Requisicao(username, this)
 
-        setCurrentFragment(MainMenu)
+        setCurrentFragment(Estatistica)
 
         var bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.menu->setCurrentFragment(MainMenu)
+                R.id.menu->setCurrentFragment(Estatistica)
                 R.id.relatorioNav->setCurrentFragment(Estatistica)
                 R.id.requisicaoNav->setCurrentFragment(Requisicao)
             }
@@ -49,7 +49,7 @@ class MainNav : AppCompatActivity() {
         var navRail = findViewById<NavigationRailView>(R.id.nav_viewRail)
         navRail.setOnItemSelectedListener{
             when(it.itemId){
-                R.id.menu->setCurrentFragment(MainMenu)
+                R.id.menu->setCurrentFragment(Estatistica)
                 R.id.relatorioNav->setCurrentFragment(Estatistica)
                 R.id.requisicaoNav->setCurrentFragment(Requisicao)
             }

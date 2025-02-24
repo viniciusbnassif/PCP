@@ -5,10 +5,7 @@
     android:id="@+id/CL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ApontamentoEmbalados1"
-    android:windowSoftInputMode="adjustResize|adjustPan">
-
-
+    tools:context=".ApontamentoEmbalados1">
 
     <ProgressBar
         android:id="@+id/progressInd"
@@ -24,7 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,38 +30,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <!-- TODO: Update blank fragment layout -->
-        <!-- android:background="#11888888""-->
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
             android:layout_margin="5dp"
             android:orientation="vertical">
-
-            <!--<com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/optmenu"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="Produto"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayout19"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <AutoCompleteTextView
-                    android:id="@+id/menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="none"
-                    app:boxCornerRadiusBottomEnd="5dp"
-                    app:boxCornerRadiusBottomStart="5dp" />
-            </com.google.android.material.textfield.TextInputLayou-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewSpinner"
@@ -83,15 +52,14 @@
                     android:id="@+id/spinnerIdSaver"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"></TextView>
+                    android:visibility="gone" />
 
                 <AutoCompleteTextView
                     android:id="@+id/spinnerPrd"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout17"
@@ -113,7 +81,6 @@
                     android:hint="Embalagens p/ caixa"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout19"
@@ -139,7 +106,6 @@
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout18"
                 android:layout_width="0dp"
@@ -164,7 +130,6 @@
                     android:tooltipText="Hora de Início" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout20"
                 android:layout_width="0dp"
@@ -187,7 +152,6 @@
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout21"
                 android:layout_width="0dp"
@@ -206,13 +170,13 @@
                     android:id="@+id/tipoVProdutoSaver"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"></TextView>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/validProdutoSaver"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"></TextView>
+                    android:visibility="gone" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/btnValidade"
@@ -223,7 +187,6 @@
                     android:hint="Validade"
                     android:inputType="date"
                     android:singleLine="true"
-                    android:text=""
                     android:tooltipText="Clique para abrir o calendário e selecionar/editar a data" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -251,7 +214,6 @@
                     android:hint="Pilha ou Pallet"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/toggleButton"
@@ -286,30 +248,40 @@
                     android:text="Pallet"
                     app:cornerRadius="5dp" />
 
-                <EditText
-                    android:id="@+id/numeroPorPilha"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"/>
+
             </com.google.android.material.button.MaterialButtonToggleGroup>
+            <EditText
+                android:id="@+id/numeroPorPilha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
 
             <Button
                 android:id="@+id/minusBtn"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:backgroundTint="@color/colorPrimaryContainer"
                 android:enabled="false"
                 android:hapticFeedbackEnabled="true"
+                android:iconTint="@color/colorOnPrimaryContainer"
+                android:insetLeft="0dp"
                 android:insetTop="5dp"
+                android:insetRight="0dp"
                 android:insetBottom="0dp"
-                android:text="-"
+                android:padding="0dp"
                 android:textSize="80sp"
                 android:tooltipText="Subtrair"
                 app:cornerRadius="5dp"
+                app:icon="@drawable/rounded_remove_24"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="80dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textInputLayout22"
                 app:layout_constraintEnd_toStartOf="@+id/textInputLayout22"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textInputLayout22" />
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout22"
@@ -318,8 +290,6 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:editable="false"
-                android:focusableInTouchMode="false"
                 android:minWidth="140dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/viewQtdAvulsas"
@@ -330,7 +300,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/finalResult"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="Pilhas"
                     android:inputType="none"
                     android:editable="false"
@@ -341,16 +311,23 @@
                     android:textSize="72sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <Button
                 android:id="@+id/plusBtn"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:hapticFeedbackEnabled="true"
+                android:insetLeft="0dp"
                 android:insetTop="5dp"
+                android:insetRight="0dp"
                 android:insetBottom="0dp"
-                android:longClickable="false"
-                android:text="+"
+                app:icon="@drawable/rounded_add_24"
+                app:iconSize="80dp"
+                app:iconPadding="0dp"
+                android:padding="0dp"
+                app:iconGravity="textStart"
+                android:backgroundTint="@color/colorPrimaryContainer"
+                android:iconTint="@color/colorOnPrimaryContainer"
                 android:textSize="80sp"
                 android:tooltipText="Adicionar 1"
                 app:cornerRadius="5dp"
@@ -371,7 +348,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/minusBtn">
 
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/caixasAvulsas"
                     android:layout_width="match_parent"
@@ -389,7 +365,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewQtdAvulsas"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
                 android:visibility="visible"
@@ -414,7 +390,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewTotal"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:visibility="visible"
                 app:errorEnabled="true"
@@ -439,118 +415,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewCaixasAvulsas"></Space>
-
-
+                app:layout_constraintTop_toBottomOf="@+id/viewCaixasAvulsas" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </ScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#00FFFFFF"
-        android:backgroundTint="#00FFFFFF"
-        android:foregroundTint="#00FFFFFF"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!--com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/apontEmbaladosBottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            app:backgroundTint="@color/colorPrimary"
-            app:hideOnScroll="true"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIconTint="@color/white"
-            app:titleTextColor="@color/white" />
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/fab1"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="3dp"
-                android:elevation="15dp"
-                android:lines="2"
-                android:text="Finalizar e \n iniciar outro"
-                android:tooltipText="Finalizar"
-                app:icon="@drawable/ic_outline_library_add_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/fab2" />
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/fab2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_margin="3dp"
-                android:text="@string/finalizar"
-                android:textSize="16sp"
-                android:tooltipText="Finalizar"
-                app:fabSize="normal"
-                app:icon="@drawable/ic_outline_library_add_check_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout-->
-
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/apontEmbaladosBottomBar"
-            style="@style/Widget.Material3.AppBarLayout"
+            style="@style/Widget.Material3.BottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:keepScreenOn="true"
-            app:backgroundTint="@color/appBarColor"
+            app:backgroundTint="@color/colorBackground"
             app:hideOnScroll="true"
-            app:navigationIconTint="#FFFFFF"
+            app:navigationIconTint="?attr/colorControlNormal"
             app:titleTextColor="@color/white">
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end">
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/fab1"
-                    style="?attr/materialButtonOutlinedStyle"
+                    style="@style/Widget.Material3.Button.Icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:text="Finalizar e \niniciar outro"
                     android:textAlignment="textStart"
-                    android:textColor="@color/appBarColor"
+                    android:textColor="@color/alternativeColorOnPrimaryContainer"
                     app:backgroundTint="@color/color_0"
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_outline_library_add_24"
                     app:iconSize="24dp"
-                    app:iconTint="@color/appBarColor"
+                    app:iconTint="@color/alternativeColorOnPrimaryContainer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/fab2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:strokeColor="#00FFFFFF" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/fab2"
-                    style="?attr/materialButtonOutlinedStyle"
+                    style="@style/Widget.Material3.Button.Icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:insetTop="0dp"
@@ -559,23 +479,19 @@
                     android:paddingRight="12dp"
                     android:text="Finalizar"
                     android:textAlignment="textStart"
-                    android:textColor="@color/appBarColor"
+                    android:textColor="@color/alternativeColorOnPrimaryContainer"
                     android:textSize="16sp"
                     app:backgroundTint="@color/color_0"
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_outline_library_add_check_24"
                     app:iconGravity="start"
                     app:iconSize="24dp"
-                    app:iconTint="@color/appBarColor"
+                    app:iconTint="@color/alternativeColorOnPrimaryContainer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/fab1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:strokeColor="#00FFFFFF" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

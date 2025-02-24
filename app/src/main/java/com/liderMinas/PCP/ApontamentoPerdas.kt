@@ -133,8 +133,6 @@ class ApontamentoPerdas : AppCompatActivity() {
         var name = intent.getStringExtra("messageIntent")
 
 
-
-
         fun updateTime(): String {
 
             val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
@@ -164,17 +162,17 @@ class ApontamentoPerdas : AppCompatActivity() {
             var primaryColorSuccess = getColor(R.color.suSuccessGreen)
             var resourcePrimaryColorSuccess = R.color.suSuccessGreen
             var backgroundColorSuccess = getColor(R.color.lightSuccessGreen)
-            var iconSuccess = R.drawable.ic_baseline_check_circle_24
+            var iconSuccess = R.drawable.rounded_check_circle_24
 
             var primaryColorError = getColor(R.color.suErrorRed)
             var resourcePrimaryColorError = R.color.suErrorRed
             var backgroundColorError = getColor(R.color.lightErrorRed)
-            var iconError = R.drawable.baseline_cancel_24
+            var iconError = R.drawable.rounded_cancel_24
 
             var primaryColorNeutral = getColor(R.color.black)
-            var resourcePrimaryColorNeutral = R.color.black
+            var resourcePrimaryColorNeutral = R.color.spacegray
             var backgroundColorNeutral = getColor(R.color.white)
-            var iconNeutral = R.drawable.ic_baseline_remove_circle_24
+            var iconNeutral = R.drawable.round_remove_circle_outline_24
 
             /*stats2.setTextColor(primaryColorSuccess)
             stats2.setBackgroundColor(backgroundColorSuccess)
@@ -649,39 +647,99 @@ class ApontamentoPerdas : AppCompatActivity() {
 
         toggleKG1.setOnClickListener{
             verifyErrors(1)
+            if (toggleKG1.isChecked){
+                toggleKG1.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleKG1.setTextColor(getColor(R.color.black))
+            }
         }
         toggleUN1.setOnClickListener{
             verifyErrors(1)
+            if (toggleUN1.isChecked){
+                toggleUN1.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleUN1.setTextColor(getColor(R.color.black))
+            }
         }
         toggleKG2.setOnClickListener{
             verifyErrors(2)
+            if (toggleKG2.isChecked){
+                toggleKG2.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleKG2.setTextColor(getColor(R.color.black))
+            }
         }
         toggleUN2.setOnClickListener{
             verifyErrors(2)
+            if (toggleUN2.isChecked){
+                toggleUN2.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleUN2.setTextColor(getColor(R.color.black))
+            }
         }
         toggleKG3.setOnClickListener{
             verifyErrors(3)
+            if (toggleKG3.isChecked){
+                toggleKG3.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleKG3.setTextColor(getColor(R.color.black))
+            }
         }
         toggleUN3.setOnClickListener{
             verifyErrors(3)
+            if (toggleUN3.isChecked){
+                toggleUN3.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleUN3.setTextColor(getColor(R.color.black))
+            }
         }
         toggleKG4.setOnClickListener{
             verifyErrors(4)
+            if (toggleKG4.isChecked){
+                toggleKG4.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleKG4.setTextColor(getColor(R.color.black))
+            }
         }
         toggleUN4.setOnClickListener{
             verifyErrors(4)
+            if (toggleUN4.isChecked){
+                toggleUN4.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleUN4.setTextColor(getColor(R.color.black))
+            }
         }
         toggleKG5.setOnClickListener{
             verifyErrors(5)
+            if (toggleKG5.isChecked){
+                toggleKG5.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleKG5.setTextColor(getColor(R.color.black))
+            }
         }
         toggleUN5.setOnClickListener{
             verifyErrors(5)
+            if (toggleUN5.isChecked){
+                toggleUN5.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleUN5.setTextColor(getColor(R.color.black))
+            }
         }
         toggleKG6.setOnClickListener{
             verifyErrors(6)
+            if (toggleKG6.isChecked){
+                toggleKG6.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleKG6.setTextColor(getColor(R.color.black))
+            }
         }
         toggleUN6.setOnClickListener{
             verifyErrors(6)
+            if (toggleUN6.isChecked){
+                toggleUN6.setTextColor(getColor(R.color.alternativeColorOnPrimaryContainer))
+            } else {
+                toggleUN6.setTextColor(getColor(R.color.black))
+            }
         }
 
         setOrRefreshSpinnerPerdas(0)
@@ -836,6 +894,7 @@ class ApontamentoPerdas : AppCompatActivity() {
 
 
     override fun onBackPressed() {
+        super.onBackPressed()
         MaterialAlertDialogBuilder(this)
             .setTitle("Parece que você está tentando sair...")
             .setMessage("Ao sair desta tela usando o botão voltar, todas as informações preenchidas serão perdidas. \nDeseja sair mesmo assim?")

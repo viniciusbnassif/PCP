@@ -18,6 +18,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -33,11 +35,22 @@ import java.lang.Integer.parseInt
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var prefs: PreferencesHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var progress = findViewById<LinearProgressIndicator>(R.id.progressToolbar)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        prefs = PreferencesHelper(this)
+
+        var progress = findViewById<LinearProgressIndicator>(R.id.syncStatusIndicator)
         var ctxt = this
 
 
@@ -47,16 +60,16 @@ class MainActivity : AppCompatActivity() {
 
         var sync = Sync()
 
-        val user = findViewById<EditText>(R.id.editTextUsername)
-        val userView = findViewById<TextInputLayout>(R.id.viewUser)
+        val user = findViewById<EditText>(R.id.usernameText)
+        val userView = findViewById<TextInputLayout>(R.id.username)
 
-        val pw = findViewById<EditText>(R.id.editTextPassword)
-        val pwView = findViewById<TextInputLayout>(R.id.viewPassword)
+        val pw = findViewById<EditText>(R.id.passwordText)
+        val pwView = findViewById<TextInputLayout>(R.id.password)
 
         val username = user.text.toString()
 
         fun syncIsDone(){
-            var mainMenu = Intent(this, MainNav::class.java).apply {
+            var mainMenu = Intent(this, MainMenu::class.java).apply {
                 putExtra(AlarmClock.EXTRA_MESSAGE, username)
             }
             startActivity(mainMenu)
@@ -64,21 +77,8 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-
-        //Exibir número de versão + revisão
-
-
-        var query: String
-
-        //val user = String
-        //val pw = String
-
-        var elementsOnLogin = findViewById<ConstraintLayout>(R.id.elementsOnLogin)
-
-
-
         fun showProgress(result: String) {
-            var progress = findViewById<LinearProgressIndicator>(R.id.progressToolbar)
+            var progress = findViewById<LinearProgressIndicator>(R.id.syncStatusIndicator)
             if (result == "true") {
                 progress.visibility = VISIBLE
             } else if (result == "false") {
@@ -90,12 +90,11 @@ class MainActivity : AppCompatActivity() {
 
 
         suspend fun connectionView(): String {
-
             var result = Sync().testConnection()
 
             if (result == "Falha") {
                 var xyz = Snackbar.make(
-                    findViewById(R.id.clMA),
+                    findViewById(R.id.saudacaoContainer),
                     getString(R.string.connectionErroResult1),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(Color.parseColor("#741919"))
@@ -146,20 +145,26 @@ class MainActivity : AppCompatActivity() {
         suspend fun authUser(ctxt: android.content.Context) {
             showProgress("true")
 
-            val user = findViewById<EditText>(R.id.editTextUsername)
+            /*val user = findViewById<EditText>(R.id.editTextUsername)
             val userView = findViewById<TextInputLayout>(R.id.viewUser)
 
             val pw = findViewById<EditText>(R.id.editTextPassword)
-            val pwView = findViewById<TextInputLayout>(R.id.viewPassword)
+            val pwView = findViewById<TextInputLayout>(R.id.viewPassword)*/
+
+            val user = findViewById<EditText>(R.id.usernameText)
+            val userView = findViewById<TextInputLayout>(R.id.username)
+
+            val pw = findViewById<EditText>(R.id.passwordText)
+            val pwView = findViewById<TextInputLayout>(R.id.password)
 
             var query: String
-            val button = findViewById<MaterialButton>(R.id.loginscreen_login)
+            val button = findViewById<Button>(R.id.loginBtn)
 
             var db = SQLiteHelper(this)
 
             var sync = Sync()
 
-            var elementsOnLogin = findViewById<ConstraintLayout>(R.id.elementsOnLogin)
+            var elementsOnLogin = findViewById<ConstraintLayout>(R.id.saudacaoContainer)
 
             var result = connectionView()
             if (result == "Sucesso") {
@@ -190,10 +195,15 @@ class MainActivity : AppCompatActivity() {
                     var message = runSync()
 
                     if (message == "Sucesso"){
-                        var mainMenu = Intent(this, MainNav::class.java).apply {
+                        prefs.saveData("username", username)
+                        prefs.saveBoolean("isLoggedIn", true)
+
+                        var mainMenu = Intent(this, MainMenu::class.java).apply {
                             putExtra(AlarmClock.EXTRA_MESSAGE, username)
                         }
                         startActivity(mainMenu)
+
+
 
                         finish()
                     } else {
@@ -222,7 +232,7 @@ class MainActivity : AppCompatActivity() {
                 //Log.d("Debug", "Cursor = $cursor")
                 if (auth == true) {
                     val username = user.text.toString()
-                    var mainMenu = Intent(this, MainNav::class.java).apply {
+                    var mainMenu = Intent(this, MainMenu::class.java).apply {
                         putExtra(AlarmClock.EXTRA_MESSAGE, username)
                     }
                     startActivity(mainMenu)
@@ -249,7 +259,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val button: Button = findViewById(R.id.loginscreen_login)
+        val button: Button = findViewById(R.id.loginBtn)
         button.setOnClickListener {
             showProgress("true")
             var context = this
@@ -295,8 +305,7 @@ class MainActivity : AppCompatActivity() {
 
         R.id.versionView -> {
             // User chose the "Settings" item, show the app settings UI...
-            val versionCode = BuildConfig.VERSION_CODE
-            val versionName = BuildConfig.VERSION_NAME
+
             var toast = Toast.makeText(this, "Welcome to Android Teachers..!!",
                 Toast.LENGTH_LONG)
             toast.show()

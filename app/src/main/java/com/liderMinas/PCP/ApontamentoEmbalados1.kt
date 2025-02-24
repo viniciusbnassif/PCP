@@ -1,5 +1,6 @@
 package com.liderMinas.PCP
 
+import android.content.Context
 import android.database.Cursor
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
@@ -10,9 +11,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -94,20 +97,64 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
 
         var qtd = customAlertDialogView.findViewById<TextInputEditText>(R.id.qtd)
 
-        //var soma = customAlertDialogView.findViewById<MaterialButton>(R.id.soma1)
-        //var subt = customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)
+        fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+            this.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+
+                override fun afterTextChanged(editable: Editable?) {
+                    afterTextChanged.invoke(editable.toString())
+                }
+            })
+        }
+        fun isKeyboardVisible(context: Context): Boolean {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            return imm.isAcceptingText
+        }
+
+        qtd.afterTextChanged {
+            if(isKeyboardVisible(this)) {
+                if (qtd.length() > 0) {
+                    var qtdS = parseInt(qtd?.text.toString())
+                    if (qtdS > 0) {
+                        customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)
+                            .setEnabled(true)
+                    } /*else {
+                        qtd.removeTextChangedListener(null)
+                        qtd.setText("0")
+                        customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)
+                            .setEnabled(false)
+                        qtd.afterTextChanged { }
+                    }*/
+                }
+            }
+        }
 
         var soma =
             customAlertDialogView.findViewById<MaterialButton>(R.id.soma1)?.setOnClickListener {
                 var qtdS = parseInt(qtd?.text.toString())
                 qtdS += 1
+                customAlertDialogView.findViewById<MaterialButton>(R.id.subt1).setEnabled(true)
+
                 qtd?.setText("$qtdS")
             }
         var subt =
             customAlertDialogView.findViewById<MaterialButton>(R.id.subt1)?.setOnClickListener {
                 var qtdS = parseInt(qtd?.text.toString())
-                qtdS -= 1
-                qtd?.setText("$qtdS")
+                if(qtdS>0) {
+                    qtdS -= 1
+                    if (qtdS == 0) {
+                        customAlertDialogView.findViewById<MaterialButton>(R.id.subt1).setEnabled(false)
+                    } else {
+                        customAlertDialogView.findViewById<MaterialButton>(R.id.subt1).setEnabled(true)
+                    }
+                    qtd?.setText("$qtdS")
+                } else {
+                    customAlertDialogView.findViewById<MaterialButton>(R.id.subt1).setEnabled(false)
+                }
             }
 
         fun qtdPilha(qtd: String) {
@@ -126,18 +173,22 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
             .setTitle("Configurando pilhas...")
             .setMessage("Digite quantas embalagens cabem em cada pilha")
             .setNegativeButton("Cancelar") { dialog, which ->
+                btnPilha.isChecked = false
                 dialog.dismiss()
             }
             .setPositiveButton("Salvar") { dialog, which ->
                 qtdPilha(qtd.text.toString())
+                btnPilha.setTextColor(getResources().getColor(R. color. alternativeColorOnPrimaryContainer))
                 dialog.dismiss()
             }.create()
 
         btnPilha.addOnCheckedChangeListener { button, isChecked ->
             if (isChecked == true){
                 tipoTransporte = "pilha"
+
                 dialog.show()
             } else if(btnPallet.isChecked == false) {
+                btnPilha.setTextColor(getResources().getColor(R. color.textColorPrimary))
                 tipoTransporte = ""
                 viewTotal.text = ""
             }
@@ -147,8 +198,10 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
         btnPallet.addOnCheckedChangeListener { button, isChecked ->
             if (isChecked == true){
                 tipoTransporte = "pallet"
+                btnPallet.setTextColor(getResources().getColor(R. color. alternativeColorOnPrimaryContainer))
                 setTotal()
             } else if(btnPilha.isChecked == false) {
+                btnPallet.setTextColor(getResources().getColor(R. color.textColorPrimary))
                 tipoTransporte = ""
                 viewTotal.text = ""
             }
@@ -627,13 +680,13 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
             }
         }
 
-        val buttonResetar: MaterialButton = findViewById(R.id.fab1)
+        val buttonResetar: Button = findViewById(R.id.fab1)
         buttonResetar.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch { finalizar(1) }
 
         }
 
-        val buttonFinalizar: MaterialButton = findViewById(R.id.fab2)
+        val buttonFinalizar: Button = findViewById(R.id.fab2)
         buttonFinalizar.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch { finalizar(2) }
         }

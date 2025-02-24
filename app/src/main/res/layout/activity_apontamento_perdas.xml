@@ -15,9 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="top"
-        android:background="@color/appBarColor"
-        app:backgroundTint="@color/appBarColor"
-
+        android:background="@color/colorBackground"
+        app:backgroundTint="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIconTint="@color/white"
@@ -215,7 +214,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/card1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -223,6 +222,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:padding="10dp"
+            app:cardBackgroundColor="@color/colorBackground"
             app:layout_constraintBottom_toTopOf="@id/card2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -280,25 +280,26 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApagarPerda1"
-                    style="?attr/materialIconButtonFilledStyle"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:insetLeft="0dp"
-
                     android:insetTop="5dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
                     android:text="Limpar"
-                    app:backgroundTint="#9E2323"
+                    android:textColor="@color/suErrorRed"
+                    app:backgroundTint="@color/lightErrorRed"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/ic_baseline_backspace_24"
                     app:iconGravity="textStart"
                     app:iconPadding="10dp"
-                    app:iconTint="#FFFFFF"
+                    app:iconTint="@color/suErrorRed"
                     app:layout_constraintBottom_toTopOf="@+id/viewQtdPerda1"
                     app:layout_constraintEnd_toEndOf="@+id/toggleButton1"
                     app:layout_constraintStart_toStartOf="@+id/toggleButton1"
-                    app:layout_constraintTop_toTopOf="@+id/viewMotivo1" />
+                    app:layout_constraintTop_toTopOf="@+id/viewMotivo1"
+                    app:strokeColor="@color/suErrorRed" />
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -350,9 +351,9 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/card2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -360,6 +361,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:padding="10dp"
+            app:cardBackgroundColor="@color/colorBackground"
             app:layout_constraintBottom_toTopOf="@+id/card3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -417,21 +419,22 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApagarPerda2"
-                    style="?attr/materialIconButtonFilledStyle"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:textColor="@color/suErrorRed"
+                    app:iconTint="@color/suErrorRed"
+                    app:backgroundTint="@color/lightErrorRed"
+                    app:strokeColor="@color/suErrorRed"
                     android:insetLeft="0dp"
-
                     android:insetTop="5dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
                     android:text="Limpar"
-                    app:backgroundTint="#9E2323"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/ic_baseline_backspace_24"
                     app:iconGravity="textStart"
                     app:iconPadding="10dp"
-                    app:iconTint="#FFFFFF"
                     app:layout_constraintBottom_toTopOf="@+id/viewQtdPerda2"
                     app:layout_constraintEnd_toEndOf="@+id/toggleButton2"
                     app:layout_constraintStart_toStartOf="@+id/toggleButton2"
@@ -487,9 +490,9 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/card3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -497,6 +500,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:padding="10dp"
+            app:cardBackgroundColor="@color/colorBackground"
             app:layout_constraintBottom_toTopOf="@+id/card4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -554,21 +558,22 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApagarPerda3"
-                    style="?attr/materialIconButtonFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:insetLeft="0dp"
-
                     android:insetTop="5dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:textColor="@color/suErrorRed"
+                    app:iconTint="@color/suErrorRed"
+                    app:backgroundTint="@color/lightErrorRed"
+                    app:strokeColor="@color/suErrorRed"
                     android:text="Limpar"
-                    app:backgroundTint="#9E2323"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/ic_baseline_backspace_24"
                     app:iconGravity="textStart"
                     app:iconPadding="10dp"
-                    app:iconTint="#FFFFFF"
                     app:layout_constraintBottom_toTopOf="@+id/viewQtdPerda3"
                     app:layout_constraintEnd_toEndOf="@+id/toggleButton3"
                     app:layout_constraintStart_toStartOf="@+id/toggleButton3"
@@ -624,9 +629,9 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/card4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -634,6 +639,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:padding="10dp"
+            app:cardBackgroundColor="@color/colorBackground"
             app:layout_constraintBottom_toTopOf="@+id/card5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -691,21 +697,22 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApagarPerda4"
-                    style="?attr/materialIconButtonFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:insetLeft="0dp"
-
                     android:insetTop="5dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:textColor="@color/suErrorRed"
+                    app:iconTint="@color/suErrorRed"
+                    app:backgroundTint="@color/lightErrorRed"
+                    app:strokeColor="@color/suErrorRed"
                     android:text="Limpar"
-                    app:backgroundTint="#9E2323"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/ic_baseline_backspace_24"
                     app:iconGravity="textStart"
                     app:iconPadding="10dp"
-                    app:iconTint="#FFFFFF"
                     app:layout_constraintBottom_toTopOf="@+id/viewQtdPerda4"
                     app:layout_constraintEnd_toEndOf="@+id/toggleButton4"
                     app:layout_constraintStart_toStartOf="@+id/toggleButton4"
@@ -761,9 +768,9 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/card5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -771,6 +778,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:padding="10dp"
+            app:cardBackgroundColor="@color/colorBackground"
             app:layout_constraintBottom_toTopOf="@+id/card6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -827,21 +835,22 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApagarPerda5"
-                    style="?attr/materialIconButtonFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:insetLeft="0dp"
-
                     android:insetTop="5dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
                     android:text="Limpar"
-                    app:backgroundTint="#9E2323"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:textColor="@color/suErrorRed"
+                    app:iconTint="@color/suErrorRed"
+                    app:backgroundTint="@color/lightErrorRed"
+                    app:strokeColor="@color/suErrorRed"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/ic_baseline_backspace_24"
                     app:iconGravity="textStart"
                     app:iconPadding="10dp"
-                    app:iconTint="#FFFFFF"
                     app:layout_constraintBottom_toTopOf="@+id/viewQtdPerda5"
                     app:layout_constraintEnd_toEndOf="@+id/toggleButton5"
                     app:layout_constraintStart_toStartOf="@+id/toggleButton5"
@@ -897,9 +906,9 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/card6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -907,6 +916,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:padding="10dp"
+            app:cardBackgroundColor="@color/colorBackground"
             app:layout_constraintBottom_toTopOf="@id/space1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -963,21 +973,22 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApagarPerda6"
-                    style="?attr/materialIconButtonFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:insetLeft="0dp"
-
                     android:insetTop="5dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
                     android:text="Limpar"
-                    app:backgroundTint="#9E2323"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:textColor="@color/suErrorRed"
+                    app:iconTint="@color/suErrorRed"
+                    app:backgroundTint="@color/lightErrorRed"
+                    app:strokeColor="@color/suErrorRed"
                     app:cornerRadius="4dp"
                     app:icon="@drawable/ic_baseline_backspace_24"
                     app:iconGravity="textStart"
                     app:iconPadding="10dp"
-                    app:iconTint="#FFFFFF"
                     app:layout_constraintBottom_toTopOf="@+id/viewQtdPerda6"
                     app:layout_constraintEnd_toEndOf="@+id/toggleButton6"
                     app:layout_constraintStart_toStartOf="@+id/toggleButton6"
@@ -1033,7 +1044,7 @@
                         app:cornerRadius="4dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
             <Space
                 android:id="@+id/space1"
@@ -1117,9 +1128,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:keepScreenOn="true"
-            app:backgroundTint="@color/appBarColor"
+            app:backgroundTint="@color/colorBackground"
             app:hideOnScroll="true"
-            app:navigationIconTint="#FFFFFF"
+            app:navigationIconTint="?attr/colorControlNormal"
             app:titleTextColor="@color/white">
 
 
@@ -1139,12 +1150,12 @@
                     android:paddingRight="12dp"
                     android:text="Finalizar e \niniciar outro"
                     android:textAlignment="textStart"
-                    android:textColor="@color/appBarColor"
-                    app:backgroundTint="@color/color_0"
+                    android:textColor="@color/alternativeColorOnPrimaryContainer"
+                    app:backgroundTint="@color/appBarColor"
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_outline_library_add_24"
                     app:iconSize="24dp"
-                    app:iconTint="@color/appBarColor"
+                    app:iconTint="@color/alternativeColorOnPrimaryContainer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/fab2"
                     app:layout_constraintStart_toStartOf="parent"
@@ -1164,14 +1175,14 @@
                     android:paddingRight="12dp"
                     android:text="Finalizar"
                     android:textAlignment="textStart"
-                    android:textColor="@color/appBarColor"
+                    android:textColor="@color/alternativeColorOnPrimaryContainer"
                     android:textSize="16sp"
-                    app:backgroundTint="@color/color_0"
+                    app:backgroundTint="@color/appBarColor"
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_outline_library_add_check_24"
                     app:iconGravity="start"
                     app:iconSize="24dp"
-                    app:iconTint="@color/appBarColor"
+                    app:iconTint="@color/alternativeColorOnPrimaryContainer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/fab1"

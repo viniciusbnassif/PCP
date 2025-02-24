@@ -5,7 +5,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import com.github.barteksc.pdfviewer.PDFView
+//import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.appbar.MaterialToolbar
 
 class PdfActivity : AppCompatActivity() {
@@ -31,8 +31,8 @@ class PdfActivity : AppCompatActivity() {
             actionBar.setDisplayHomeAsUpEnabled(true)
         }
 
-        var pdfView = findViewById<PDFView>(R.id.pdfView)
-        pdfView.fromAsset("guia.pdf").load()
+        //var pdfView = findViewById<PDFView>(R.id.pdfView)
+        //pdfView.fromAsset("guia.pdf").load()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

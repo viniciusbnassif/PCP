@@ -13,18 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="top"
-        android:background="@color/appBarColor"
-        app:backgroundTint="@color/appBarColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:menu="@menu/main_menu"
         app:navigationIconTint="@color/white"
         app:title="Menu inicial"
         app:titleTextColor="@color/textColorTertiary">
-
-
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,44 +32,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/appBarColor"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/saudacao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Bem-vindo"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/sair"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Finalizar \nSessão"
-                app:icon="@drawable/baseline_login_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -88,7 +50,6 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/apEmbalados"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -98,34 +59,42 @@
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="108dp"
-                android:layout_marginStart="64dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="2dp"
+                android:backgroundTint="@color/colorPrimaryContainer"
+                android:iconTint="@color/colorOnPrimaryContainer"
                 android:text="Produtos embalados"
+                android:textColor="@color/colorOnPrimaryContainer"
                 android:textSize="20sp"
-
                 app:cornerRadius="20dp"
                 app:icon="@drawable/baseline_app_registration_24"
                 app:iconGravity="textStart"
                 app:layout_constraintBottom_toBottomOf="@+id/apPerdas"
                 app:layout_constraintEnd_toStartOf="@+id/apPerdas"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/apPerdas" />
+                app:layout_constraintTop_toBottomOf="@id/ApontamentosTextView" />
 
             <Button
                 android:id="@+id/apPerdas"
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="108dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="64dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/colorPrimaryContainer"
+                android:iconTint="@color/colorOnPrimaryContainer"
                 android:text="Perdas de produtos"
+                android:textColor="@color/colorOnPrimaryContainer"
                 android:textSize="20sp"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/baseline_apps_outage_24"
                 app:iconGravity="textStart"
                 app:layout_constraintBottom_toBottomOf="@id/apEmbalados"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/apEmbalados" />
+                app:layout_constraintStart_toEndOf="@+id/apEmbalados"
+                app:layout_constraintTop_toBottomOf="@id/ApontamentosTextView" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/materialDivider"
@@ -151,19 +120,20 @@
 
             <Button
                 android:id="@+id/relatorioBtn"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="108dp"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="2dp"
+                android:backgroundTint="@color/colorSecondaryContainer"
                 android:text="Relatórios de perdas"
-                android:textSize="20sp"
+                android:textColor="@color/colorOnSecondaryContainer"
+                android:textSize="14sp"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_baseline_checklist_24"
-                app:iconGravity="textStart"
-                app:layout_constraintBottom_toBottomOf="@+id/requisicaoBtn"
-                app:layout_constraintEnd_toStartOf="@+id/requisicaoBtn"
+                app:iconGravity="textTop"
+                app:iconTint="@color/colorOnSecondaryContainer"
+                app:layout_constraintEnd_toStartOf="@+id/syncBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/outrosTextView" />
 
@@ -175,39 +145,62 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="64dp"
+                android:backgroundTint="@color/colorSecondaryContainer"
                 android:text="Requisições"
-                android:textSize="20sp"
+                android:textColor="@color/colorOnSecondaryContainer"
+                android:textSize="14sp"
+                android:visibility="gone"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/outline_move_up_24"
-                app:iconGravity="textStart"
+                app:iconGravity="textTop"
+                app:iconTint="@color/colorOnSecondaryContainer"
+
                 app:layout_constraintBottom_toBottomOf="@id/relatorioBtn"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/accountBtn"
                 app:layout_constraintStart_toEndOf="@+id/relatorioBtn"
                 app:layout_constraintTop_toBottomOf="@id/outrosTextView" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/syncBtn"
+                android:layout_width="0dp"
+                android:layout_height="108dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="2dp"
+                android:backgroundTint="@color/colorSecondaryContainer"
+                android:text="Sincronizar"
+                android:textColor="@color/colorOnSecondaryContainer"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/rounded_sync_24"
+                app:iconGravity="textTop"
+                app:iconTint="@color/colorOnSecondaryContainer"
+                app:layout_constraintEnd_toStartOf="@+id/accountBtn"
+                app:layout_constraintStart_toEndOf="@id/relatorioBtn"
+                app:layout_constraintTop_toBottomOf="@+id/outrosTextView" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/accountBtn"
+                android:layout_width="0dp"
+                android:layout_height="108dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/colorSecondaryContainer"
+                android:text="Mais opções"
+                android:textColor="@color/colorOnSecondaryContainer"
+                android:textSize="14sp"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/rounded_more_horiz_24"
+                app:iconGravity="textTop"
+                app:iconTint="@color/colorOnSecondaryContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/syncBtn"
+                app:layout_constraintTop_toBottomOf="@+id/outrosTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/syncBtn"
-                style="@style/Widget.Material3.Button.ElevatedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
-                android:text="Sincronizar"
-                android:textSize="16sp"
-                app:icon="@drawable/ic_baseline_sync_24"
-                app:iconGravity="textStart"
-                app:iconSize="22dp" />
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

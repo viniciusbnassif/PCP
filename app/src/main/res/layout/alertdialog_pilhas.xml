@@ -32,19 +32,26 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/subt1"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/colorPrimaryContainer"
+            android:iconTint="@color/colorOnPrimaryContainer"
             android:insetBottom="0dp"
-            android:text="-"
-            android:textSize="40sp"
             app:cornerRadius="5dp"
+            app:icon="@drawable/rounded_remove_24"
+            app:iconSize="50dp"
+            app:iconPadding="0dp"
+            android:padding="0dp"
+            app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/qtdView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.24" />
+            app:layout_constraintWidth_percent="0.24"
+            app:strokeColor="@color/colorOnPrimaryContainer"/>
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -72,19 +79,26 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/soma1"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="1dp"
+            android:backgroundTint="@color/colorPrimaryContainer"
+            android:iconTint="@color/colorOnPrimaryContainer"
             android:insetBottom="0dp"
-            android:text="+"
-            android:textSize="40sp"
+            android:padding="0dp"
             app:cornerRadius="5dp"
+            app:icon="@drawable/rounded_add_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/qtdView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.24" />
+            app:layout_constraintWidth_percent="0.24"
+            app:strokeColor="@color/colorOnPrimaryContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

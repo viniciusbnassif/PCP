@@ -220,12 +220,7 @@ class SQLiteHelper(context: Context?):
                 "VALUES ('101113',1.5, 1.4, 'kane', 'kane', '2023121022:10', '2023121022:15', 0);")
 
 
-
-
     }
-
-
-
 
     fun externalExecSQL(query: String){
         val db = this.writableDatabase

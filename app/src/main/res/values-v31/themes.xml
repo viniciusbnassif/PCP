@@ -18,11 +18,15 @@
         <item name="colorContainer">@color/material_dynamic_primary70</item>
         <item name="android:textColorHighlight">@color/color_100</item>
 
-        <item name="navigationIconTint">@color/colorPrimary</item>
-        <item name="android:navigationBarColor">@color/material_dynamic_primary95</item>
-        <item name="android:windowLightNavigationBar">false</item>
+
+
+        <!-- Status bar and Navigation bar color. -->
+        <item name="navigationIconTint">@color/spacegray</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/material_dynamic_primary95</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
 
     </style>
 </resources>
