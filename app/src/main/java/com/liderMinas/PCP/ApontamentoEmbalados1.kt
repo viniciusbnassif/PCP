@@ -854,6 +854,7 @@ class ApontamentoEmbalados1 : AppCompatActivity(), LifecycleEventObserver {
             AdapterView.OnItemClickListener { p0, view, position, _id ->
                 if (view?.context != null) {
                     spinnerID.text = _id.toInt().toString()
+                    Log.d("idSaver","${spinnerID.text}, ${spinnerPrd.text}")
                     id = _id.toInt()
                     overrideDataBlock(id) //inicia metodo passando o id do item selecionado
                     CoroutineScope(Dispatchers.Main).launch {

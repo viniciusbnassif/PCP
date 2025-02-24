@@ -41,10 +41,11 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:hint="Selecione o produto"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout17"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/listaProduto"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -60,6 +61,26 @@
                     android:layout_height="wrap_content"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/listaProduto"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="22dp"
+                android:backgroundTint="@color/colorPrimaryContainer"
+                android:hapticFeedbackEnabled="true"
+                android:iconTint="@color/colorOnPrimaryContainer"
+                android:insetLeft="0dp"
+                android:insetTop="6dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:text="Pesquisa"
+                app:cornerRadius="5dp"
+                app:icon="@drawable/rounded_manage_search_24"
+                app:layout_constraintBottom_toBottomOf="@+id/viewSpinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout17"
