@@ -218,8 +218,6 @@ class SQLiteHelper(context: Context?):
         db?.execSQL("INSERT INTO Requisicao (codProduto, qtdRequisicao, qtdConfirmacao," +
                 " userRequisicao, userAtendimento, dataHoraRequisicao, dataHoraAtendimento, statusSync) " +
                 "VALUES ('101113',1.5, 1.4, 'kane', 'kane', '2023121022:10', '2023121022:15', 0);")
-
-
     }
 
     fun externalExecSQL(query: String){
@@ -266,21 +264,49 @@ class SQLiteHelper(context: Context?):
         onCreate(db)
     }
 
-    fun getProdutos(): Cursor {
-        return db.query(
-            TBL_PRODUTO,
-            arrayOf("$ID_PRODUTO AS ${BaseColumns._ID}",
-                DESC_PROD,
-                /*QE_PROD,
-                VALID_PROD,
-                TIPOV_PROD*/
-            ),
-            null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
-            null /* arguments to replace ? place holder in the WHERE clause, null if none */,
-            null /* GROUP BY clause, null if no GROUP BY clause */,
-            null /* HAVING CLAUSE, null if no HAVING clause */,
-            null //DESC_PROD + " ASC" /* ORDER BY clause products will be shown alphabetically a->z*/
-        )
+    fun getProdutos(filtro: String? = null): Cursor {
+        val db = this.readableDatabase
+
+        // Se o filtro estiver vazio, a query é limpa. Se tiver texto, aplica o WHERE.
+
+        val sql =
+            if (filtro.isNullOrEmpty()) {
+                db.query(
+                    TBL_PRODUTO,
+                    arrayOf(
+                        "SUBSTR($DESC_PROD, 1, INSTR($DESC_PROD, ' - ') - 1) AS codigoProduto",
+                        "SUBSTR($DESC_PROD, INSTR($DESC_PROD, ' - ') + 3) AS nomeProduto",
+                        "$ID_PRODUTO AS ${BaseColumns._ID}",
+                        QE_PROD,
+                        VALID_PROD,
+                        TIPOV_PROD,
+                    ),
+                    null /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                    null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                    null /* GROUP BY clause, null if no GROUP BY clause */,
+                    null /* HAVING CLAUSE, null if no HAVING clause */,
+                    null /* ORDER BY clause products will be shown alphabetically a->z*/
+                )
+            } else {
+                db.query(
+                    TBL_PRODUTO,
+                    arrayOf(
+                        "SUBSTR($DESC_PROD, 1, INSTR($DESC_PROD, ' - ') - 1) AS codigoProduto",
+                        "SUBSTR($DESC_PROD, INSTR($DESC_PROD, ' - ') + 3) AS nomeProduto",
+                        "$ID_PRODUTO AS ${BaseColumns._ID}",
+                        QE_PROD,
+                        VALID_PROD,
+                        TIPOV_PROD,
+                    ),
+                    "descProduto LIKE '%${filtro}%'" /* WHERE clause less the WHERE keyword, null = no WHERE clause */,
+                    null /* arguments to replace ? place holder in the WHERE clause, null if none */,
+                    null /* GROUP BY clause, null if no GROUP BY clause */,
+                    null /* HAVING CLAUSE, null if no HAVING clause */,
+                    null /* ORDER BY clause products will be shown alphabetically a->z*/
+                )
+            }
+
+        return sql
     }
 
     fun getDetailProdutos(idPrd: Int): Cursor {

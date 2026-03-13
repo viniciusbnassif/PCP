@@ -184,16 +184,16 @@ fun uploadAE(context: Context) {
     var localResult = result
 
 
-    connect().use {
+    connect()?.use {
 
-        var st1 = it?.createStatement()!!
+        var st1 = it.createStatement()
         if (localResult != null && localResult.count > 0) {
             localResult.moveToFirst()
             do {
                 var id = localResult.getInt(0)
 
                 var produto = dbIntrn.getDescProdutos(localResult.getInt(9))
-                var produtoDesc = produto!!.getString(1)
+                var produtoDesc = if (produto != null && produto.moveToFirst()) produto.getString(1) else ""
                 Log.d("ProdDesc", "$produtoDesc")
                 try {
 
@@ -244,9 +244,9 @@ fun uploadAP(context: Context) {
     var localResult = result
 
 
-    connect().use {
+    connect()?.use {
 
-        var st1 = it?.createStatement()!!
+        var st1 = it.createStatement()
         if (localResult != null && localResult.count > 0) {
             localResult.moveToFirst()
             do {
@@ -255,8 +255,8 @@ fun uploadAP(context: Context) {
 
                 var produto = dbIntrn.getDescProdutos(localResult.getInt(5))
                 var motivo = dbIntrn.getDescMotivo(localResult.getInt(6))
-                var produtoDesc = produto!!.getString(1)
-                var motivoDesc = motivo!!.getString(1)
+                var produtoDesc = if (produto != null && produto.moveToFirst()) produto.getString(1) else ""
+                var motivoDesc = if (motivo != null && motivo.moveToFirst()) motivo.getString(1) else ""
                 Log.d("ProdDesc", "$produtoDesc")
                 try {
 
@@ -305,9 +305,9 @@ fun uploadRequisicoes(context: Context) {
     var localResult = result
     var localResultUpd = resultUpd
 
-    connect().use {
+    connect()?.use {
 
-        var st1 = it?.createStatement()!!
+        var st1 = it.createStatement()
         if (localResult != null && localResult.count > 0) {
             localResult.moveToFirst()
             do {
@@ -394,9 +394,9 @@ fun uploadUpdRequisicoes(context: Context) {
     var localResult = result
     var localResultUpd = resultUpd
 
-    connect().use {
+    connect()?.use {
 
-        var st1 = it?.createStatement()!!
+        var st1 = it.createStatement()
         if (localResultUpd != null && localResultUpd.count > 0) {
             localResultUpd.moveToFirst()
             do {

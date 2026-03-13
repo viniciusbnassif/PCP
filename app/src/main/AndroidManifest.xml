@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PCP"
         android:usesCleartextTraffic="true"
-        tools:targetApi="34">
+        tools:targetApi="35">
         <activity
             android:name=".PdfActivity"
             android:exported="false" />

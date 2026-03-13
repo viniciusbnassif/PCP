@@ -83,7 +83,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginBottom="8dp"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Planejamento e Controle \nde Produção"
+                        android:text="PCP"
                         android:textSize="24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

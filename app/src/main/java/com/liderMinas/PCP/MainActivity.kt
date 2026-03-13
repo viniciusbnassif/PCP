@@ -20,19 +20,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import com.liderMinas.PCP.database.Sync
-import com.liderMinas.PCP.database.confirmUnPw
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Integer.parseInt
 import java.util.Calendar
+import com.liderMinas.PCP.database.Sync
+import com.liderMinas.PCP.database.confirmUnPw
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         var ctxt = this
 
 
-        setContentView(R.layout.activity_main)
         SQLiteHelper(this)
         var db = SQLiteHelper(this)
 
@@ -66,9 +66,10 @@ class MainActivity : AppCompatActivity() {
         val pw = findViewById<EditText>(R.id.passwordText)
         val pwView = findViewById<TextInputLayout>(R.id.password)
 
-        val username = user.text.toString()
 
         fun syncIsDone(){
+            val username = user.text.toString()
+
             var mainMenu = Intent(this, MainMenu::class.java).apply {
                 putExtra(AlarmClock.EXTRA_MESSAGE, username)
             }
@@ -86,24 +87,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
-
         suspend fun connectionView(): String {
             var result = Sync().testConnection()
 
-            if (result == "Falha") {
-                var xyz = Snackbar.make(
-                    findViewById(R.id.saudacaoContainer),
-                    getString(R.string.connectionErroResult1),
-                    Snackbar.LENGTH_LONG
-                ).setBackgroundTint(Color.parseColor("#741919"))
-                    .setTextColor(Color.WHITE)
-                    .setActionTextColor(Color.WHITE)
-                    .setAction("OK") {}.show()
-                return result
-            } else if (result == "Sem Conexão") {
-                return result
+            if (result.toString() == "Falha") {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    var xyz = Snackbar.make(
+                        findViewById(R.id.main),
+                        "Erro",
+                        Snackbar.LENGTH_LONG
+                    ).setBackgroundTint(Color.parseColor("#741919"))
+                        .setTextColor(Color.WHITE)
+                        .setActionTextColor(Color.WHITE)
+                        .setAction("OK") {}.show()
+                }
+                return result.toString()
+
+            } else if (result.toString() == "Sem Conexão") {
+                return result.toString()
             } else {
                 return "Sucesso"
             }
@@ -118,26 +119,13 @@ class MainActivity : AppCompatActivity() {
                         Looper.prepare()
                     }
 
-                    var ret = sync.sync(0, ctxt)!!
+                    var ret = sync.sync(0, ctxt) ?: "Falha"
 
                     return@withContext ret
                 } catch (e: Exception) {
                     Log.d("SyncMainActivity (Thread)", "$e")
                     return@withContext "Falha"
                 }
-                /*MainScope().launch {
-                    if (message == "Sucesso"){
-                        var mainMenu = Intent(this, MainNav::class.java).apply {
-                            putExtra(AlarmClock.EXTRA_MESSAGE, username)
-                        }
-                        startActivity(mainMenu)
-
-                        finish()
-                    } else {
-                        showProgress("false")
-                    }
-                }*/
-                //syncIsDone()
             }
             return message
         }
@@ -151,7 +139,6 @@ class MainActivity : AppCompatActivity() {
             val pw = findViewById<EditText>(R.id.editTextPassword)
             val pwView = findViewById<TextInputLayout>(R.id.viewPassword)*/
 
-            val user = findViewById<EditText>(R.id.usernameText)
             val userView = findViewById<TextInputLayout>(R.id.username)
 
             val pw = findViewById<EditText>(R.id.passwordText)
@@ -168,7 +155,7 @@ class MainActivity : AppCompatActivity() {
 
             var result = connectionView()
             if (result == "Sucesso") {
-                var validation = confirmUnPw(user.text.toString(), pw.text.toString())
+                var validation = withContext(Dispatchers.IO) { confirmUnPw(user.text.toString(), pw.text.toString()) }
                 if (validation == 201) {
                     user.isEnabled = false
                     pw.isEnabled = false
@@ -248,13 +235,6 @@ class MainActivity : AppCompatActivity() {
                         .setNeutralButton("Abrir Configurações de Wi-fi") { dialog, which ->
                             startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
                         }.show()
-                    /*Snackbar.make(
-                        elementsOnLogin,
-                        "Não foi possivel conectar ao servidor. Verifique as configurações de rede e tente novamente.",
-                        Snackbar.LENGTH_LONG
-                    ).setAction("Abrir Configurações") {
-                        startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
-                    }.show()*/
                     showProgress("false")
                 }
             }
@@ -279,7 +259,6 @@ class MainActivity : AppCompatActivity() {
         calendar.set(Calendar.MINUTE, parseInt(dmi[1]))
 
         var date = "01/01/2023"//.toLong()
-        //NotificationManager(this).NotificacaoErro( "produto", "Guilherme é um cagão","MensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhadaMensagemDetalhada", calendar.getTimeInMillis())
     }
 
     override fun onDestroy() {

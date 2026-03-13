@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".ApontamentoEmbalados1">
 
+
+
     <ProgressBar
         android:id="@+id/progressInd"
         style="?android:attr/progressBarStyle"
@@ -25,16 +27,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:keepScreenOn="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/coordinatorLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/CLAE1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:scrollbars="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/viewSpinner"
@@ -65,7 +69,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/listaProduto"
                 style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="22dp"
                 android:backgroundTint="@color/colorPrimaryContainer"
@@ -75,7 +79,7 @@
                 android:insetTop="6dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
-                android:text="Pesquisa"
+                android:text="Toque aqui para selecionar o produto"
                 app:cornerRadius="5dp"
                 app:icon="@drawable/rounded_manage_search_24"
                 app:layout_constraintBottom_toBottomOf="@+id/viewSpinner"
@@ -271,6 +275,7 @@
 
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
+
             <EditText
                 android:id="@+id/numeroPorPilha"
                 android:layout_width="match_parent"
@@ -322,10 +327,10 @@
                     android:id="@+id/finalResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Pilhas"
-                    android:inputType="none"
                     android:editable="false"
                     android:focusableInTouchMode="false"
+                    android:hint="Pilhas"
+                    android:inputType="none"
                     android:singleLine="true"
                     android:text="0"
                     android:textAlignment="center"
@@ -337,21 +342,21 @@
                 style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:backgroundTint="@color/colorPrimaryContainer"
                 android:hapticFeedbackEnabled="true"
+                android:iconTint="@color/colorOnPrimaryContainer"
                 android:insetLeft="0dp"
                 android:insetTop="5dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
-                app:icon="@drawable/rounded_add_24"
-                app:iconSize="80dp"
-                app:iconPadding="0dp"
                 android:padding="0dp"
-                app:iconGravity="textStart"
-                android:backgroundTint="@color/colorPrimaryContainer"
-                android:iconTint="@color/colorOnPrimaryContainer"
                 android:textSize="80sp"
                 android:tooltipText="Adicionar 1"
                 app:cornerRadius="5dp"
+                app:icon="@drawable/rounded_add_24"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="80dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textInputLayout22"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayout22"
@@ -434,13 +439,14 @@
             <Space
                 android:id="@+id/space"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="96dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewCaixasAvulsas" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -477,10 +483,11 @@
                     android:text="Finalizar e \niniciar outro"
                     android:textAlignment="textStart"
                     android:textColor="@color/alternativeColorOnPrimaryContainer"
+                    android:textSize="16sp"
                     app:backgroundTint="@color/color_0"
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_outline_library_add_24"
-                    app:iconSize="24dp"
+                    app:iconSize="28dp"
                     app:iconTint="@color/alternativeColorOnPrimaryContainer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/fab2"
@@ -506,7 +513,7 @@
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_outline_library_add_check_24"
                     app:iconGravity="start"
-                    app:iconSize="24dp"
+                    app:iconSize="28dp"
                     app:iconTint="@color/alternativeColorOnPrimaryContainer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -514,5 +521,26 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--Button
+        android:id="@+id/btnFecharTeclado"
+        style="@style/Widget.App.Button.UnelevatedButton.IconOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:insetLeft="8dp"
+        android:insetTop="8dp"
+        android:insetRight="8dp"
+        android:insetBottom="0dp"
+        android:textSize="0sp"
+        app:cornerRadius="5dp"
+        app:icon="@drawable/keyboard_hide_24"
+        app:iconGravity="textEnd"
+        app:iconPadding="0dp"
+        app:iconSize="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/coordinatorLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/coordinatorLayout" /-->
 </androidx.constraintlayout.widget.ConstraintLayout>
